@@ -1,5 +1,5 @@
 import {FormEvent} from 'react'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.svg'
 import hero from '../assets/heroimg.svg'
 import {Link, useNavigate} from 'react-router-dom'
 
