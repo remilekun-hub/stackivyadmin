@@ -1,5 +1,3 @@
-import { Navigate } from "react-router-dom";
-
 type prop = {
   children: JSX.Element;
 };
