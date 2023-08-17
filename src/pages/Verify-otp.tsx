@@ -1,27 +1,34 @@
+import { useState } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link } from "react-router-dom";
+import OtpInput from "react18-input-otp";
 
 function Verify() {
+  const [otp, setOtp] = useState("");
+  const handleChange = (enteredOtp: string) => {
+    setOtp(enteredOtp);
+  };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     alert("otp sent");
   };
   return (
-    <section>
-      <div className="xl:grid xl:grid-cols-2 mx-auto">
-        <div className="mx-auto px-4 md:px-[10%] lg:px-[10%] xl:w-full">
-          <div>
-            <header className="h-[100px] flex items-center">
+    <section className="bg-[#f4f4f4] xl:p-8 h-screen">
+      <div className="xl:grid xl:grid-cols-2 mx-auto h-full">
+        <div className="xl:pt-4 xl:pb-4">
+          <div className="mx-auto h-screen xl:h-full bg-[#ffffff] px-4 sm:px-[10%] md:px-[20%] lg:w-[] xl:px-[16%] xl:w-full">
+            <header className="h-[140px] xl:pt-[50px] flex items-center">
               <nav>
                 <Link to={"/"}>
                   <img src={logo} alt="stackivy logo" />
                 </Link>
               </nav>
             </header>
-            {/* hero section */}
-            <div className="">
+
+            {/* hero */}
+            <div>
               <div className="mt-6">
                 <h1 className="text-[#116B89] font-medium text-[20px] leading-6 mb-3">
                   OTP Verification
@@ -34,36 +41,38 @@ function Verify() {
                 </p>
               </div>
 
-              <form className="mt-10" onSubmit={handleSubmit}>
-                <label htmlFor="" className="flex flex-col gap-1 mb-4">
-                  <p>Password</p>
-
-                  <input
-                    type="password"
-                    name=""
-                    id=""
-                    className="w-full outline-0 p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+              <form className="mt-7" onSubmit={handleSubmit}>
+                <div className="mb-5">
+                  <OtpInput
+                    value={otp}
+                    onChange={handleChange}
+                    numInputs={7}
+                    inputStyle={
+                      "otp border-[1px] border-[#e5e73b] text-center text-[24px] font-medium bg-white m-[10px] outline-none"
+                    }
                   />
-                </label>
+                </div>
                 <p>
                   Didn’t get an OTP code?{" "}
                   <span className="text-[#116B89]">RESEND</span>
                 </p>
 
-                <button className="mb-4 bg-[#116B89] p-5 w-full text-white rounded-full text-[14px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Sign In
+                <button className="mb-4  bg-[#116B89] p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                  Reset Password
                 </button>
-                <p className="text-[13px] leading-[22px] text-center">
-                  Dont have an account?{" "}
-                  <span className="text-[#116B89] font-normal">
-                    <Link to={"/sign-in"}>Create account</Link>
-                  </span>
-                </p>
               </form>
+              <p className="text-center">
+                Don't have an account?{" "}
+                <span className="">
+                  <Link to="/sign-up" className="text-[#116B89]">
+                    Create account
+                  </Link>
+                </span>
+              </p>
             </div>
           </div>
         </div>
-        <div className="hidden xl:block max-h-screen">
+        <div className="hidden xl:block max-h-screen overflow-hidden">
           <img
             src={hero}
             alt="stack ivy hero img"

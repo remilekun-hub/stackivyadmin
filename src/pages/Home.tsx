@@ -1,25 +1,22 @@
-import { Link } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import DashBox from "../components/DashBox";
+import Navbar from "../components/Navbar";
 
 function Home() {
   return (
-    <section className="flex">
-      <Sidebar />
-      <main className="flex-1 px-4 lg:px-6 ">
-        <li>
-          <Link to={"/sign-in"}>sign in</Link>
-        </li>
-        <li>
-          <Link to={"/sign-up"}>sign up</Link>
-        </li>
-        <li>
-          <Link to={"/verify-otp"}>verif otp</Link>
-        </li>
-        <li>
-          <Link to={"/forgot-password"}>forgort password</Link>
-        </li>
-        <p>dashboard here</p>
-      </main>
+    <section>
+      <div className="flex-1 mx-auto">
+        <Navbar>
+          <div className="flex items-center">
+            <h1 className="font-medium text-[24px]">Dashboard</h1>
+          </div>
+        </Navbar>
+
+        <main className="p-4 lg:p-6 xl:p-7 bg-[#F3F4F6]">
+          <div className="grid grid-cols-3">
+            <DashBox />
+          </div>
+        </main>
+      </div>
     </section>
   );
 }
