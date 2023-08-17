@@ -4,8 +4,7 @@ type prop = {
 };
 
 function ProtectedRoute({ children }: prop) {
-  // const user = localStorage.getItem("user");
-  const user = "remi";
+  const user = localStorage.getItem("user");
 
   if (!user) {
     return (

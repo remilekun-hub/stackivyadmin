@@ -47,9 +47,7 @@ function Verify() {
                     value={otp}
                     onChange={handleChange}
                     numInputs={7}
-                    inputStyle={
-                      "otp border-[1px] border-[#e5e73b] text-center text-[24px] font-medium bg-white m-[10px] outline-none"
-                    }
+                    inputStyle={"otp"}
                   />
                 </div>
                 <p>
@@ -57,7 +55,7 @@ function Verify() {
                   <span className="text-[#116B89]">RESEND</span>
                 </p>
 
-                <button className="mb-4  bg-[#116B89] p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
                   Reset Password
                 </button>
               </form>

@@ -39,12 +39,12 @@ function Forgotpassword() {
                     type="email"
                     name=""
                     id=""
-                    className="w-full outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
                   />
                 </label>
 
-                <button className="mb-4  bg-[#116B89] p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                <button className="mb-4  bg-[#116B89] p-4 g:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
                   Reset Password
                 </button>
               </form>

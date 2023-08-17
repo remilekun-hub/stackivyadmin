@@ -52,7 +52,7 @@ function Signup() {
                     type="text"
                     name=""
                     id=""
-                    className="w-full outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Name"
                   />
                 </label>
@@ -63,7 +63,7 @@ function Signup() {
                     type="email"
                     name=""
                     id=""
-                    className="w-full outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
                   />
                 </label>
@@ -74,16 +74,16 @@ function Signup() {
                     type={toggleType}
                     name=""
                     id="pass"
-                    className="w-full  outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
                   />
                   <img
                     src={eye}
-                    className="w-4 h-4 absolute right-7 top-12 cursor-pointer"
+                    className="w-4 h-4 absolute right-7 top-[45px] lg:top-[52px] cursor-pointer"
                     onClick={toggle}
                   />
                 </label>
-                <button className="mb-4 bg-[#116B89] p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-5 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                <button className="mb-4 bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-5 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
                   Create Account
                 </button>
               </form>

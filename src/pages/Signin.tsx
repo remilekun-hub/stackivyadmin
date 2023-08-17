@@ -9,6 +9,7 @@ function Signin() {
   const navigate = useNavigate();
 
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
+  const [user, setUser] = useState("");
 
   const toggle = () => {
     if (toggleType === "password") {
@@ -19,6 +20,8 @@ function Signin() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (!user) return;
+    localStorage.setItem("user", user);
     navigate("/verify-otp");
   };
 
@@ -54,8 +57,10 @@ function Signin() {
                     type="email"
                     name=""
                     id=""
-                    className="w-full outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
+                    required
+                    onChange={(e) => setUser(e.target.value)}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -65,12 +70,13 @@ function Signin() {
                     type={toggleType}
                     name=""
                     id="pass"
-                    className="w-full  outline-0 p-4 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
+                    required
                   />
                   <img
                     src={eye}
-                    className="w-4 h-4 absolute right-7 top-[52px] cursor-pointer"
+                    className="w-4 h-4 absolute right-7 top-[45px] lg:top-[52px] cursor-pointer"
                     onClick={toggle}
                   />
                 </label>
@@ -90,7 +96,7 @@ function Signin() {
                     Forgort Password?
                   </Link>
                 </div>
-                <button className="mb-4  bg-[#116B89] p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
                   Create Account
                 </button>
               </form>
