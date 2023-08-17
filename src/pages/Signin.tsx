@@ -45,7 +45,7 @@ function Signin() {
                   Welcome to the admin dashboard{" "}
                 </h1>
                 <p className="text-[#999999] leading-6">
-                  Sign ip to Stackivy’s admin dashboard and start putting things
+                  Sign in to Stackivy’s admin dashboard and start putting things
                   right
                 </p>
               </div>
@@ -84,9 +84,9 @@ function Signin() {
                   <div>
                     <input
                       type="checkbox"
-                      className="accent-[#116b89] cursor-pointer w-4  h-4"
+                      className="accent-[#116b89] cursor-pointer w-3  h-3"
                     />{" "}
-                    Remember Password
+                    <span className="text-[13px] mb-9 ">Remember Password</span>
                   </div>
 
                   <Link
