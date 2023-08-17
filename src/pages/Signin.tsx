@@ -70,7 +70,7 @@ function Signin() {
                   />
                   <img
                     src={eye}
-                    className="w-4 h-4 absolute right-7 top-12 cursor-pointer"
+                    className="w-4 h-4 absolute right-7 top-[52px] cursor-pointer"
                     onClick={toggle}
                   />
                 </label>
