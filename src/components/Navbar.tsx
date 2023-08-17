@@ -1,4 +1,3 @@
-import React from "react";
 import glassIcon2 from "../assets/search-two.png";
 import bell from "../assets/bell.png";
 import prfofileImg from "../assets/profileimg.png";

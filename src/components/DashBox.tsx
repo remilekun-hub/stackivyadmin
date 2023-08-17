@@ -1,4 +1,3 @@
-import React from "react";
 import head1 from "../assets/head1.png";
 
 // type Prop = {

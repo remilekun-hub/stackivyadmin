@@ -5,14 +5,15 @@ type prop = {
 
 function ProtectedRoute({ children }: prop) {
   // const user = localStorage.getItem("user");
+  const user = "remi";
 
-  // if (!user) {
-  //   return (
-  //     <>
-  //       <Navigate to={"/sign-in"} />
-  //     </>
-  //   );
-  // }
+  if (!user) {
+    return (
+      <>
+        <Navigate to={"/sign-in"} />
+      </>
+    );
+  }
   return children;
 }
 
