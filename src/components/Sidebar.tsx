@@ -1,19 +1,29 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
 import Sidebaritem from "./Sidebaritem";
-import arrow from "../assets/arrow-down.png";
-import arrowup from "../assets/arrowup.png";
 import contentIcon from "../assets/Contenticon.png";
+import door from "../assets/door.png";
+import clog from "../assets/clog.png";
+import profile from "../assets/profile-circle.png";
+import careerI from "../assets/material-symbols_business-center-outline.svg";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 function Sidebar() {
-  const [showContent, setShowContent] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/");
+  };
+
+  const customNavigate = (path: string) => {
+    navigate(path);
   };
 
   return (
@@ -35,64 +45,66 @@ function Sidebar() {
         </div>
       </div>
 
-      <div className="px-6 mt-6">
+      <div className="px-6 mt-6 mb-10">
         <Sidebaritem link="/dashboard" icon={dashboardicon} title="Dashboard" />
-        <Sidebaritem link="/career" icon={dashboardicon} title="Career" />
+        <Sidebaritem link="/career" icon={careerI} title="Career" />
+        <Sidebaritem link="/startup" icon={dashboardicon} title="Startup" />
+        <Sidebaritem link="/quote" icon={dashboardicon} title="Quote" />
 
-        <div className="pl-4 my-3">
-          <div
-            className="flex justify-between cursor-pointer"
-            onClick={() => setShowContent(!showContent)}
-          >
-            <div
-              className={`leading-[15px] gap-4  flex items-center ${
-                showContent ? "text-white" : "text-[#a9b1bc]"
-              }`}
-            >
-              <img src={contentIcon} className="w-5 h-5" />
-              <p
-                className={`leading-[15px] gap-4  flex items-center${
-                  showContent ? "text-white" : "text-[#a9b1bc]"
-                }`}
-              >
-                Content
-              </p>
-            </div>
-            <h2>
-              {showContent ? (
-                <img src={arrow} className="w-5 h-5" />
-              ) : (
-                <img src={arrowup} className="w-5 h-5" />
-              )}
-            </h2>
-          </div>
-          {showContent && (
-            <div className="ml-8 mt-3">
-              <p className="text-[#a9b1bc] hover:text-white hover:bg-[#2B3E46] px-4 py-1 rounded-[4px] mb-1">
-                Blogs
-              </p>
-              <p className="hover:bg-[#2B3E46] px-3 py-1 rounded-[4px] mb-1">
-                vvv
-              </p>
-              <p className="hover:bg-[#2B3E46] px-3 py-1 rounded-[4px] mb-1">
-                vvv
-              </p>
-            </div>
-          )}
+        <div>
+          <Accordion type="single" collapsible className="w-full outline-none">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
+                <div className="flex gap-4 ">
+                  <img src={contentIcon} alt="" className="w-5 h-5" />
+                  <p>Marketing</p>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div
+                  className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                  onClick={() => customNavigate("/blog")}
+                >
+                  Blogs
+                </div>
+                <div
+                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                  onClick={() => customNavigate("/guides")}
+                >
+                  Guides
+                </div>
+                <div
+                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                  onClick={() => customNavigate("/webinars")}
+                >
+                  Webinars
+                </div>
+                <div
+                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                  onClick={() => customNavigate("/case-studies")}
+                >
+                  Case Studies
+                </div>
+                <div
+                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                  onClick={() => customNavigate("/events")}
+                >
+                  Events
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
 
-      <div className="px-6 pt-8">
-        <Sidebaritem link="/account" icon={dashboardicon} title="Account" />
-        <Sidebaritem link="/support" icon={dashboardicon} title="Support" />
+      <div className="px-6 pt-8 border-t-[1px] border-t-[#27393F]">
+        <Sidebaritem link="/account" icon={profile} title="Account" />
+        <Sidebaritem link="/support" icon={clog} title="Support" />
         <div
           className={`group flex items-center hover:bg-[#2B3E46] gap-4 py-3 mb-2 px-4 rounded-[4px] cursor-pointer`}
           onClick={handleLogout}
         >
-          {/* <img
-              src={icon}
-              className={`w-5 h-5`}
-            /> */}
+          <img src={door} className={`w-5 h-5`} />
           <p className="text-[#a9b1bc] group-hover:text-white leading-[15px]">
             Logout
           </p>
