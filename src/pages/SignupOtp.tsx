@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
 
-function Verify() {
+function SignupOtp() {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const handleChange = (enteredOtp: string) => {
@@ -14,7 +14,8 @@ function Verify() {
   };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    localStorage.setItem("user", "user");
+    navigate("/");
   };
   return (
     <section className="bg-[#f4f4f4] xl:p-8 h-screen">
@@ -76,4 +77,4 @@ function Verify() {
   );
 }
 
-export default Verify;
+export default SignupOtp;

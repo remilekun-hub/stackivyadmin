@@ -8,7 +8,7 @@ type Prop = {
 function Navbar({ children }: Prop) {
   return (
     <header className="sticky top-0 px-4 lg:px-6 flex items-center py-6 w-full bg-white">
-      <nav className="flex justify-between w-full items-center h-full mx-auto">
+      <nav className="flex justify-between w-full items-center h-full mx-auto max-w-[1500px]">
         {children}
 
         <div className="flex items-center gap-10">

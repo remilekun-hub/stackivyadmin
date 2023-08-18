@@ -5,9 +5,11 @@ import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
 
-function Signup() {
+function Thereisuser() {
   const navigate = useNavigate();
+
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
+  // const [user, setUser] = useState("");
 
   const toggle = () => {
     if (toggleType === "password") {
@@ -19,14 +21,13 @@ function Signup() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    navigate("/signup/verify-otp");
+    navigate("/dashboard");
   };
-
   return (
     <section className="bg-[#f4f4f4] xl:p-8 h-screen">
       <div className="xl:grid xl:grid-cols-2 mx-auto h-full">
         <div className="xl:pt-4 xl:pb-4">
-          <div className=" mx-auto h-screen xl:h-full bg-[#ffffff] px-4 sm:px-[10%] md:px-[20%] lg:w-[] xl:px-[16%] xl:w-full">
+          <div className="mx-auto h-screen xl:h-full bg-[#ffffff] px-4 sm:px-[10%] md:px-[20%] lg:w-[] xl:px-[16%] xl:w-full">
             <header className="h-[140px] xl:pt-[50px] flex items-center">
               <nav>
                 <Link to={"/"}>
@@ -42,21 +43,11 @@ function Signup() {
                   Welcome to the admin dashboard{" "}
                 </h1>
                 <p className="text-[#999999] leading-6">
-                  Sign up to Stackivy’s admin dashboard and start putting things
+                  Sign in to Stackivy’s admin dashboard and start putting things
                   right
                 </p>
               </div>
               <form className="mt-7" onSubmit={handleSubmit}>
-                <label htmlFor="" className="flex flex-col gap-1 mb-4">
-                  <p>Name</p>
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
-                    placeholder="Enter Name"
-                  />
-                </label>
                 <label htmlFor="" className="flex flex-col gap-1 mb-4">
                   <p>Email</p>
 
@@ -66,6 +57,8 @@ function Signup() {
                     id=""
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
+                    required
+                    // onChange={(e) => setUser(e.target.value)}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -77,6 +70,7 @@ function Signup() {
                     id="pass"
                     className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
+                    required
                   />
                   <img
                     src={eye}
@@ -84,14 +78,30 @@ function Signup() {
                     onClick={toggle}
                   />
                 </label>
-                <button className="mb-4 bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-5 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Create Account
+                <div className="flex justify-between mt-7">
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="accent-[#116b89] cursor-pointer w-3  h-3"
+                    />{" "}
+                    <span className="text-[13px] mb-9 ">Remember Password</span>
+                  </div>
+
+                  <Link
+                    to={"/forgot-password"}
+                    className="text-[#116B89] text-[13px]"
+                  >
+                    Forgort Password?
+                  </Link>
+                </div>
+                <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                  Sign In
                 </button>
               </form>
-              <p className="leading-[22px] mt-2 font-normal text-center">
-                Already have an account?{" "}
+              <p className=" leading-[22px] mt-3 font-normal text-center">
+                Don't have an account?{" "}
                 <span className="text-[#116B89]">
-                  <Link to={"/"}>Sign in</Link>
+                  <Link to={"/sign-up"}>Create Account</Link>
                 </span>
               </p>
             </div>
@@ -109,4 +119,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Thereisuser;

@@ -47,7 +47,7 @@ function Blog() {
               </div>
               <div className="mr-2">
                 <Link
-                  to={"/blog/new"}
+                  to={"/blog/create"}
                   className="bg-[#116B89] text-white py-4 px-6 rounded-full font-normal"
                 >
                   Create New Blog +

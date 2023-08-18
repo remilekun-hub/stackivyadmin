@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
@@ -10,11 +10,16 @@ import contentIcon from "../assets/Contenticon.png";
 
 function Sidebar() {
   const [showContent, setShowContent] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   return (
-    <aside className="hidden xl:block min-h-screen w-[300px] bg-[#1E2C31] fixed left-0">
+    <aside className="hidden xl:block min-h-screen w-[300px] bg-[#1E2C31] fixed left-0 z-[900]">
       <header className=" h-[100px] pl-5 items-center flex">
-        <Link to={"/"}>
+        <Link to={"/dashboard"}>
           <img src={SidebarLogo} alt="Stackivy Logo" />
         </Link>
       </header>
@@ -31,7 +36,7 @@ function Sidebar() {
       </div>
 
       <div className="px-6 mt-6">
-        <Sidebaritem link="/" icon={dashboardicon} title="Dashboard" />
+        <Sidebaritem link="/dashboard" icon={dashboardicon} title="Dashboard" />
         <Sidebaritem link="/career" icon={dashboardicon} title="Career" />
 
         <div className="pl-4 my-3">
@@ -80,6 +85,18 @@ function Sidebar() {
       <div className="px-6 pt-8">
         <Sidebaritem link="/account" icon={dashboardicon} title="Account" />
         <Sidebaritem link="/support" icon={dashboardicon} title="Support" />
+        <div
+          className={`group flex items-center hover:bg-[#2B3E46] gap-4 py-3 mb-2 px-4 rounded-[4px] cursor-pointer`}
+          onClick={handleLogout}
+        >
+          {/* <img
+              src={icon}
+              className={`w-5 h-5`}
+            /> */}
+          <p className="text-[#a9b1bc] group-hover:text-white leading-[15px]">
+            Logout
+          </p>
+        </div>
       </div>
     </aside>
   );

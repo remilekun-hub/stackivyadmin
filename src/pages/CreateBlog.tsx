@@ -9,7 +9,7 @@ function NewBlog() {
   return (
     <section className="max-h-screen">
       {catModal && (
-        <div className="w-screen h-screen fixed top-0 z-50 left-0 bg-black/70 flex justify-center items-center">
+        <div className="w-screen h-screen fixed top-0 z-[700000] left-0 bg-black/70 flex justify-center items-center">
           <div className="bg-white p-7 rounded-[24px] w-[312px] flex-col flex gap-6">
             <div className="flex items-center justify-between">
               <h1 className="font-medium">Add Category</h1>
@@ -42,7 +42,7 @@ function NewBlog() {
           </span>
         </div>
       </Navbar>
-      <main className="p-4 lg:p-6 xl:p-7 bg-[#F3F4F6]">
+      <main className="p-4 lg:p-6 xl:p-9 bg-[#F3F4F6]">
         <div className="rounded-[16px]  h-screen flex flex-col xl:flex-row gap-5 xl:gap-8">
           <div className="xl:basis-[77%] bg-white rounded-[16px]">1</div>
           <div className="xl:basis-[350px] bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">
@@ -120,7 +120,7 @@ function NewBlog() {
                   <input
                     type="checkbox"
                     value="savings"
-                    className="cursor-pointer"
+                    className="cursor-pointer accent-[#116B89]"
                   />
                   <p> Savings</p>
                 </label>
@@ -128,7 +128,7 @@ function NewBlog() {
                   <input
                     type="checkbox"
                     value="investment"
-                    className="cursor-pointer"
+                    className="cursor-pointer accent-[#116B89]"
                   />
                   <p>Investment</p>
                 </label>

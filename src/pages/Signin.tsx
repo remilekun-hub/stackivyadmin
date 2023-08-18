@@ -9,7 +9,6 @@ function Signin() {
   const navigate = useNavigate();
 
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
-  const [user, setUser] = useState("");
 
   const toggle = () => {
     if (toggleType === "password") {
@@ -20,9 +19,12 @@ function Signin() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!user) return;
-    localStorage.setItem("user", user);
-    navigate("/verify-otp");
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/dashboard");
+      return;
+    }
+    navigate("/signin/verify-otp");
   };
 
   return (
@@ -60,7 +62,7 @@ function Signin() {
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
                     required
-                    onChange={(e) => setUser(e.target.value)}
+                    // onChange={(e) => setUser(e.target.value)}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -97,7 +99,7 @@ function Signin() {
                   </Link>
                 </div>
                 <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Create Account
+                  Sign In
                 </button>
               </form>
               <p className=" leading-[22px] mt-3 font-normal text-center">
