@@ -8,20 +8,23 @@ body {
   width: 40px !important;
   height: 40px !important;
   padding: 10px;
-  border: 1px solid #999999;
+  border: 1px solid #e5e7eb;
   border-radius: 4px;
-  margin: 0 10px !important;
+  margin-right: 15px !important;
   font-size: 20px;
   font-weight: bold;
+}
+.opt:focus-within {
+  border: 1px solid #e5e7eb;
 }
 @media screen and (min-width: 1200px) {
   .otp {
     width: 50px !important;
     height: 50px !important;
     padding: 10px;
-    border: 1px solid #999999;
+    border: 1px solid #e5e7eb;
     border-radius: 4px;
-    margin: 0 10px !important;
+    margin-right: 15px !important;
     font-size: 20px;
     font-weight: bold;
   }

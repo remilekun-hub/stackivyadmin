@@ -35,7 +35,7 @@ function Verify() {
                 </h1>
                 <p className="text-[#999999] leading-6">
                   We sent you an OTP code to this email{" "}
-                  <span className="text-black font-medium">
+                  <span className="text-black font-semibold">
                     AyodeleVincentOlagunju888@gmail.com{" "}
                   </span>
                 </p>
@@ -52,11 +52,11 @@ function Verify() {
                 </div>
                 <p>
                   Didn’t get an OTP code?{" "}
-                  <span className="text-[#116B89]">RESEND</span>
+                  <span className="text-[#116B89] font-medium">RESEND</span>
                 </p>
 
                 <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Reset Password
+                  Sign in
                 </button>
               </form>
               <p className="text-center">
