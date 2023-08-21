@@ -3,11 +3,12 @@ import Navbar from "../components/Navbar";
 import { applicants } from "@/dummy/applicants";
 import { Applicant } from "@/dummy/applicants";
 import { ColumnDef } from "@tanstack/react-table";
+import eye from "../assets/eye.png";
+import trash from "../assets/trash.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -39,14 +40,20 @@ function Applications() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                className="cursor-pointer flex items-center  gap-2"
+                className="cursor-pointer flex items-center  gap-4"
                 onClick={() => navigate(`/career/applicant/${applicant.id}`)}
               >
-                <span>Icon here</span> <span>View Details</span>
+                <span>
+                  <img src={eye} className="w-4 h-4" />
+                </span>{" "}
+                <span>View Details</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-                <span>icon here</span> <span>Delete Applicant</span>
+
+              <DropdownMenuItem className="cursor-pointer flex items-center gap-4">
+                <span className="mb-[5px]">
+                  <img src={trash} className="w-4 h-4" />
+                </span>{" "}
+                <span>Delete Applicant</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
