@@ -113,6 +113,7 @@ function CreateJobPost() {
                       type="text"
                       name=""
                       id=""
+                      placeholder="Enter Job Title"
                       className="w-full outline-none border-[1px] boreder-[#E5E7EB] p-5 rounded-[4px]"
                     />
                   </TabsContent>

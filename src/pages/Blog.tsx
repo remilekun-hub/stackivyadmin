@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-// import CustomDataTable from "@/components/CustomDataTable";
+
 import { blog } from "../dummy/blog";
 import BlogTable from "@/components/BlogTable";
 
@@ -56,8 +56,8 @@ function Blog() {
     {
       id: "actions",
       header: "ACTION",
-      cell: ({ row }) => {
-        const blog = row.original;
+      cell: () => {
+        // const blog = row.original;
 
         return (
           <DropdownMenu>
