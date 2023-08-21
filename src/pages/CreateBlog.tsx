@@ -12,7 +12,7 @@ import Superscript from "@tiptap/extension-superscript";
 import SubScript from "@tiptap/extension-subscript";
 
 const content =
-  '<h2 style="text-align: center;">Welcome to Stackivy Admin"s blog post creator</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+  '<h2 style="text-align: center;">Welcome to Stackiv"y Admin blog post creator</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
 
 function NewBlog() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -30,9 +30,10 @@ function NewBlog() {
     ],
     content,
   });
-
+  const c = content;
+  console.log({ c });
   return (
-    <section className="max-h-screen">
+    <section className="">
       {catModal && (
         <div className="w-screen h-screen fixed top-0 z-[700000] left-0 bg-black/70 flex justify-center items-center">
           <div className="bg-white p-7 rounded-[24px] w-[312px] flex-col flex gap-6">
@@ -61,7 +62,7 @@ function NewBlog() {
       )}
       <Navbar>
         <div className="flex items-center gap-[6px]">
-          <h1 className="font-medium text-[24px]">Content -</h1>
+          <h1 className="font-bold text-[24px]">Content -</h1>
           <span className="text-[#116B89] mt-[6px] text-[14px leading-[16.8px] font-medium">
             Blogs
           </span>
@@ -69,7 +70,7 @@ function NewBlog() {
       </Navbar>
       <main className="p-4 lg:p-6  bg-[#F3F4F6]">
         <div className="rounded-[16px]  h-screen flex flex-col xl:flex-row gap-5 xl:gap-7 max-w-[1500px] mx-auto">
-          <div className="xl:basis-[77%] bg-white rounded-[16px] overflow-hidden">
+          <div className="xl:basis-[77%] bg-white rounded-[16px] h-full overflow-auto">
             <RichTextEditor editor={editor} className="border-0">
               <RichTextEditor.Toolbar className="flex justify-center py-10">
                 <RichTextEditor.ControlsGroup>
@@ -111,10 +112,10 @@ function NewBlog() {
                 </RichTextEditor.ControlsGroup>
               </RichTextEditor.Toolbar>
 
-              <RichTextEditor.Content />
+              <RichTextEditor.Content className="w-full whitespace-pre-wrap" />
             </RichTextEditor>
           </div>
-          <div className=" xl:basis-[350px] h-full overflow-auto bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">
+          <div className=" xl:basis-[350px] h-full bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">
             <div className="flex gap-7 mb-6">
               <button className="rounded-full bg-[#116B89] px-8 py-3 text-white">
                 Publish

@@ -3,11 +3,13 @@ import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
 import Sidebaritem from "./Sidebaritem";
-import contentIcon from "../assets/Contenticon.png";
+import startupIcon from "../assets/rstart.png";
 import door from "../assets/door.png";
 import clog from "../assets/clog.png";
 import profile from "../assets/profile-circle.png";
-import careerI from "../assets/material-symbols_business-center-outline.svg";
+import careerI from "../assets/rcareer.png";
+import quote from "../assets/quote.png";
+import marketing from "../assets/marketing.png";
 import {
   Accordion,
   AccordionContent,
@@ -47,54 +49,82 @@ function Sidebar() {
 
       <div className="px-6 mt-6 mb-10">
         <Sidebaritem link="/dashboard" icon={dashboardicon} title="Dashboard" />
-        <Sidebaritem link="/career" icon={careerI} title="Career" />
-        <Sidebaritem link="/startup" icon={dashboardicon} title="Startup" />
-        <Sidebaritem link="/quote" icon={dashboardicon} title="Quote" />
+        <Accordion type="single" collapsible className="w-full outline-none">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
+              <div className="flex gap-4 ">
+                <img src={careerI} alt="" className="w-5 h-5" />
+                <p>Career</p>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div
+                className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/career/applications")}
+              >
+                Applications
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/career/manage-job-posts")}
+              >
+                Manage Job Posts
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/career/settings")}
+              >
+                Settings
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
-        <div>
-          <Accordion type="single" collapsible className="w-full outline-none">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
-                <div className="flex gap-4 ">
-                  <img src={contentIcon} alt="" className="w-5 h-5" />
-                  <p>Marketing</p>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div
-                  className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                  onClick={() => customNavigate("/blog")}
-                >
-                  Blogs
-                </div>
-                <div
-                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                  onClick={() => customNavigate("/guides")}
-                >
-                  Guides
-                </div>
-                <div
-                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                  onClick={() => customNavigate("/webinars")}
-                >
-                  Webinars
-                </div>
-                <div
-                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                  onClick={() => customNavigate("/case-studies")}
-                >
-                  Case Studies
-                </div>
-                <div
-                  className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                  onClick={() => customNavigate("/events")}
-                >
-                  Events
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
+        <Sidebaritem link="/startup" icon={startupIcon} title="Startup" />
+        <Sidebaritem link="/quote" icon={quote} title="Quote" />
+
+        <Accordion type="single" collapsible className="w-full outline-none">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
+              <div className="flex gap-4 ">
+                <img src={marketing} alt="" className="w-5 h-5" />
+                <p>Marketing</p>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div
+                className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/blog")}
+              >
+                Blogs
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/guides")}
+              >
+                Guides
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/webinars")}
+              >
+                Webinars
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/case-studies")}
+              >
+                Case Studies
+              </div>
+              <div
+                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                onClick={() => customNavigate("/events")}
+              >
+                Events
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
 
       <div className="px-6 pt-8 border-t-[1px] border-t-[#27393F]">

@@ -12,9 +12,7 @@ function Sidebaritem({ link, icon, title }: SidebarType) {
   return (
     <Link
       to={link}
-      className={`group flex items-center hover:bg-[#2B3E46] gap-4 py-3 mb-2 px-4 rounded-[4px] ${
-        isActive ? "bg-[#2B3E46]" : ""
-      }`}
+      className={`group flex items-center hover:bg-[#2B3E46] gap-4 py-3 mb-2 px-4 rounded-[4px]`}
     >
       <img
         src={icon}

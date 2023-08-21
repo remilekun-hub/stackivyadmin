@@ -7,7 +7,7 @@ function Home() {
       <div className="flex-1 mx-auto">
         <Navbar>
           <div className="flex items-center">
-            <h1 className="font-medium text-[24px]">Dashboard</h1>
+            <h1 className="font-bold text-[24px]">Dashboard</h1>
           </div>
         </Navbar>
 

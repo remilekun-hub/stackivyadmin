@@ -6,12 +6,16 @@ import Signin from "./pages/Signin";
 import Verify from "./pages/Verify-otp";
 import Forgotpassword from "./pages/Forgotpassword";
 import Home from "./pages/Home";
-import Career from "./pages/Career";
 import Blog from "./pages/Blog";
 import DashboardLayout from "./components/DashboardLayout";
 import NewBlog from "./pages/CreateBlog";
 import SignupOtp from "./pages/SignupOtp";
 import Thereisuser from "./pages/Thereisuser";
+import Applications from "./pages/Applications";
+import JobPosts from "./pages/JobPosts";
+import CreateJobPost from "./pages/CreateJobPost";
+import SingleApplicant from "./pages/SingleApplicant";
+import CareerSettimgs from "./pages/CareerSettings";
 
 function App() {
   const [user, setUser] = useState("");
@@ -33,16 +37,15 @@ function App() {
 
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Home />} />
-          <Route path="/career" element={<Career />} />
+          <Route path="/career/applications" element={<Applications />} />
+          <Route path="/career/applicant/:id" element={<SingleApplicant />} />
+          <Route path="/career/manage-job-posts" element={<JobPosts />} />
+          <Route path="/career/job-posts/create" element={<CreateJobPost />} />
+          <Route path="/career/settings" element={<CareerSettimgs />} />
 
           <Route element={<Blog />} path="/blog" />
           <Route element={<NewBlog />} path="/blog/create" />
         </Route>
-
-        {/* <Route element={<Contact />} path="/contact" />
-        <Route element={<ContentBlog />} path="/content/blog" />
-        <Route element={<ContentBlog />} path="/content/new" />
-        <Route element={<Contact />} path="/contact" /> */}
       </Routes>
     </>
   );

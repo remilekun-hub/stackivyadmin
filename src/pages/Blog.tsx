@@ -5,23 +5,99 @@ import calendar from "../assets/calendar-2.png";
 import arrowDown2 from "../assets/arrow-down2.png";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { ColumnDef } from "@tanstack/react-table";
+import { BlogType } from "@/dummy/blog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
+// import CustomDataTable from "@/components/CustomDataTable";
+import { blog } from "../dummy/blog";
+import BlogTable from "@/components/BlogTable";
 
 function Blog() {
   console.log(location);
+
+  const columns: ColumnDef<BlogType>[] = [
+    { accessorKey: "title", header: "TITLE" },
+    {
+      accessorKey: "author",
+      header: "AUTHOR",
+      cell: ({ row }) => {
+        const blog = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <img src={blog.authorimg} alt={blog.author} className="w-6 h-6" />
+            <span>{blog.author}</span>
+          </div>
+        );
+      },
+    },
+    { accessorKey: "category", header: "CATEGORY" },
+    { accessorKey: "tags", header: "TAGS" },
+    {
+      accessorKey: "date",
+      header: "DATE",
+      cell: ({ row }) => {
+        const blog = row.original;
+        return (
+          <div className="flex flex-col gap-[px]">
+            <span>{blog.date}</span>
+            <span className="text-[#9CA3AF] font-medium">{blog.time}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      header: "ACTION",
+      cell: ({ row }) => {
+        const blog = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="cursor-pointer flex items-center  gap-2"
+                // onClick={() => navigate(`/startup/${applicant.id}`)}
+              >
+                <span>Icon here</span> <span>View Details</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+                <span>icon here</span> <span>Delete Applicant</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
   return (
     <section className="">
       <div className="flex-1  mx-auto">
         <Navbar>
           <div className="flex items-center gap-[6px]">
-            <h1 className="font-medium text-[24px]">Content -</h1>
+            <h1 className="font-bold text-[24px]">Content -</h1>
             <span className="text-[#116B89] mt-[6px] text-[14px leading-[16.8px] font-medium">
               Blogs
             </span>
           </div>
         </Navbar>
 
-        <main className="p-4 lg:p-6 xl:p-7 bg-[#F3F4F6]">
-          <div className="rounded-[16px] bg-white h-screen">
+        <main className=" p-4 lg:px-6 lg:py-7 bg-[#F3F4F6]">
+          <div className="rounded-[16px] bg-white min-h-screen mx-auto max-w-[1500px]">
             <div className="pt-10 pb-6 px-4 lg:px-7 flex justify-between">
               <div className=" gap-3 hidden sm:flex">
                 <div className="flex gap-3 items-center">
@@ -77,7 +153,7 @@ function Blog() {
               </div>
             </div>
             <div className="mt-4 pb-6 px-4 lg:px-7 mr-2">
-              {/* <TableSection /> */}
+              <BlogTable columns={columns} data={blog} />
             </div>
           </div>
         </main>

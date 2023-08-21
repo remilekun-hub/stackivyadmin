@@ -1,9 +1,16 @@
 body {
   font-family: "Mona-Sans", sans-serif;
 }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  .list {
+    @apply text-[14px] leading-5 text-[#6B7280];
+  }
+}
+
 .otp {
   width: 40px !important;
   height: 40px !important;
