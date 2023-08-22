@@ -1,8 +1,6 @@
-import glassIcon2 from "../assets/search-two.png";
 import chev from "../assets/chev.png";
 import chev2 from "../assets/chev2.png";
-import calendar from "../assets/calendar-2.png";
-import arrowDown2 from "../assets/arrow-down2.png";
+
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { ColumnDef } from "@tanstack/react-table";
@@ -11,7 +9,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -21,8 +18,6 @@ import { blog } from "../dummy/blog";
 import BlogTable from "@/components/BlogTable";
 
 function Blog() {
-  console.log(location);
-
   const columns: ColumnDef<BlogType>[] = [
     { accessorKey: "title", header: "TITLE" },
     {
@@ -69,14 +64,10 @@ function Blog() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                className="cursor-pointer flex items-center  gap-2"
-                // onClick={() => navigate(`/startup/${applicant.id}`)}
+                className="cursor-pointer flex items-center gap-2"
+                // onClick={() => navigate(`/startup/${blog.id}`)}
               >
-                <span>Icon here</span> <span>View Details</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-                <span>icon here</span> <span>Delete Applicant</span>
+                <span>Delete Post</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -96,8 +87,8 @@ function Blog() {
           </div>
         </Navbar>
 
-        <main className=" p-4 lg:px-6 lg:py-7 bg-[#F3F4F6]">
-          <div className="rounded-[16px] bg-white min-h-screen mx-auto max-w-[1500px]">
+        <main className=" p-4 lg:px-6 lg:py-7 bg-[#F3F4F6] h-screen">
+          <div className="rounded-[16px] bg-white h-full mx-auto max-w-[1500px]">
             <div className="pt-10 pb-6 px-4 lg:px-7 flex justify-between">
               <div className=" gap-3 hidden sm:flex">
                 <div className="flex gap-3 items-center">
@@ -131,27 +122,6 @@ function Blog() {
               </div>
             </div>
 
-            <div className="flex px-4 lg:px-7 items-center">
-              <div className="flex items-center w-full justify-between">
-                <div className="flex  items-center">
-                  <div className="max-w-sm  space-y-6">1</div>
-                  <div className="flex gap-2 items-center  px-4 py-2">
-                    <img src={calendar} className="w-6 h-6 font-bold" />
-                    <div>2</div>
-                    <img src={arrowDown2} className="w-4 h-4 " />
-                  </div>
-                </div>
-
-                <div className="hidden mr-2 lg:flex items-center gap-3 border-[1px] border-[#F3F4F6] pl-4  mt-5 rounded-[4px] overflow-hidden">
-                  <img src={glassIcon2} className="w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search for something here"
-                    className="p-3 outline-0 border-0 text-black  placeholder:text-[#9CA3AF]  w-[250px]"
-                  />
-                </div>
-              </div>
-            </div>
             <div className="mt-4 pb-6 px-4 lg:px-7 mr-2">
               <BlogTable columns={columns} data={blog} />
             </div>
