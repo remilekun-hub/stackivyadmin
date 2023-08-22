@@ -270,7 +270,14 @@ function NewBlog() {
             </div>
             <div className="mb-5">
               <h1 className="mb-2">Tags</h1>
-              <div>tags here</div>
+              <div className="flex gap-3 rounded-[4px] border-[1px] border-[#F3F4F6] px-3 py-2">
+                <div className="bg-[#116B89] px-2 py-1 text-white rounded-[2px]">
+                  Savings
+                </div>
+                <div className="bg-[#116B89] px-2 py-1 text-white rounded-[2px]">
+                  Savings
+                </div>
+              </div>
             </div>
           </ScrollArea>
         </div>
