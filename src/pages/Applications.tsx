@@ -72,7 +72,7 @@ function Applications() {
 
       <main className="bg-[#F3F4F6] min-h-screen p-4 lg:px-6 lg:py-7">
         <div className="max-w-[1500px] mx-auto  bg-white rounded-[16px] p-7">
-          <div className="flex justify-between py-5 mb-3">header here</div>
+          {/* <div className="flex justify-between py-5 mb-3">header here</div> */}
           <div>
             <CustomDataTable columns={columns} data={applicants} />
           </div>
