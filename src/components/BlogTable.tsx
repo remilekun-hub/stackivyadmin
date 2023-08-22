@@ -65,7 +65,7 @@ function BlogTable<TData, TValue>({
       <div className="flex px-4 lg:px-7 items-center mb-5">
         <div className="flex items-center w-full justify-between">
           <div className="flex  items-center gap-6 ">
-            <div className="max-w-sm  space-y-6">1</div>
+            {/* <div className="max-w-sm  space-y-6">1</div> */}
             <div className={cn("grid gap-2")}>
               <Popover>
                 <PopoverTrigger asChild>
