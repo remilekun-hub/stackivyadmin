@@ -36,7 +36,18 @@ function CareerSettimgs() {
     },
   ];
   const columns: ColumnDef<SettingsType>[] = [
-    { accessorKey: "name", header: "NAME" },
+    {
+      accessorKey: "name",
+      header: "NAME",
+      cell: ({ row }) => {
+        const setting = row.original;
+        return (
+          <>
+            <div className="w-[450px]">{setting.name}</div>
+          </>
+        );
+      },
+    },
 
     {
       id: "actions",
