@@ -10,6 +10,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Superscript from "@tiptap/extension-superscript";
 import SubScript from "@tiptap/extension-subscript";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const content =
   '<h2 style="text-align: center;">Welcome to Stackiv"y Admin blog post creator</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
@@ -30,8 +31,18 @@ function NewBlog() {
     ],
     content,
   });
-  const c = content;
-  console.log({ c });
+
+  type catType = {
+    id: string;
+    name: string;
+  };
+  const [category, setCategory] = useState<catType[]>([]);
+  const [catName, setCatName] = useState("");
+  const handleCatSaveBtn = () => {
+    setCategory([...category, { id: `${Math.random()}`, name: catName }]);
+    setCatName("");
+    setCatModal(false);
+  };
   return (
     <section className="">
       {catModal && (
@@ -52,9 +63,13 @@ function NewBlog() {
                 type="text"
                 placeholder="Enter Name of Category"
                 className="outline-none rounded-[4px] p-3 border-[2px] w-full border-[#F3F4F6]"
+                onChange={(e) => setCatName(e.target.value)}
               />
             </div>
-            <button className="inline mr-auto px-8 py-[6px] text-white font-medium rounded-full bg-[#116B89]">
+            <button
+              className="inline mr-auto px-8 py-[6px] text-white font-medium rounded-full bg-[#116B89]"
+              onClick={handleCatSaveBtn}
+            >
               Save
             </button>
           </div>
@@ -115,24 +130,58 @@ function NewBlog() {
               <RichTextEditor.Content className="w-full whitespace-pre-wrap" />
             </RichTextEditor>
           </div>
-          <div className=" xl:basis-[350px] h-full bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">
+
+          <ScrollArea className=" xl:basis-[350px] h-full bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">
             <div className="flex gap-7 mb-6">
               <button className="rounded-full bg-[#116B89] px-8 py-3 text-white">
                 Publish
               </button>
               <button>Save to draft</button>
             </div>
+            <div className="flex gap-8 mb-4">
+              <div>
+                <label htmlFor="platform">
+                  <input
+                    type="checkbox"
+                    name="platform"
+                    id=""
+                    className="accent-[#116B89] cursor-pointer"
+                  />{" "}
+                  Web
+                </label>
+              </div>
+              <div>
+                <label htmlFor="platform">
+                  <input
+                    type="checkbox"
+                    name="platform"
+                    id=""
+                    className="accent-[#116B89] cursor-pointer"
+                  />{" "}
+                  App
+                </label>
+              </div>
+            </div>
 
             <div>
-              <h1 className="mb-3">Summary</h1>
+              <h1 className="mb-5">Summary</h1>
+              <h1 className="mb-3">Blog Summary</h1>
               <textarea
                 placeholder="Enter your blog Summary"
                 className="w-full h-[110px]  rounded-[5px] resize-none px-3 py-2 border-[2px] border-[#F3F4F6] outline-none"
               />
             </div>
+            <div className="flex justify-between mt-5">
+              <p className="text-[#9CA3AF]">Visibility</p>
+              <p>Public</p>
+            </div>
 
-            <div className="flex justify-between">
-              <h1 className="mb-3">Date</h1>
+            <div className="flex justify-between items-center mt-6">
+              <h1 className="mb-3 text-[#9CA3AF]">Date</h1>
+              <div className="flex flex-col">
+                <span>10/08/2023</span>
+                <span className="text-[#9CA3AF] text-[12px]">8:00 am</span>
+              </div>
             </div>
 
             <div className="mb-5">
@@ -202,13 +251,28 @@ function NewBlog() {
                   />
                   <p>Investment</p>
                 </label>
+
+                {category.map((c) => (
+                  <label
+                    htmlFor=""
+                    className="flex items-center gap-2"
+                    key={c.id}
+                  >
+                    <input
+                      type="checkbox"
+                      value="investment"
+                      className="cursor-pointer accent-[#116B89]"
+                    />
+                    <p>{c.name}</p>
+                  </label>
+                ))}
               </div>
             </div>
             <div className="mb-5">
               <h1 className="mb-2">Tags</h1>
               <div>tags here</div>
             </div>
-          </div>
+          </ScrollArea>
         </div>
       </main>
     </section>
