@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,7 +42,7 @@ function CustomDataTable<TData, TValue>({
       columnFilters,
     },
   });
-
+  const location = useLocation();
   return (
     <div>
       <div className="flex items-center w-full justify-between mb-5">
@@ -115,26 +116,28 @@ function CustomDataTable<TData, TValue>({
           </TableBody>
         </Table>
 
-        <div className="flex mt-5 items-center justify-center space-x-4 py-4">
-          <Button
-            size="sm"
-            className="bg-[#116B89] hover:bg-[#116B89]"
-            onClick={() => table.previousPage()}
-            // disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeftIcon className="w-4 h-4" />
-            Previous
-          </Button>
-          <Button
-            className="bg-[#116B89] hover:bg-[#116B89]"
-            size="sm"
-            onClick={() => table.nextPage()}
-            // disabled={!table.getCanNextPage()}
-          >
-            Next
-            <ChevronRightIcon className="w-4 h-4" />
-          </Button>
-        </div>
+        {location.pathname !== "/career/settings" && (
+          <div className="flex mt-5 items-center justify-center space-x-4 py-4">
+            <Button
+              size="sm"
+              className="bg-[#116B89] hover:bg-[#116B89]"
+              onClick={() => table.previousPage()}
+              // disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+              Previous
+            </Button>
+            <Button
+              className="bg-[#116B89] hover:bg-[#116B89]"
+              size="sm"
+              onClick={() => table.nextPage()}
+              // disabled={!table.getCanNextPage()}
+            >
+              Next
+              <ChevronRightIcon className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
