@@ -43,7 +43,7 @@ function CareerSettimgs() {
         const setting = row.original;
         return (
           <>
-            <div className="w-[450px]">{setting.name}</div>
+            <div className="w-[300px]">{setting.name}</div>
           </>
         );
       },
