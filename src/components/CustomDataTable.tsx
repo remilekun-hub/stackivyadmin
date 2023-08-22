@@ -17,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "./ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -112,6 +114,27 @@ function CustomDataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+
+        <div className="flex mt-5 items-center justify-center space-x-4 py-4">
+          <Button
+            size="sm"
+            className="bg-[#116B89] hover:bg-[#116B89]"
+            onClick={() => table.previousPage()}
+            // disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeftIcon className="w-4 h-4" />
+            Previous
+          </Button>
+          <Button
+            className="bg-[#116B89] hover:bg-[#116B89]"
+            size="sm"
+            onClick={() => table.nextPage()}
+            // disabled={!table.getCanNextPage()}
+          >
+            Next
+            <ChevronRightIcon className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
