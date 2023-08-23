@@ -16,9 +16,12 @@ import JobPosts from "./pages/JobPosts";
 import CreateJobPost from "./pages/CreateJobPost";
 import SingleApplicant from "./pages/SingleApplicant";
 import CareerSettimgs from "./pages/CareerSettings";
+import Startup from "./pages/Startup";
+import SingleStartUp from "./pages/SingleStartUp";
 
 function App() {
   const [user, setUser] = useState("");
+
   useEffect(() => {
     const u = localStorage.getItem("user");
     if (u) {
@@ -38,7 +41,9 @@ function App() {
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Home />} />
           <Route path="/career/applications" element={<Applications />} />
-          <Route path="/career/applicant/:id" element={<SingleApplicant />} />
+          <Route path="/career/application/:id" element={<SingleApplicant />} />
+          <Route path="/startup" element={<Startup />} />
+          <Route path="/startup/:id" element={<SingleStartUp />} />
           <Route path="/career/manage-job-posts" element={<JobPosts />} />
           <Route path="/career/job-posts/create" element={<CreateJobPost />} />
           <Route path="/career/settings" element={<CareerSettimgs />} />

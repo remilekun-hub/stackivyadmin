@@ -3,6 +3,9 @@ import Navbar from "../components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SingleJobTab from "@/components/SingleJobTab";
 import { Link } from "react-router-dom";
+import jobicon1 from "../assets/jobicon1.png";
+import jobicon2 from "../assets/jobicon2.png";
+import jobicon3 from "../assets/jobicon3.png";
 
 function JobPosts() {
   return (
@@ -16,9 +19,24 @@ function JobPosts() {
       <main className="bg-[#F3F4F6] min-h-screen p-4 lg:px-6 lg:py-7">
         <div className="max-w-[1500px] mx-auto">
           <div className="grid md:grid-cols-3 gap-5 lg:gap-[30px]">
-            <JobBox bg="#FFF4CC" border="#FFCA0D" activeJob={0} />
-            <JobBox bg="#D4F7E1" border="#22C55E" activeJob={0} />
-            <JobBox bg="#FBD0D0" border="#EF4444" activeJob={0} />
+            <JobBox
+              bg="#FFF4CC"
+              border="#FFCA0D"
+              activeJob={0}
+              icon={jobicon1}
+            />
+            <JobBox
+              bg="#D4F7E1"
+              border="#22C55E"
+              activeJob={0}
+              icon={jobicon2}
+            />
+            <JobBox
+              bg="#FBD0D0"
+              border="#EF4444"
+              activeJob={0}
+              icon={jobicon3}
+            />
           </div>
 
           <div className="bg-white rounded-[16px] mt-[30px] pt-3">
@@ -38,20 +56,20 @@ function JobPosts() {
                 <TabsList className="flex gap-10 justify-start">
                   <TabsTrigger
                     value="activejobs"
-                    className="text-[14px] py-4 leading-6"
+                    className="text-[14px] py-4 leading-6 px-0"
                   >
                     Active Jobs{" "}
                     <span className="text-[#9CA3AF] ml-2">(10 applied)</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="draftedjobs"
-                    className="text-[14px]  py-4 leading-6"
+                    className="text-[14px]  py-4 leading-6 px-0"
                   >
                     Drafted Jobs
                   </TabsTrigger>
                   <TabsTrigger
                     value="closedjobs"
-                    className=" text-[14px] py-4 leading-6"
+                    className=" text-[14px] py-4 leading-6 px-0"
                   >
                     Closed Jobs{" "}
                     <span className="ml-2 text-[#9CA3AF]">

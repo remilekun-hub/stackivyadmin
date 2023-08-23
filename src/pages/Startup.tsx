@@ -1,10 +1,7 @@
-import CustomDataTable from "../components/CustomDataTable";
+import StartUpTable from "@/components/StartUpTable";
 import Navbar from "../components/Navbar";
-import { applicants } from "@/dummy/applicants";
-import { Applicant } from "@/dummy/applicants";
-import { ColumnDef } from "@tanstack/react-table";
-import eye from "../assets/eye.png";
-import trash from "../assets/trash.png";
+import { StarupType, startup } from "@/dummy/startup";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,22 +10,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { ColumnDef } from "@tanstack/react-table";
+import eye from "../assets/edit22.png";
+import trash from "../assets/trash.png";
 
-function Applications() {
+function Startup() {
   const navigate = useNavigate();
+  const columns: ColumnDef<StarupType>[] = [
+    { accessorKey: "name", header: "STARTUP NAME" },
+    { accessorKey: "industry", header: "STARTUP INDUSTRY" },
+    { accessorKey: "country", header: "STARTUP COUNTRY" },
+    { accessorKey: "person", header: "PERSON NAME" },
+    { accessorKey: "email", header: "CONTACT EMAIL" },
+    { accessorKey: "phone", header: "PHONE NUMBER" },
 
-  const columns: ColumnDef<Applicant>[] = [
-    { accessorKey: "firstName", header: "FIRST NAME" },
-    { accessorKey: "lastName", header: "LAST NAME" },
-    { accessorKey: "email", header: "EMAIL" },
-    { accessorKey: "phonenumber", header: "PHONE NUMBER" },
-    { accessorKey: "date", header: "DATE" },
     {
       id: "actions",
       header: "ACTION",
       cell: ({ row }) => {
-        const applicant = row.original;
+        const startup = row.original;
 
         return (
           <DropdownMenu>
@@ -41,7 +41,7 @@ function Applications() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer flex items-center  gap-4"
-                onClick={() => navigate(`/career/application/${applicant.id}`)}
+                onClick={() => navigate(`/startup/${startup.id}`)}
               >
                 <span>
                   <img src={eye} className="w-4 h-4" />
@@ -53,7 +53,7 @@ function Applications() {
                 <span className="mb-[5px]">
                   <img src={trash} className="w-4 h-4" />
                 </span>{" "}
-                <span className="text-black">Delete Applicant</span>
+                <span className="text-black">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -61,12 +61,11 @@ function Applications() {
       },
     },
   ];
-
   return (
     <section className="">
       <Navbar>
         <div className="flex items-center">
-          <h1 className="font-bold text-[24px]">Career</h1>
+          <h1 className="font-bold text-[24px]">Starup</h1>
         </div>
       </Navbar>
 
@@ -74,7 +73,7 @@ function Applications() {
         <div className="max-w-[1500px] mx-auto  bg-white rounded-[16px] p-7">
           {/* <div className="flex justify-between py-5 mb-3">header here</div> */}
           <div>
-            <CustomDataTable columns={columns} data={applicants} />
+            <StartUpTable columns={columns} data={startup} />
           </div>
         </div>
       </main>
@@ -82,4 +81,4 @@ function Applications() {
   );
 }
 
-export default Applications;
+export default Startup;

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
@@ -19,6 +19,7 @@ import {
 
 function Sidebar() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/");
@@ -48,7 +49,12 @@ function Sidebar() {
       </div>
 
       <div className="px-6 mt-6 mb-10">
-        <Sidebaritem link="/dashboard" icon={dashboardicon} title="Dashboard" />
+        <Sidebaritem
+          link="/dashboard"
+          icon={dashboardicon}
+          title="Dashboard"
+          isActive={pathname === "/dashboard"}
+        />
         <Accordion type="single" collapsible className="w-full outline-none">
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
@@ -59,19 +65,33 @@ function Sidebar() {
             </AccordionTrigger>
             <AccordionContent>
               <div
-                className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                className={`${
+                  pathname === "/career/applications" ||
+                  pathname.startsWith("/career/application")
+                    ? "bg-[#2B3E46] text-white"
+                    : "text-[#a9b1bc]"
+                } cursor-pointer mt-2 ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
                 onClick={() => customNavigate("/career/applications")}
               >
                 Applications
               </div>
               <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                className={`${
+                  pathname === "/career/manage-job-posts" ||
+                  pathname === "/career/job-posts/create"
+                    ? "bg-[#2B3E46] text-white"
+                    : "text-[#a9b1bc]"
+                } cursor-pointer  ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
                 onClick={() => customNavigate("/career/manage-job-posts")}
               >
                 Manage Job Posts
               </div>
               <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
+                className={`${
+                  pathname === "/career/settings"
+                    ? "bg-[#2B3E46] text-white"
+                    : "text-[#a9b1bc]"
+                } cursor-pointer  ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
                 onClick={() => customNavigate("/career/settings")}
               >
                 Settings
@@ -80,8 +100,18 @@ function Sidebar() {
           </AccordionItem>
         </Accordion>
 
-        <Sidebaritem link="/startup" icon={startupIcon} title="Startup" />
-        <Sidebaritem link="/quote" icon={quote} title="Quote" />
+        <Sidebaritem
+          link="/startup"
+          icon={startupIcon}
+          title="Startup"
+          isActive={pathname === "/startup" || pathname.startsWith("/startup/")}
+        />
+        <Sidebaritem
+          link="/quote"
+          icon={quote}
+          title="Quote"
+          isActive={pathname === "/quote"}
+        />
 
         <Accordion type="single" collapsible className="w-full outline-none">
           <AccordionItem value="item-1">

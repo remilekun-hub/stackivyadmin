@@ -1,4 +1,4 @@
-import head1 from "../assets/head1.png";
+import head1 from "../assets/jobicon1.png";
 
 // type Prop = {
 //   amount: number;
