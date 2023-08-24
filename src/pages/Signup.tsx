@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
+// import axios from "axios";
 
 function Signup() {
   const navigate = useNavigate();
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const toggle = () => {
     if (toggleType === "password") {
@@ -16,8 +22,23 @@ function Signup() {
     setToggleType("password");
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  console.log({ userData });
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    // try {
+    //   const { data } = await axios.post(
+    //     "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
+    //     { userData }
+    //   );
+    //   console.log(data);
+    // } catch (error) {
+    //   console.log(error)
+    // } finally {
+    //   alert('finished')
+    // }
 
     navigate("/signup/verify-otp");
   };
@@ -51,10 +72,10 @@ function Signup() {
                   <p>Name</p>
                   <input
                     type="text"
-                    name=""
-                    id=""
+                    name="name"
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Name"
+                    onChange={handleFormChange}
                   />
                 </label>
                 <label htmlFor="" className="flex flex-col gap-1 mb-4">
@@ -62,10 +83,10 @@ function Signup() {
 
                   <input
                     type="email"
-                    name=""
-                    id=""
+                    name="email"
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
+                    onChange={handleFormChange}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -73,10 +94,11 @@ function Signup() {
 
                   <input
                     type={toggleType}
-                    name=""
+                    name="password"
                     id="pass"
                     className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
+                    onChange={handleFormChange}
                   />
                   <img
                     src={eye}

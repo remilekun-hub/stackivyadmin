@@ -397,8 +397,8 @@ function CreateJobPost() {
                               <SelectItem value="firstname">
                                 First Name
                               </SelectItem>
-                              <SelectItem value="firstname">
-                                First Name
+                              <SelectItem value="lastname">
+                                Last Name
                               </SelectItem>
                             </SelectGroup>
                           </SelectContent>

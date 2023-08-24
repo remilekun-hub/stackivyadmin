@@ -21,8 +21,8 @@ function Sidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const handleLogout = () => {
-    localStorage.removeItem("user");
     navigate("/");
+    localStorage.removeItem("user");
   };
 
   const customNavigate = (path: string) => {
@@ -30,7 +30,7 @@ function Sidebar() {
   };
 
   return (
-    <aside className="hidden xl:block min-h-screen w-[300px] bg-[#1E2C31] fixed left-0 z-[900]">
+    <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[9999999999999999999999]">
       <header className=" h-[100px] pl-5 items-center flex">
         <Link to={"/dashboard"}>
           <img src={SidebarLogo} alt="Stackivy Logo" />
@@ -122,36 +122,58 @@ function Sidebar() {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div
-                className="cursor-pointer mt-2 text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                onClick={() => customNavigate("/blog")}
+              <Link
+                to={"/blogs"}
+                className={`block  mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/blogs" || pathname === "/blog/create"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
               >
                 Blogs
-              </div>
-              <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                onClick={() => customNavigate("/guides")}
+              </Link>
+              <Link
+                to={"/guides"}
+                className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/guides" || pathname === "/guides/create"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
               >
                 Guides
-              </div>
-              <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                onClick={() => customNavigate("/webinars")}
+              </Link>
+              <Link
+                to={"/webinars"}
+                className={`block   ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/webinars"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
               >
                 Webinars
-              </div>
-              <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                onClick={() => customNavigate("/case-studies")}
+              </Link>
+
+              <Link
+                to={"/case-studies"}
+                className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/case-studies"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
               >
                 Case Studies
-              </div>
-              <div
-                className="cursor-pointer text-[#a9b1bc] ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1"
-                onClick={() => customNavigate("/events")}
+              </Link>
+
+              <Link
+                to={"/events"}
+                className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/events"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
               >
                 Events
-              </div>
+              </Link>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

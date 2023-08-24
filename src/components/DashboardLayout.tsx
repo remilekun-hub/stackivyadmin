@@ -8,7 +8,7 @@ function DashboardLayout() {
   return (
     <div className="relative">
       <Sidebar />
-      <main className="flex-1 xl:pl-[300px]">
+      <main className="flex-1 xl:pl-[330px]">
         <Outlet context={{ categoryModal, setCategoryModal }} />
       </main>
     </div>

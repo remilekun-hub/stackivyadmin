@@ -18,6 +18,8 @@ import SingleApplicant from "./pages/SingleApplicant";
 import CareerSettimgs from "./pages/CareerSettings";
 import Startup from "./pages/Startup";
 import SingleStartUp from "./pages/SingleStartUp";
+import Guides from "./pages/Guides";
+import CreateGuide from "./pages/CreateGuide";
 
 function App() {
   const [user, setUser] = useState("");
@@ -48,8 +50,10 @@ function App() {
           <Route path="/career/job-posts/create" element={<CreateJobPost />} />
           <Route path="/career/settings" element={<CareerSettimgs />} />
 
-          <Route element={<Blog />} path="/blog" />
+          <Route element={<Blog />} path="/blogs" />
           <Route element={<NewBlog />} path="/blog/create" />
+          <Route element={<Guides />} path="/guides" />
+          <Route element={<CreateGuide />} path="/guides/create" />
         </Route>
       </Routes>
     </>

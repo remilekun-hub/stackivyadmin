@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import folder from "../assets/folder.png";
 import xIcon from "../assets/close-circle.png";
@@ -13,10 +13,10 @@ import SubScript from "@tiptap/extension-subscript";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "@tiptap/extension-link";
 
-function NewBlog() {
-  const fileRef = useRef<HTMLInputElement>(null);
+function CreateGuide() {
   const [catModal, setCatModal] = useState(false);
-
+  const [catName, setCatName] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -28,21 +28,18 @@ function NewBlog() {
       TextAlign.configure({ types: ["heading", "paragraph", "Image"] }),
     ],
   });
-
-  // const blogTextContent = editor?.getJSON();
   type catType = {
     id: string;
     name: string;
   };
   const [category, setCategory] = useState<catType[]>([]);
-  const [catName, setCatName] = useState("");
   const handleCatSaveBtn = () => {
     setCategory([...category, { id: `${Math.random()}`, name: catName }]);
     setCatName("");
     setCatModal(false);
   };
   return (
-    <section className="">
+    <section>
       {catModal && (
         <div className="w-screen h-screen fixed top-0 z-[700000] left-0 bg-black/70 flex justify-center items-center">
           <div className="bg-white p-7 rounded-[24px] w-[312px] flex-col flex gap-6">
@@ -78,7 +75,7 @@ function NewBlog() {
         <div className="flex items-center gap-[6px]">
           <h1 className="font-bold text-[24px]">Content -</h1>
           <span className="text-[#116B89] mt-[6px] text-[14px leading-[16.8px] font-medium">
-            Blogs
+            Guides
           </span>
         </div>
       </Navbar>
@@ -136,7 +133,7 @@ function NewBlog() {
               </button>
               <button>Save to draft</button>
             </div>
-            <div className="flex gap-8 mb-4">
+            <div className="flex gap-8 my-14">
               <div>
                 <label htmlFor="platform">
                   <input
@@ -161,14 +158,6 @@ function NewBlog() {
               </div>
             </div>
 
-            <div>
-              <h1 className="mb-5">Summary</h1>
-              <h1 className="mb-3">Blog Summary</h1>
-              <textarea
-                placeholder="Enter your blog Summary"
-                className="w-full h-[110px]  rounded-[5px] resize-none px-3 py-2 border-[2px] border-[#F3F4F6] outline-none"
-              />
-            </div>
             <div className="flex justify-between mt-5">
               <p className="text-[#9CA3AF]">Visibility</p>
               <p>Public</p>
@@ -182,7 +171,7 @@ function NewBlog() {
               </div>
             </div>
 
-            <div className="mb-5">
+            <div className="mb-5 mt-12">
               <h1 className="mb-2">Meta Title</h1>
               <input
                 type="text"
@@ -284,4 +273,4 @@ function NewBlog() {
   );
 }
 
-export default NewBlog;
+export default CreateGuide;
