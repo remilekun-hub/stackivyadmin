@@ -1,20 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link } from "react-router-dom";
 import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Verify() {
-  const [otp, setOtp] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [otp, setOtp] = useState(0);
+
+  let parsedOTP: number;
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (email) {
+      setUserEmail(email);
+    }
+  }, [userEmail]);
+
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: string) => {
+  const handleChange = (enteredOtp: number) => {
     setOtp(enteredOtp);
   };
-  const handleSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    try {
+      // parsedOTP = parseInt(otp);
+      parsedOTP = otp;
+      console.log({ parsedOTP });
+      const { data } = await axios.post(
+        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
+        { email: userEmail, otp: parsedOTP }
+      );
+      console.log({ data });
+      if (data.code === 200) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <section className="bg-[#f4f4f4] xl:p-8 h-screen">
@@ -37,9 +63,15 @@ function Verify() {
                 </h1>
                 <p className="text-[#999999] leading-6">
                   We sent you an OTP code to this email{" "}
-                  <span className="text-black font-semibold">
-                    AyodeleVincentOlagunju888@gmail.com{" "}
-                  </span>
+                  {userEmail ? (
+                    <span className="text-black font-semibold">
+                      {userEmail}
+                    </span>
+                  ) : (
+                    <span className="text-black font-semibold">
+                      AyodeleVincentOlagunju888@gmail.com{" "}
+                    </span>
+                  )}
                 </p>
               </div>
 

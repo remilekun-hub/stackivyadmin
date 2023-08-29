@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
+import axios from "axios";
 
 function Signin() {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
 
   const toggle = () => {
@@ -17,14 +25,23 @@ function Signin() {
     setToggleType("password");
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/dashboard");
-      return;
+    try {
+      const { data } = await axios.post(
+        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/generate_login_otp",
+        userData
+      );
+      console.log({ data });
+      if (data.code === 200) {
+        localStorage.setItem("email", userData.email);
+        navigate("/signin/verify-otp");
+
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
-    navigate("/signin/verify-otp");
   };
 
   return (
@@ -57,10 +74,10 @@ function Signin() {
 
                   <input
                     type="email"
-                    name=""
-                    id=""
+                    name="email"
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
+                    onChange={handleFormChange}
                     required
                     // onChange={(e) => setUser(e.target.value)}
                   />
@@ -70,11 +87,12 @@ function Signin() {
 
                   <input
                     type={toggleType}
-                    name=""
+                    name="password"
                     id="pass"
                     className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
                     required
+                    onChange={handleFormChange}
                   />
                   <img
                     src={eye}

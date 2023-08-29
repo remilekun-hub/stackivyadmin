@@ -25,12 +25,8 @@ function Sidebar() {
     localStorage.removeItem("user");
   };
 
-  const customNavigate = (path: string) => {
-    navigate(path);
-  };
-
   return (
-    <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[9999999999999999999999]">
+    <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[9999999999]">
       <header className=" h-[100px] pl-5 items-center flex">
         <Link to={"/dashboard"}>
           <img src={SidebarLogo} alt="Stackivy Logo" />
@@ -64,38 +60,39 @@ function Sidebar() {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div
-                className={`${
+              <Link
+                to={"/career/applications"}
+                className={`block  mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/career/applications" ||
                   pathname.startsWith("/career/application")
-                    ? "bg-[#2B3E46] text-white"
+                    ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
-                } cursor-pointer mt-2 ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
-                onClick={() => customNavigate("/career/applications")}
+                }`}
               >
                 Applications
-              </div>
-              <div
-                className={`${
+              </Link>
+
+              <Link
+                to={"/career/manage-job-posts"}
+                className={`block  mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/career/manage-job-posts" ||
                   pathname === "/career/job-posts/create"
-                    ? "bg-[#2B3E46] text-white"
+                    ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
-                } cursor-pointer  ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
-                onClick={() => customNavigate("/career/manage-job-posts")}
+                }`}
               >
                 Manage Job Posts
-              </div>
-              <div
-                className={`${
+              </Link>
+              <Link
+                to={"/career/settings"}
+                className={`block  mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/career/settings"
-                    ? "bg-[#2B3E46] text-white"
+                    ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
-                } cursor-pointer  ml-[50px] hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1`}
-                onClick={() => customNavigate("/career/settings")}
+                }`}
               >
                 Settings
-              </div>
+              </Link>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -124,7 +121,7 @@ function Sidebar() {
             <AccordionContent>
               <Link
                 to={"/blogs"}
-                className={`block  mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/blogs" || pathname === "/blog/create"
                     ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
@@ -134,7 +131,7 @@ function Sidebar() {
               </Link>
               <Link
                 to={"/guides"}
-                className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/guides" || pathname === "/guides/create"
                     ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
@@ -144,8 +141,8 @@ function Sidebar() {
               </Link>
               <Link
                 to={"/webinars"}
-                className={`block   ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
-                  pathname === "/webinars"
+                className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/webinars" || pathname === "/webinars/create"
                     ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
                 }`}
@@ -153,21 +150,21 @@ function Sidebar() {
                 Webinars
               </Link>
 
-              <Link
+              {/* <Link
                 to={"/case-studies"}
-                className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                className={`block mt-2 ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/case-studies"
                     ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
                 }`}
               >
                 Case Studies
-              </Link>
+              </Link> */}
 
               <Link
                 to={"/events"}
                 className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
-                  pathname === "/events"
+                  pathname === "/events" || pathname === "/events/create"
                     ? "bg-[#2b3E46] text-white"
                     : "text-[#a9b1bc]"
                 }`}
