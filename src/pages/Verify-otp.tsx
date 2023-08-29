@@ -28,13 +28,12 @@ function Verify() {
     e.preventDefault();
     try {
       parsedOTP = otp;
-
-      console.log(typeof parsedOTP);
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
         { email: userEmail, otp: parsedOTP }
       );
       console.log({ data });
+      console.log({ parsedOTP });
       if (data.code === 200) {
         navigate("/dashboard");
       }

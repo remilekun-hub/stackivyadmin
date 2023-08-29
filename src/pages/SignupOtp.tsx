@@ -28,7 +28,6 @@ function SignupOtp() {
 
     try {
       parsedOTP = otp;
-
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
         { email: userEmail, otp: parsedOTP }
