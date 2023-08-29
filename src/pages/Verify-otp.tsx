@@ -9,9 +9,9 @@ import axios from "axios";
 
 function Verify() {
   const [userEmail, setUserEmail] = useState("");
-  const [otp, setOtp] = useState(0);
+  const [otp, setOtp] = useState("");
 
-  let parsedOTP: number;
+  let parsedOTP: number | string;
   useEffect(() => {
     const email = localStorage.getItem("email");
     if (email) {
@@ -20,7 +20,7 @@ function Verify() {
   }, [userEmail]);
 
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: number) => {
+  const handleChange = (enteredOtp: string) => {
     setOtp(enteredOtp);
   };
 
@@ -29,7 +29,7 @@ function Verify() {
     try {
       parsedOTP = otp;
 
-      console.log({ parsedOTP });
+      console.log(typeof parsedOTP);
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
         { email: userEmail, otp: parsedOTP }

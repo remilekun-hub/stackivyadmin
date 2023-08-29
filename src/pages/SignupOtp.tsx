@@ -9,7 +9,7 @@ import axios from "axios";
 
 function SignupOtp() {
   const [userEmail, setUserEmail] = useState("");
-  let parsedOTP: number;
+  let parsedOTP: number | string;
   useEffect(() => {
     const email = localStorage.getItem("email");
     if (email) {
@@ -17,9 +17,9 @@ function SignupOtp() {
     }
   }, [userEmail]);
 
-  const [otp, setOtp] = useState(0);
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: number) => {
+  const handleChange = (enteredOtp: string) => {
     setOtp(enteredOtp);
   };
 
