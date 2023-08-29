@@ -17,9 +17,9 @@ function SignupOtp() {
     }
   }, [userEmail]);
 
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(0);
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: string) => {
+  const handleChange = (enteredOtp: number) => {
     setOtp(enteredOtp);
   };
 
@@ -27,7 +27,7 @@ function SignupOtp() {
     e.preventDefault();
 
     try {
-      parsedOTP = parseInt(otp);
+      parsedOTP = otp;
 
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
@@ -82,6 +82,7 @@ function SignupOtp() {
                     value={otp}
                     onChange={handleChange}
                     numInputs={7}
+                    isInputNum={true}
                     inputStyle={"otp"}
                   />
                 </div>

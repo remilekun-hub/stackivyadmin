@@ -9,7 +9,7 @@ import axios from "axios";
 
 function Verify() {
   const [userEmail, setUserEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(0);
 
   let parsedOTP: number;
   useEffect(() => {
@@ -20,14 +20,14 @@ function Verify() {
   }, [userEmail]);
 
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: string) => {
+  const handleChange = (enteredOtp: number) => {
     setOtp(enteredOtp);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      parsedOTP = parseInt(otp);
+      parsedOTP = otp;
 
       console.log({ parsedOTP });
       const { data } = await axios.post(
@@ -79,6 +79,7 @@ function Verify() {
                 <div className="mb-5">
                   <OtpInput
                     value={otp}
+                    isInputNum={true}
                     onChange={handleChange}
                     numInputs={7}
                     inputStyle={"otp"}
