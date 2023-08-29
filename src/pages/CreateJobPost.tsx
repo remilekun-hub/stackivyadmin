@@ -19,10 +19,14 @@ import {
 } from "@/components/ui/select";
 import JobPostModal from "../components/JobPostModal";
 import SaveDrafts from "@/components/SaveDrafts";
+import { useJobDataHook } from "@/Hooks/JobData";
 
 function CreateJobPost() {
+  const JobData = useJobDataHook();
+
   const [jobPostModal, setJobPostModal] = useState(false);
   const [isSaveDrafts, setIsSaveDrafts] = useState(false);
+
   return (
     <section className="">
       {jobPostModal && <JobPostModal setJobPostModal={setJobPostModal} />}
@@ -49,7 +53,9 @@ function CreateJobPost() {
             <div className="flex gap-5">
               <button
                 className="px-6 py-3 text-white bg-[#116B89] rounded-full outline-none"
-                onClick={() => setJobPostModal(true)}
+                onClick={() => {
+                  setJobPostModal(true);
+                }}
               >
                 Post Job
               </button>
@@ -111,47 +117,70 @@ function CreateJobPost() {
                   <TabsContent value="jobtitle" className="pb-2">
                     <input
                       type="text"
-                      name=""
-                      id=""
+                      name="title"
                       placeholder="Enter Job Title"
                       className="w-full outline-none border-[1px] boreder-[#E5E7EB] p-5 rounded-[4px]"
+                      defaultValue={JobData.title}
+                      onChange={(e) => JobData.setTitle(e.target.value)}
                     />
                   </TabsContent>
                   <TabsContent value="description" className="">
                     <textarea
                       className="h-[150px] w-full outline-none border-[1px] boreder-[#E5E7EB] p-5 rounded-[4px]"
                       placeholder="Enter Description"
+                      defaultValue={JobData.description}
+                      onChange={(e) => JobData.setDescription(e.target.value)}
                     ></textarea>
                   </TabsContent>
                   <TabsContent value="responsibilities" className="pb-2">
                     <textarea
                       className="h-[150px] w-full outline-none border-[1px] boreder-[#E5E7EB] p-5 rounded-[4px]"
                       placeholder="Enter Responsibilities"
+                      defaultValue={JobData.responsibilities}
+                      onChange={(e) =>
+                        JobData.setResponsibilities(e.target.value)
+                      }
                     ></textarea>
                   </TabsContent>
                   <TabsContent value="req" className="pb-2">
                     <textarea
                       className="h-[150px] w-full outline-none border-[1px] boreder-[#E5E7EB] p-5 rounded-[4px]"
                       placeholder="Enter Requirements and Skills"
+                      defaultValue={JobData.requirements_and_skills}
+                      onChange={(e) =>
+                        JobData.setRequirements_and_skills(e.target.value)
+                      }
                     ></textarea>
                   </TabsContent>
 
                   <TabsContent value="jobtype" className="flex flex-col pb-2">
-                    <Select>
+                    <Select
+                      defaultValue={JobData.job_and_work_place_type.jobType}
+                      onValueChange={(value) => JobData.setJob(value)}
+                    >
                       <SelectTrigger className="w-full py-8 px-5 mb-6">
                         <SelectValue placeholder="Job Type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Job Type</SelectLabel>
-                          <SelectItem value="On-Site">On-Site</SelectItem>
-                          <SelectItem value="Hybrid">Hybrid</SelectItem>
-                          <SelectItem value="Remote">Remote</SelectItem>
+                          <SelectItem value="Full Time">Full Time</SelectItem>
+                          <SelectItem value="Part Time">Part Time</SelectItem>
+                          <SelectItem value="Contract">Contract</SelectItem>
+                          <SelectItem value="Temporary">Temporary</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                          <SelectItem value="Volunteer">Volunteer</SelectItem>
+                          <SelectItem value="Internship">Internship</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
 
-                    <Select>
+                    <Select
+                      defaultValue={
+                        JobData.job_and_work_place_type.workPlaceType
+                      }
+                      onValueChange={(value) => JobData.setWork(value)}
+                    >
                       <SelectTrigger className="w-full py-8 px-5">
                         <SelectValue placeholder="Work Place Type" />
                       </SelectTrigger>
@@ -358,28 +387,34 @@ function CreateJobPost() {
                       </div>
                     </div>
                   </TabsContent>
+
                   <TabsContent value="upload">
                     <div className="flex flex-col gap-5">
                       <div className="flex flex-col">
-                        <Select>
+                        <Select
+                          defaultValue={JobData.uploads[0].file}
+                          onValueChange={(value) => JobData.setCvUpload(value)}
+                        >
                           <SelectTrigger className="w-full py-8 px-5 mb-6">
                             <SelectValue placeholder="CV" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>CV</SelectLabel>
-                              <SelectItem value="firstname">
-                                First Name
-                              </SelectItem>
+                              <SelectItem value="CV">CV</SelectItem>
+                              <SelectItem value="DV">DV</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
                         <div>
                           <input
                             type="checkbox"
-                            name=""
-                            id=""
                             className="accent-[#116B89] cursor-pointer "
+                            name="compulsory"
+                            defaultChecked={JobData.uploads[0].compulsory}
+                            onChange={(e) =>
+                              JobData.setCvCompulsory(e.target.checked)
+                            }
                           />{" "}
                           <span className="text-[#6B7280] text-[14px]">
                             Compulsory
@@ -387,18 +422,22 @@ function CreateJobPost() {
                         </div>
                       </div>
                       <div className="flex flex-col">
-                        <Select>
+                        <Select
+                          defaultValue={JobData.uploads[1].file}
+                          onValueChange={(value) => JobData.setDocUpload(value)}
+                        >
                           <SelectTrigger className="w-full py-8 px-5 mb-6">
                             <SelectValue placeholder="Choose Document" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>Document</SelectLabel>
-                              <SelectItem value="firstname">
-                                First Name
+                              <SelectItem value="CV">CV</SelectItem>
+                              <SelectItem value="Cover Letter">
+                                Cover Letter
                               </SelectItem>
-                              <SelectItem value="lastname">
-                                Last Name
+                              <SelectItem value="Portfolio">
+                                Portfolio
                               </SelectItem>
                             </SelectGroup>
                           </SelectContent>
@@ -406,9 +445,11 @@ function CreateJobPost() {
                         <div>
                           <input
                             type="checkbox"
-                            name=""
-                            id=""
+                            defaultChecked={JobData.uploads[1].compulsory}
                             className="accent-[#116B89] cursor-pointer "
+                            onChange={(e) =>
+                              JobData.setDocCompulsory(e.target.checked)
+                            }
                           />{" "}
                           <span className="text-[#6B7280] text-[14px]">
                             Compulsory

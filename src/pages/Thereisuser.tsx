@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
+import axios from "axios";
 
 function Thereisuser() {
   const navigate = useNavigate();
-
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
-  // const [user, setUser] = useState("");
 
   const toggle = () => {
     if (toggleType === "password") {
@@ -18,10 +21,26 @@ function Thereisuser() {
     setToggleType("password");
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    navigate("/dashboard");
+    try {
+      const { data } = await axios.post(
+        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
+        userData
+      );
+      if (data.code === 200) {
+        console.log({ data });
+        navigate("/dashboard");
+        localStorage.removeItem("user");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      alert("finished");
+    }
   };
   return (
     <section className="bg-[#f4f4f4] xl:p-8 h-screen">
@@ -53,12 +72,11 @@ function Thereisuser() {
 
                   <input
                     type="email"
-                    name=""
-                    id=""
+                    name="email"
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
                     required
-                    // onChange={(e) => setUser(e.target.value)}
+                    onChange={handleFormChange}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -66,11 +84,12 @@ function Thereisuser() {
 
                   <input
                     type={toggleType}
-                    name=""
+                    name="password"
                     id="pass"
                     className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
                     required
+                    onChange={handleFormChange}
                   />
                   <img
                     src={eye}

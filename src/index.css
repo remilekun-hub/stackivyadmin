@@ -1,6 +1,15 @@
 body {
   font-family: "Mona-Sans", sans-serif;
 }
+@font-face {
+  font-family: mag;
+  src: url("./assets/fonts/Magiona Display.ttf");
+  font-style: normal;
+  font-weight: 400;
+}
+.mag {
+  font-family: mag;
+}
 
 @tailwind base;
 @tailwind components;

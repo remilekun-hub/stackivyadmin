@@ -1,21 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormEvent } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link } from "react-router-dom";
 import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SignupOtp() {
+  const [userEmail, setUserEmail] = useState("");
+  let parsedOTP: number | string;
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (email) {
+      setUserEmail(email);
+    }
+  }, [userEmail]);
+
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const handleChange = (enteredOtp: string) => {
     setOtp(enteredOtp);
   };
-  const handleSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("user", "user");
-    navigate("/");
+
+    try {
+      parsedOTP = otp;
+      const { data } = await axios.post(
+        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
+        { email: userEmail, otp: parsedOTP }
+      );
+      console.log({ data });
+      if (data.code === 200) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      alert("finished");
+    }
   };
   return (
     <section className="bg-[#f4f4f4] xl:p-8 h-screen">
@@ -38,9 +63,15 @@ function SignupOtp() {
                 </h1>
                 <p className="text-[#999999] leading-6">
                   We sent you an OTP code to this email{" "}
-                  <span className="text-black font-semibold">
-                    AyodeleVincentOlagunju888@gmail.com{" "}
-                  </span>
+                  {userEmail ? (
+                    <span className="text-black font-semibold">
+                      {userEmail}
+                    </span>
+                  ) : (
+                    <span className="text-black font-semibold">
+                      AyodeleVincentOlagunju888@gmail.com{" "}
+                    </span>
+                  )}
                 </p>
               </div>
 
@@ -50,6 +81,7 @@ function SignupOtp() {
                     value={otp}
                     onChange={handleChange}
                     numInputs={7}
+                    isInputNum={true}
                     inputStyle={"otp"}
                   />
                 </div>

@@ -4,7 +4,7 @@ import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
-// import axios from "axios";
+import axios from "axios";
 
 function Signup() {
   const navigate = useNavigate();
@@ -22,25 +22,26 @@ function Signup() {
     setToggleType("password");
   };
 
-  console.log({ userData });
   const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // try {
-    //   const { data } = await axios.post(
-    //     "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
-    //     { userData }
-    //   );
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log(error)
-    // } finally {
-    //   alert('finished')
-    // }
-
-    navigate("/signup/verify-otp");
+    try {
+      const { data } = await axios.post(
+        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/contact_verification",
+        userData
+      );
+      console.log({ data });
+      if (data.code === 200) {
+        localStorage.setItem("email", userData.email);
+        navigate("/signup/verify-otp");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      alert("returned");
+    }
   };
 
   return (
