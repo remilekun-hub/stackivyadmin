@@ -9,7 +9,7 @@ import axios from "axios";
 
 function Verify() {
   const [userEmail, setUserEmail] = useState("");
-  const [otp, setOtp] = useState(0);
+  const [otp, setOtp] = useState("");
 
   let parsedOTP: number;
   useEffect(() => {
@@ -20,15 +20,15 @@ function Verify() {
   }, [userEmail]);
 
   const navigate = useNavigate();
-  const handleChange = (enteredOtp: number) => {
+  const handleChange = (enteredOtp: string) => {
     setOtp(enteredOtp);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      // parsedOTP = parseInt(otp);
-      parsedOTP = otp;
+      parsedOTP = parseInt(otp);
+
       console.log({ parsedOTP });
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
