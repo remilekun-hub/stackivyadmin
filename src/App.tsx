@@ -24,6 +24,9 @@ import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
 import Webinars from "./pages/Webinars";
 import CreateWebinars from "./pages/CreateWebinars";
+import Account from "./pages/Account";
+import Support from "./pages/Support";
+import SingleComplain from "./pages/SingleComplain";
 
 function App() {
   return (
@@ -56,10 +59,13 @@ function App() {
           <Route element={<NewBlog />} path="/blog/create" />
           <Route element={<Guides />} path="/guides" />
           <Route element={<CreateGuide />} path="/guides/create" />
+          <Route element={<Account />} path="/account" />
+          <Route element={<Support />} path="/support" />
+          <Route element={<SingleComplain />} path="/support/complaints/:id" />
         </Route>
         <Route
           element={
-            "Either this page does not exist or you don't have access to it"
+            "Comrade,how far?...Either this page does not exist or you don't have access to it"
           }
           path="*"
         />

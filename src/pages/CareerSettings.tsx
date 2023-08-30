@@ -345,7 +345,7 @@ function CareerSettimgs() {
         <div className="max-w-[1500px] relative  mx-auto bg-white rounded-[16px] min-h-screen pb-10">
           <div className="mx-auto">
             <Tabs defaultValue="workplace" className="w-full mx-auto">
-              <div className=" border-b-[1px] border-b-[#F3F4F6] mx-6">
+              <div className=" border-b-[1px] border-b-[#F3F4F6] mx-9">
                 <TabsList className="flex gap-8 w-[300px] justify-center mx-auto h-[100px]">
                   <TabsTrigger value="workplace" className="pb-5 px-0">
                     Work Place Type

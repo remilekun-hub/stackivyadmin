@@ -177,8 +177,18 @@ function Sidebar() {
       </div>
 
       <div className="px-6 pt-8 border-t-[1px] border-t-[#27393F]">
-        <Sidebaritem link="/account" icon={profile} title="Account" />
-        <Sidebaritem link="/support" icon={clog} title="Support" />
+        <Sidebaritem
+          link="/account"
+          icon={profile}
+          title="Account"
+          isActive={pathname === "/account"}
+        />
+        <Sidebaritem
+          link="/support"
+          icon={clog}
+          title="Support"
+          isActive={pathname === "/support"}
+        />
         <div
           className={`group flex items-center hover:bg-[#2B3E46] gap-4 py-3 mb-2 px-4 rounded-[4px] cursor-pointer`}
           onClick={handleLogout}
