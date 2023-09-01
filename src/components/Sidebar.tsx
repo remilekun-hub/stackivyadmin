@@ -7,6 +7,7 @@ import startupIcon from "../assets/rstart.png";
 import door from "../assets/door.png";
 import clog from "../assets/clog.png";
 import profile from "../assets/profile-circle.png";
+import profile2 from "../assets/profile2.png";
 import careerI from "../assets/rcareer.png";
 import quote from "../assets/quote.png";
 import marketing from "../assets/marketing.png";
@@ -110,7 +111,11 @@ function Sidebar() {
           isActive={pathname === "/quote"}
         />
 
-        <Accordion type="single" collapsible className="w-full outline-none">
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full outline-none mb-2"
+        >
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
               <div className="flex gap-4 ">
@@ -149,18 +154,6 @@ function Sidebar() {
               >
                 Webinars
               </Link>
-
-              {/* <Link
-                to={"/case-studies"}
-                className={`block mt-2 ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
-                  pathname === "/case-studies"
-                    ? "bg-[#2b3E46] text-white"
-                    : "text-[#a9b1bc]"
-                }`}
-              >
-                Case Studies
-              </Link> */}
-
               <Link
                 to={"/events"}
                 className={`block  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
@@ -170,6 +163,40 @@ function Sidebar() {
                 }`}
               >
                 Events
+              </Link>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <Accordion type="single" collapsible className="w-full outline-none">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-[#a9b1bc] hover:bg-[#2B3E46] py-2">
+              <div className="flex gap-4 ">
+                <img src={profile2} alt="" className="w-5 h-5" />
+                <p>Members</p>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <Link
+                to={"/members/manage"}
+                className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/members/manage" ||
+                  pathname.startsWith("/member/manage/")
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
+              >
+                Manage Members
+              </Link>
+              <Link
+                to={"/member/settings"}
+                className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
+                  pathname === "/member/settings"
+                    ? "bg-[#2b3E46] text-white"
+                    : "text-[#a9b1bc]"
+                }`}
+              >
+                Settings
               </Link>
             </AccordionContent>
           </AccordionItem>

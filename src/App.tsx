@@ -27,6 +27,8 @@ import CreateWebinars from "./pages/CreateWebinars";
 import Account from "./pages/Account";
 import Support from "./pages/Support";
 import SingleComplain from "./pages/SingleComplain";
+import Member from "./pages/Member";
+import SingleMember from "./pages/SingleMember";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
           <Route element={<NewBlog />} path="/blog/create" />
           <Route element={<Guides />} path="/guides" />
           <Route element={<CreateGuide />} path="/guides/create" />
+          <Route element={<Member />} path="/members/manage" />
+          <Route element={<SingleMember />} path="/member/manage/:id" />
           <Route element={<Account />} path="/account" />
           <Route element={<Support />} path="/support" />
           <Route element={<SingleComplain />} path="/support/complaints/:id" />
