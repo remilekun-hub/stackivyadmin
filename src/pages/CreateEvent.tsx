@@ -66,7 +66,7 @@ function CreateEvent() {
                 </div>
                 <div className="px-5">
                   <TabsContent value="title" className="pb-2 pt-2">
-                    <input type="text" name="title" className="outline-none " />
+                    <input type="text" name="title" className="outline-none mag" />
                   </TabsContent>
                   <TabsContent value="uploads" className="pb-2 pt-3">
                     <div>
