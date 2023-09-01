@@ -28,10 +28,15 @@ function CareerSettimgs() {
     id: string;
     name: string;
   };
+  type QuestionType = {
+    id: string;
+    name: string;
+  };
 
   const [createJob, setCreateJob] = useState(false);
   const [createJobType, setCreateJobType] = useState(false);
   const [createDoc, setCreateDoc] = useState(false);
+  const [createQuestion, setCreateQuestion] = useState(false);
   const settings = [
     {
       id: "1",
@@ -59,6 +64,40 @@ function CareerSettimgs() {
     {
       id: "3",
       name: "Portfolio",
+    },
+  ];
+  const questions = [
+    {
+      id: "1",
+      name: "First Name",
+    },
+    {
+      id: "2",
+      name: "Last Name",
+    },
+    {
+      id: "3",
+      name: "Email",
+    },
+    {
+      id: "4",
+      name: "Phone Number",
+    },
+    {
+      id: "5",
+      name: "Website/proftfolio Link",
+    },
+    {
+      id: "6",
+      name: "Linkedin Profile",
+    },
+    {
+      id: "7",
+      name: "Work Type",
+    },
+    {
+      id: "8",
+      name: "Able to Start Immediately",
     },
   ];
 
@@ -243,6 +282,57 @@ function CareerSettimgs() {
       },
     },
   ];
+  const questionColumns: ColumnDef<QuestionType>[] = [
+    {
+      accessorKey: "name",
+      header: "NAME",
+      cell: ({ row }) => {
+        const data = row.original;
+        return (
+          <>
+            <div className="w-[300px]">{data.name}</div>
+          </>
+        );
+      },
+    },
+
+    {
+      id: "actions",
+      header: "ACTION",
+      cell: () => {
+        // const setting = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="cursor-pointer flex items-center  gap-3"
+                // onClick={() => navigate(`/career/applicant/${applicant.id}`)}
+              >
+                <span>
+                  <img src={edit22} className="w-3 h-3" />
+                </span>{" "}
+                <span>Edit</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className="cursor-pointer flex items-center gap-3">
+                <span>
+                  <img src={del22} className="w-3 h-3" />
+                </span>{" "}
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
   return (
     <section>
       {createJob && (
@@ -333,6 +423,35 @@ function CareerSettimgs() {
           </div>
         </div>
       )}
+      {createQuestion && (
+        <div className="flex justify-center fixed inset-0 items-center z-[99999999999999] h-screen w-full bg-black/70">
+          <div className="rounded-[24px] bg-white w-[450px]  p-10">
+            <div className="flex justify-between border-b-[1px] border-[#F3F4F6] pb-5">
+              <h1 className="font-bold">Create Question Type </h1>
+              <div
+                className="cursor-pointer"
+                onClick={() => setCreateQuestion(false)}
+              >
+                <img src={close} className="w-4 h-4" />
+              </div>
+            </div>
+
+            <div className="mt-10">
+              <p className="mb-4">Name Of Question Type</p>
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Enter Name of Question Type"
+                className="w-full outline-none rounded-[4px] mb-6 border-[1px] py-3 px-5 border-[#F3F4F6]"
+              />
+              <button className="rounded-full text-white px-7 py-[10px] bg-[#116B89]">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Navbar>
         <div className="flex items-center">
@@ -354,6 +473,9 @@ function CareerSettimgs() {
                   </TabsTrigger>
                   <TabsTrigger value="documents" className="pb-5 px-0">
                     Documents
+                  </TabsTrigger>
+                  <TabsTrigger value="questions" className="pb-5 px-0">
+                    Questions
                   </TabsTrigger>
                 </TabsList>
                 <hr className="bg-[#F3F4F6] mt-[-25px]" />
@@ -396,6 +518,22 @@ function CareerSettimgs() {
                   </div>
                   <div className="mt-6">
                     <CustomDataTable columns={DocColumns} data={documents} />
+                  </div>
+                </TabsContent>
+                <TabsContent value="questions">
+                  <div className="flex justify-end mt-10 ">
+                    <button
+                      className="px-7 text-white py-3 bg-[#116B89] rounded-full"
+                      onClick={() => setCreateQuestion(true)}
+                    >
+                      Add +{" "}
+                    </button>
+                  </div>
+                  <div className="mt-6">
+                    <CustomDataTable
+                      columns={questionColumns}
+                      data={questions}
+                    />
                   </div>
                 </TabsContent>
               </div>
