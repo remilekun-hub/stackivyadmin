@@ -29,6 +29,7 @@ import Support from "./pages/Support";
 import SingleComplain from "./pages/SingleComplain";
 import Member from "./pages/Member";
 import SingleMember from "./pages/SingleMember";
+import MemberSettings from "./pages/MemberSettings";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
           <Route element={<CreateGuide />} path="/guides/create" />
           <Route element={<Member />} path="/members/manage" />
           <Route element={<SingleMember />} path="/member/manage/:id" />
+          <Route element={<MemberSettings />} path="/member/settings" />
           <Route element={<Account />} path="/account" />
           <Route element={<Support />} path="/support" />
           <Route element={<SingleComplain />} path="/support/complaints/:id" />

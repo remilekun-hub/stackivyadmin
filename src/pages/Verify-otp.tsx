@@ -6,14 +6,16 @@ import { Link } from "react-router-dom";
 import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader } from "@mantine/core";
 
 function Verify() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [otp, setOtp] = useState("");
-
   let parsedOTP: number | string;
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const email = sessionStorage.getItem("email");
     if (email) {
       setUserEmail(email);
     }
@@ -27,18 +29,26 @@ function Verify() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       parsedOTP = otp;
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
         { email: userEmail, otp: parsedOTP }
       );
-      console.log({ data });
-      console.log({ parsedOTP });
+      if (data.code !== 200) {
+        setMessage(data.message);
+      }
       if (data.code === 200) {
+        sessionStorage.removeItem("email");
         navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     }
   };
   return (
@@ -89,8 +99,19 @@ function Verify() {
                   <span className="text-[#116B89] font-medium">RESEND</span>
                 </p>
 
-                <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Sign in
+                <p className="text-center text-red-500 mt-3 text-[14px]">
+                  {message}
+                </p>
+                <button
+                  className={`${
+                    isLoading ? "bg-white" : "bg-[#116B89] hover:bg-[#0E5971] "
+                  } mb-4  h-[60px] items-center p-4 lg:p-5 w-full flex justify-center text-white rounded-full text-[15px] leading-[22px] font-medium mt-7  transition`}
+                >
+                  {isLoading ? (
+                    <Loader size={"lg"} variant="dots" color="#116B89" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
               </form>
             </div>

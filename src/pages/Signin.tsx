@@ -5,8 +5,11 @@ import hero from "../assets/heroimg.svg";
 import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
 import axios from "axios";
+import { Loader } from "@mantine/core";
 
 function Signin() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -28,19 +31,30 @@ function Signin() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const { data } = await axios.post(
         "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/generate_login_otp",
         userData
       );
       console.log({ data });
+      if (data.code !== 200) {
+        setMessage(data.message);
+      }
+
       if (data.code === 200) {
-        localStorage.setItem("email", userData.email);
+        sessionStorage.setItem("email", userData.email);
         navigate("/signin/verify-otp");
 
         return;
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     }
   };
 
@@ -79,7 +93,6 @@ function Signin() {
                     placeholder="Enter Email"
                     onChange={handleFormChange}
                     required
-                    // onChange={(e) => setUser(e.target.value)}
                   />
                 </label>
                 <label htmlFor="" className="relative flex flex-col gap-1 mb-4">
@@ -116,8 +129,19 @@ function Signin() {
                     Forgort Password?
                   </Link>
                 </div>
-                <button className="mb-4  bg-[#116B89] p-4 lg:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
-                  Sign In
+                <p className="text-center text-red-500 mt-3 text-[14px]">
+                  {message}
+                </p>
+                <button
+                  className={`${
+                    isLoading ? "bg-white" : "bg-[#116B89] hover:bg-[#0E5971] "
+                  } mb-4  h-[60px] items-center p-4 lg:p-5 w-full flex justify-center text-white rounded-full text-[15px] leading-[22px] font-medium mt-7  transition`}
+                >
+                  {isLoading ? (
+                    <Loader size={"lg"} variant="dots" color="#116B89" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
               </form>
               <p className=" leading-[22px] mt-3 font-normal text-center">
