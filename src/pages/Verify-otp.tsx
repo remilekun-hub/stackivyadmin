@@ -7,8 +7,10 @@ import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "@mantine/core";
+import { userSlice } from "@/Hooks/user";
 
 function Verify() {
+  const user = userSlice();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -40,6 +42,15 @@ function Verify() {
       }
       if (data.code === 200) {
         sessionStorage.removeItem("email");
+        user.setUser({
+          admin: {
+            name: data.name,
+            email: data.email,
+            adminInfo: { last_login: data.admin.adminInfo.last_login },
+          },
+          token: data.token,
+        });
+        console.log({ data });
         navigate("/dashboard");
       }
     } catch (error) {
@@ -103,6 +114,7 @@ function Verify() {
                   {message}
                 </p>
                 <button
+                  disabled={isLoading}
                   className={`${
                     isLoading ? "bg-white" : "bg-[#116B89] hover:bg-[#0E5971] "
                   } mb-4  h-[60px] items-center p-4 lg:p-5 w-full flex justify-center text-white rounded-full text-[15px] leading-[22px] font-medium mt-7  transition`}

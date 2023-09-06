@@ -37,6 +37,9 @@ function SignupOtp() {
         { email: userEmail, otp: parsedOTP }
       );
       console.log({ data });
+      if (data.code !== 200) {
+        setMessage(data.message);
+      }
       if (data.code === 200) {
         navigate("/dashboard");
       }
@@ -102,6 +105,7 @@ function SignupOtp() {
                   {message}
                 </p>
                 <button
+                  disabled={isLoading}
                   className={`${
                     isLoading ? "bg-white" : "bg-[#116B89] hover:bg-[#0E5971] "
                   } mb-4  h-[60px] items-center p-4 lg:p-5 w-full flex justify-center text-white rounded-full text-[15px] leading-[22px] font-medium mt-7  transition`}

@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
@@ -17,13 +17,33 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+// import axios from "axios";
+import { userSlice } from "@/Hooks/user";
 
 function Sidebar() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  // const user = userSlice((state) => state.user);
+  const removeUser = userSlice((state) => state.removeUser);
   const { pathname } = useLocation();
-  const handleLogout = () => {
-    navigate("/");
-    localStorage.removeItem("user");
+
+  const handleLogout = async () => {
+    // if (user) {
+    //   const { data } = await axios.post(
+    //     "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/logout",
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${user.token}`,
+    //       },
+    //     }
+    //   );
+    //   console.log({ data });
+    //   if (data.code === 200) {
+    //     removeUser();
+    //     console.log("loggedOut");
+    //     navigate("/");
+    //   }
+    // }
+    removeUser();
   };
 
   return (

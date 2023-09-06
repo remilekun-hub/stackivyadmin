@@ -1,18 +1,18 @@
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
-// import { userSlice } from "@/Hooks/user";
-// import { Navigate } from "react-router-dom";
+import { userSlice } from "@/Hooks/user";
+import { Navigate } from "react-router-dom";
 
 function DashboardLayout() {
-  // const user = userSlice((state) => state.user);
+  const user = userSlice((state) => state.user);
 
-  // if (!user) {
-  //   return (
-  //     <>
-  //       <Navigate to={"/"} />
-  //     </>
-  //   );
-  // }
+  if (!user) {
+    return (
+      <>
+        <Navigate to={"/"} />
+      </>
+    );
+  }
   return (
     <div className="relative">
       <Sidebar />
