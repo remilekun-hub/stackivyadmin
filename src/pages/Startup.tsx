@@ -1,6 +1,5 @@
-import StartUpTable from "@/components/StartUpTable";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { StarupType, startup } from "@/dummy/startup";
 import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -13,15 +12,46 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import eye from "../assets/edit22.png";
 import trash from "../assets/trash.png";
+import axios from "axios";
+import { userSlice } from "@/Hooks/user";
+import { StarUpType } from "../../types";
+import StartUpTable from "@/components/StartUpTable";
 
 function Startup() {
+  const user = userSlice((state) => state.user);
+  const [startUpData, setStartupData] = useState<StarUpType[]>([]);
+
+  useEffect(() => {
+    const controller = new AbortController(); // <-- create controller
+    const getStartUps = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/startup",
+          {
+            headers: { Authorization: `Bearer ${user?.token}` },
+            signal: controller.signal,
+          }
+        );
+
+        if (data.code === 200) {
+          setStartupData(data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getStartUps();
+
+    return () => controller.abort();
+  }, []); //eslint-disable-line
+
   const navigate = useNavigate();
-  const columns: ColumnDef<StarupType>[] = [
-    { accessorKey: "name", header: "STARTUP NAME" },
-    { accessorKey: "industry", header: "STARTUP INDUSTRY" },
-    { accessorKey: "country", header: "STARTUP COUNTRY" },
-    { accessorKey: "person", header: "PERSON NAME" },
-    { accessorKey: "email", header: "CONTACT EMAIL" },
+  const columns: ColumnDef<StarUpType>[] = [
+    { accessorKey: "startup_name", header: "STARTUP NAME" },
+    { accessorKey: "startup_industry", header: "STARTUP INDUSTRY" },
+    { accessorKey: "startup_country", header: "STARTUP COUNTRY" },
+    { accessorKey: "person_name", header: "PERSON NAME" },
+    { accessorKey: "contact_email", header: "CONTACT EMAIL" },
     { accessorKey: "phone", header: "PHONE NUMBER" },
 
     {
@@ -71,9 +101,10 @@ function Startup() {
 
       <main className="bg-[#F3F4F6] h-screen p-4 lg:px-6 lg:py-7">
         <div className="max-w-[1500px] mx-auto  bg-white rounded-[16px] p-7">
-          {/* <div className="flex justify-between py-5 mb-3">header here</div> */}
           <div>
-            <StartUpTable columns={columns} data={startup} />
+            {startUpData && (
+              <StartUpTable columns={columns} data={startUpData} />
+            )}
           </div>
         </div>
       </main>

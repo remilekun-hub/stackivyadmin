@@ -53,9 +53,14 @@ function StartUpTable<TData, TValue>({
             type="text"
             placeholder="Search for something here"
             className="p-3 outline-0 border-0 text-black  placeholder:text-[#9CA3AF]  w-[250px]"
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("startup_name")?.getFilterValue() as string) ??
+              ""
+            }
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table
+                .getColumn("startup_name")
+                ?.setFilterValue(event.target.value)
             }
           />
         </div>
