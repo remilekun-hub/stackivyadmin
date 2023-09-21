@@ -7,9 +7,11 @@ import OtpInput from "react18-input-otp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "@mantine/core";
+import { userSlice } from "@/Hooks/user";
 
 function SignupOtp() {
   const [isLoading, setIsLoading] = useState(false);
+  const user = userSlice();
   const [message, setMessage] = useState("");
   const [userEmail, setUserEmail] = useState("");
   let parsedOTP: number | string;
@@ -41,6 +43,14 @@ function SignupOtp() {
         setMessage(data.message);
       }
       if (data.code === 200) {
+        user.setUser({
+          admin: {
+            name: data.name,
+            email: data.email,
+            adminInfo: { last_login: data.admin.adminInfo.last_login },
+          },
+          token: data.token,
+        });
         navigate("/dashboard");
       }
     } catch (error) {

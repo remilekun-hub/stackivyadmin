@@ -2,32 +2,13 @@ import { useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import folder from "../assets/folder.png";
 import xIcon from "../assets/close-circle.png";
-import { RichTextEditor } from "@mantine/tiptap";
-import { useEditor } from "@tiptap/react";
-import Highlight from "@tiptap/extension-highlight";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import TextAlign from "@tiptap/extension-text-align";
-import Superscript from "@tiptap/extension-superscript";
-import SubScript from "@tiptap/extension-subscript";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from "@tiptap/extension-link";
 
 function CreateGuide() {
   const [catModal, setCatModal] = useState(false);
   const [catName, setCatName] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link,
-      Superscript,
-      SubScript,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph", "Image"] }),
-    ],
-  });
+
   type catType = {
     id: string;
     name: string;
@@ -82,48 +63,7 @@ function CreateGuide() {
       <main className="p-4 lg:p-6  bg-[#F3F4F6]">
         <div className="rounded-[16px]  h-screen flex flex-col xl:flex-row gap-5 xl:gap-7 max-w-[1500px] mx-auto">
           <ScrollArea className="xl:basis-[77%] bg-white rounded-[16px] h-screen overflow-auto">
-            <RichTextEditor editor={editor} className="border-0">
-              <RichTextEditor.Toolbar className="flex justify-center py-10">
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.Bold />
-                  <RichTextEditor.Italic />
-                  <RichTextEditor.Underline />
-                  <RichTextEditor.Strikethrough />
-                  <RichTextEditor.ClearFormatting />
-                  <RichTextEditor.Highlight />
-                  <RichTextEditor.Code />
-                </RichTextEditor.ControlsGroup>
-
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.H1 />
-                  <RichTextEditor.H2 />
-                  <RichTextEditor.H3 />
-                  <RichTextEditor.H4 />
-                </RichTextEditor.ControlsGroup>
-
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.Blockquote />
-                  <RichTextEditor.Hr />
-                  <RichTextEditor.BulletList />
-                  <RichTextEditor.OrderedList />
-                  <RichTextEditor.Subscript />
-                  <RichTextEditor.Superscript />
-                </RichTextEditor.ControlsGroup>
-
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.Link />
-                  <RichTextEditor.Unlink />
-                </RichTextEditor.ControlsGroup>
-
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.AlignLeft />
-                  <RichTextEditor.AlignCenter />
-                  <RichTextEditor.AlignJustify />
-                  <RichTextEditor.AlignRight />
-                </RichTextEditor.ControlsGroup>
-              </RichTextEditor.Toolbar>
-              <RichTextEditor.Content />
-            </RichTextEditor>
+            <h1>here</h1>
           </ScrollArea>
 
           <ScrollArea className=" xl:basis-[350px] h-full bg-white rounded-[16px] border-[1px] border-[#F3F4F6] px-4 lg:px-5 pt-5">

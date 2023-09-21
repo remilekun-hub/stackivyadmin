@@ -1,59 +1,46 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import backbtn from "../assets/arrow-left.png";
-import { Link } from "react-router-dom";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/SingleJobCustomTab";
-import { XCircleIcon, XIcon } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { XIcon, XCircleIcon } from "lucide-react";
 import axios from "axios";
-import { base_url, WebinarType } from "../../types";
 import { userSlice } from "@/Hooks/user";
+import { base_url } from "../../types";
 import toast from "react-hot-toast";
 
-function CreateWebinars() {
+function EditWebinar() {
   const user = userSlice((state) => state.user);
-  const filePickerRef = useRef<HTMLInputElement>(null);
-  const [speakerName, setSpeakerName] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState("");
+  const filePickerRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const params = useSearchParams();
+  const [speakerName, setSpeakerName] = useState("");
+  const urlSpeaker: string[] = params[0].get("speakers")?.split(",") || [];
+  const urlImage = params[0].get("image") || "";
 
-  const [webinarData, setWebinarData] = useState<WebinarType>({
-    title: "",
-    summary: "",
+  useEffect(() => {
+    setSelectedFile(urlImage);
+  }, []); //eslint-disable-line
+
+  const [webinar, setWebinar] = useState({
+    Id: params[0].get("id") || "",
+    title: params[0].get("title") || "",
+    summary: params[0].get("summary") || "",
     webinar_info: {
-      date: "",
-      time: "",
-      location: "",
-      speakers: [],
+      date: params[0].get("date") || "",
+      time: params[0].get("time") || "",
+      location: params[0].get("location") || "",
+      speakers: [...urlSpeaker],
     },
   });
-
-  const handleChangeWebinar = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setWebinarData({
-      ...webinarData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  useEffect(() => {
-    const WebinarData = sessionStorage.getItem("webinarData");
-    if (WebinarData) {
-      const parsedWebinar = JSON.parse(WebinarData);
-      setWebinarData(parsedWebinar);
-      return;
-    }
-    sessionStorage.setItem("webinarData", JSON.stringify(webinarData));
-  }, []); //eslint-disable-line
-  useEffect(() => {
-    sessionStorage.setItem("webinarData", JSON.stringify(webinarData));
-  }, [webinarData]);
-
   const addImageToPost = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (e.target.files && e.target.files[0]) {
@@ -67,48 +54,47 @@ function CreateWebinars() {
     };
   };
 
-  const createWebinar = async () => {
+  const handleUpdateWebinar = async () => {
     try {
-      toast.loading("creating webinar...", { id: "createWebinar" });
+      toast.loading("updating webinar...", { id: "updateWebinar" });
       const form_data = new FormData();
-      form_data.append("title", webinarData.title);
-      form_data.append("summary", webinarData.summary);
+      form_data.append("title", webinar.title);
+      form_data.append("summary", webinar.summary);
 
-      form_data.append(
-        "webinar_info",
-        JSON.stringify(webinarData.webinar_info)
-      );
+      form_data.append("webinar_info", JSON.stringify(webinar.webinar_info));
       if (file) {
         form_data.append("image", file);
       }
 
-      const { data } = await axios.post(
-        `${base_url}/api/v1/stackivy/admin/marketing/webinar`,
+      const { data } = await axios.patch(
+        `${base_url}/api/v1/stackivy/admin/marketing/webinar/${webinar.Id}`,
         form_data,
         { headers: { Authorization: `Bearer ${user?.token}` } }
       );
+
+      if (!data) {
+        toast.error("something went wrong", { id: "updateWebinar" });
+      }
+
       if (data.code === 200) {
-        toast.success("Success..", { id: "createWebinar" });
-        setWebinarData({
-          title: "",
-          summary: "",
-          webinar_info: { date: "", time: "", location: "", speakers: [] },
-        });
+        toast.success("webinar updated successfully", { id: "updateWebinar" });
+        navigate("/webinars");
         setFile(null);
         setSelectedFile("");
       }
       if (data.code != 200) {
-        toast.error("couldn't create webinar...", { id: "createWebinar" });
+        toast.error("couldn't update webinar...", { id: "updateWebinar" });
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     return () => {
-      toast.dismiss("createWebinar");
+      toast.dismiss("updateWebinar");
     };
-  }, []);
+  }, []); //eslint-disable-line
 
   return (
     <section className="">
@@ -122,19 +108,22 @@ function CreateWebinars() {
           <div className="flex justify-between border-b-[2px] border-b-[#F3F4F6] items-center h-[100px] px-8">
             <Link to="/webinars" className="flex items-center gap-[2px]">
               <img src={backbtn} className="w-6 h-6" />
-              <h1 className="text-[18px] font-medium">Add New Webinar</h1>
+              <h1 className="text-[18px] font-medium">Edit Webinar</h1>
             </Link>
             <button
               className="bg-[#116B89] px-6 text-white py-2 rounded-full"
-              onClick={createWebinar}
+              onClick={handleUpdateWebinar}
             >
-              Create Webinar
+              Update Webinar
             </button>
           </div>
+
+          {/* <SingleWebinar /> */}
+
           <div className="px-10 py-8">
             <div className="rounded-[8px]  border-[1px] border-[#F3F4F6] mb-10">
               <Tabs defaultValue="title" className="py-5 overflow-auto ">
-                <div className="flex justify-between items-center border-b-[1px] border-[#F3F4F6]">
+                <div className=" items-center border-b-[1px] border-[#F3F4F6]">
                   <TabsList className="flex gap-2 justify-start ">
                     <TabsTrigger
                       value="title"
@@ -170,8 +159,10 @@ function CreateWebinars() {
                       name="title"
                       className="outline-none mag py-2 w-full"
                       placeholder="Enter Title"
-                      defaultValue={webinarData.title}
-                      onChange={handleChangeWebinar}
+                      value={webinar.title}
+                      onChange={(e) =>
+                        setWebinar({ ...webinar, title: e.target.value })
+                      }
                     />
                   </TabsContent>
                   <TabsContent value="summary" className="pb-2">
@@ -179,8 +170,10 @@ function CreateWebinars() {
                       placeholder="Enter Summary"
                       name="summary"
                       className="w-full outline-none h-[200px]"
-                      defaultValue={webinarData.summary}
-                      onChange={handleChangeWebinar}
+                      value={webinar.summary}
+                      onChange={(e) =>
+                        setWebinar({ ...webinar, summary: e.target.value })
+                      }
                     />
                   </TabsContent>
                   <TabsContent value="info" className="pb-2">
@@ -189,14 +182,14 @@ function CreateWebinars() {
                         <input
                           type="date"
                           name="date"
-                          defaultValue={webinarData.webinar_info.date}
+                          value={webinar.webinar_info.date}
                           className="outline-none p-3 cursor-pointer w-full"
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setWebinarData({
-                              ...webinarData,
+                            setWebinar({
+                              ...webinar,
                               webinar_info: {
-                                ...webinarData.webinar_info,
-                                [e.target.name]: e.target.value,
+                                ...webinar.webinar_info,
+                                date: e.target.value,
                               },
                             });
                           }}
@@ -209,16 +202,16 @@ function CreateWebinars() {
                           name="time"
                           className="outline-none p-3 cursor-pointer w-full"
                           placeholder="Enter Time"
+                          value={webinar.webinar_info.time}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setWebinarData({
-                              ...webinarData,
+                            setWebinar({
+                              ...webinar,
                               webinar_info: {
-                                ...webinarData.webinar_info,
+                                ...webinar.webinar_info,
                                 time: e.target.value,
                               },
                             });
                           }}
-                          defaultValue={webinarData.webinar_info.time}
                         />
                       </div>
                       <div className="rounded-[4px] border-[1px] border-[#F0F0F0] p-3">
@@ -227,21 +220,21 @@ function CreateWebinars() {
                           name="location"
                           className="outline-none p-3 w-full"
                           placeholder="Enter Location Link"
+                          value={webinar.webinar_info.location}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setWebinarData({
-                              ...webinarData,
+                            setWebinar({
+                              ...webinar,
                               webinar_info: {
-                                ...webinarData.webinar_info,
-                                [e.target.name]: e.target.value,
+                                ...webinar.webinar_info,
+                                location: e.target.value,
                               },
                             });
                           }}
-                          defaultValue={webinarData.webinar_info.location}
                         />
                       </div>
                     </div>
                     <div className="rounded-[4px] w-full border-[1px] border-[#F0F0F0] h-[80px] p-3 mt-6 flex items-center">
-                      {webinarData.webinar_info.speakers.map((s) => (
+                      {webinar.webinar_info.speakers.map((s) => (
                         <div
                           key={s}
                           className="mr-3 flex items-center p-3 bg-gray-100"
@@ -251,13 +244,13 @@ function CreateWebinars() {
                             className="ml-2 cursor-pointer"
                             onClick={() => {
                               const deleteSpeaker =
-                                webinarData.webinar_info.speakers.filter(
+                                webinar.webinar_info.speakers.filter(
                                   (ss) => ss !== s
                                 );
-                              setWebinarData({
-                                ...webinarData,
+                              setWebinar({
+                                ...webinar,
                                 webinar_info: {
-                                  ...webinarData.webinar_info,
+                                  ...webinar.webinar_info,
                                   speakers: deleteSpeaker,
                                 },
                               });
@@ -272,7 +265,7 @@ function CreateWebinars() {
                     <input
                       type="text"
                       placeholder="Enter Name of Speaker"
-                      className="outline-none mt-4 min-w-[350px] border-[1px] border-[#f0f0f0] p-4"
+                      className="outline-none mt-6 min-w-[350px] border-[1px] border-[#f0f0f0] p-4"
                       value={speakerName}
                       onChange={(e) => setSpeakerName(e.target.value)}
                     />
@@ -280,12 +273,13 @@ function CreateWebinars() {
                       className="bg-[#116B89] px-6 py-3 rounded-full text-white ml-4"
                       onClick={() => {
                         if (!speakerName) return;
-                        setWebinarData({
-                          ...webinarData,
+
+                        setWebinar({
+                          ...webinar,
                           webinar_info: {
-                            ...webinarData.webinar_info,
+                            ...webinar.webinar_info,
                             speakers: [
-                              ...webinarData.webinar_info.speakers,
+                              ...webinar.webinar_info.speakers,
                               speakerName,
                             ],
                           },
@@ -341,4 +335,4 @@ function CreateWebinars() {
   );
 }
 
-export default CreateWebinars;
+export default EditWebinar;

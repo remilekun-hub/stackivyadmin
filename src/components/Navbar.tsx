@@ -6,7 +6,7 @@ type Prop = {
 };
 function Navbar({ children }: Prop) {
   return (
-    <header className="sticky top-0 z-[99999] px-4 lg:px-6 flex items-center h-[110px] w-full bg-white">
+    <header className="sticky top-0 z-[9999] px-4 lg:px-6 flex items-center h-[110px] w-full bg-white">
       <nav className="flex justify-between w-full items-center h-full mx-auto max-w-[1500px]">
         {children}
 

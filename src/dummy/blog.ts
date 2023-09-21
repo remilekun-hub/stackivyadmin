@@ -1,14 +1,12 @@
 import authorimg from "../assets/authurImg.png";
 
 export type BlogType = {
-  id: string;
+  blog_id: string;
   title: string;
   author: string;
-  category: string;
-  tags: string;
-  date: string;
-  time: string;
-  authorimg: string;
+  categories: string[];
+  tags: string[];
+  date_created: string;
 };
 
 export const blog = [

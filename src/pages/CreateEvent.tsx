@@ -9,16 +9,23 @@ import {
   TabsTrigger,
 } from "../components/SingleJobCustomTab";
 import { XCircleIcon } from "lucide-react";
+import axios from "axios";
+import { userSlice } from "@/Hooks/user";
+import toast from "react-hot-toast";
+import { base_url } from "../../types";
 
 function CreateEvent() {
+  const user = userSlice((state) => state.user);
   const [selectedFile, setSelectedFile] = useState("");
+  const [eventTitle, setEventTitle] = useState("");
   const filePickerRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const addImageToPost = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (e.target.files && e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0]);
+      setFile(e.target.files[0]);
     }
     reader.onload = (r) => {
       if (typeof r.target?.result === "string") {
@@ -26,6 +33,43 @@ function CreateEvent() {
       }
     };
   };
+
+  const createEvent = async () => {
+    if (!eventTitle) return;
+    const form_data = new FormData();
+    form_data.append("title", eventTitle);
+    if (file != null) {
+      form_data.append("image", file);
+    }
+    try {
+      toast.loading("creating event", { id: "event" });
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/marketing/event`,
+        form_data,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+
+      if (data.code === 200) {
+        toast.success("event sucessfully created", { id: "event" });
+      }
+      if (data.code != 200) {
+        toast.error("event couldn't be created at this time", {
+          id: "event",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFile(null);
+      setEventTitle("");
+      setSelectedFile("");
+    }
+  };
+
   return (
     <section className="">
       <Navbar>
@@ -40,7 +84,10 @@ function CreateEvent() {
               <img src={backbtn} className="w-6 h-6" />
               <h1 className="text-[18px] font-medium">Add New Event</h1>
             </Link>
-            <button className="bg-[#116B89] px-6 text-white py-2 rounded-full">
+            <button
+              className="bg-[#116B89] px-6 text-white py-2 rounded-full"
+              onClick={createEvent}
+            >
               Push To Live
             </button>
           </div>
@@ -66,7 +113,15 @@ function CreateEvent() {
                 </div>
                 <div className="px-5">
                   <TabsContent value="title" className="pb-2 pt-2">
-                    <input type="text" name="title" className="outline-none mag" />
+                    <input
+                      type="text"
+                      name="title"
+                      defaultValue={eventTitle || ""}
+                      className="outline-none w-full mag"
+                      onChange={(e) => {
+                        setEventTitle(e.target.value);
+                      }}
+                    />
                   </TabsContent>
                   <TabsContent value="uploads" className="pb-2 pt-3">
                     <div>

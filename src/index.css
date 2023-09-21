@@ -24,24 +24,60 @@ body {
   width: 40px !important;
   height: 40px !important;
   padding: 10px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb !important;
   border-radius: 4px;
   margin-right: 15px !important;
   font-size: 20px;
   font-weight: bold;
+  color: #116b89 !important;
 }
-.opt:focus-within {
-  border: 1px solid #e5e7eb;
+.otp:focus {
+  outline: 2px solid #116b89 !important;
+  color: #116b89 !important;
 }
 @media screen and (min-width: 1200px) {
   .otp {
     width: 50px !important;
     height: 50px !important;
+    outline: none !important;
+    color: #116b89 !important;
     padding: 10px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #e5e7eb !important;
     border-radius: 4px;
     margin-right: 15px !important;
     font-size: 20px;
     font-weight: bold;
   }
+}
+
+#root .ql-container {
+  background: white;
+  border: none;
+}
+
+/* Snow Theme */
+#root .ql-snow.ql-toolbar {
+  display: block;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+#root .ql-toolbar .ql-formats {
+  font-size: 80px !important;
+}
+
+#root .ql-editor {
+  min-height: 100vh !important;
+  font-size: 18px;
+  padding: 20px;
+  border: none;
+}
+#root .ql-editor img {
+  display: inline-block !important;
 }

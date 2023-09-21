@@ -1,11 +1,29 @@
+import { ChangeEvent, useRef, useState } from "react";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/SingleJobCustomTab";
+import { XCircleIcon } from "lucide-react";
 
 function WebinarCreator() {
+  const filePickerRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState("");
+
+  const addImageToPost = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (e.target.files && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+      setFile(e.target.files[0]);
+    }
+    reader.onload = (r) => {
+      if (typeof r.target?.result === "string") {
+        setSelectedFile(r.target?.result);
+      }
+    };
+  };
   return (
     <div className="rounded-[8px]  border-[1px] border-[#F3F4F6] mb-10">
       <Tabs defaultValue="title" className="py-5 overflow-auto ">
@@ -77,10 +95,38 @@ function WebinarCreator() {
             </div>
           </TabsContent>
           <TabsContent value="Image">
-            <div className="flex justify-center items-center border-[1px] h-[300px] rounded-[8px] border-dashed border-[#116B89]">
-              <button className="text-[#116B89] font-semibold">
-                + Upload Document
-              </button>
+            <div>
+              {selectedFile ? (
+                <div className="w-[350px] h-[350px] relative">
+                  <img
+                    src={selectedFile}
+                    className="w-[350px] h-[350px] object-contain"
+                  />
+                  <XCircleIcon
+                    className="absolute right-[-30px] top-0 cursor-pointer Z-[800] text-[#9CA3AF]"
+                    onClick={() => setSelectedFile("")}
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center items-center border-[1px] h-[300px] rounded-[8px] border-dashed border-[#116B89]">
+                  <button
+                    className="text-[#116B89] font-semibold"
+                    onClick={() => {
+                      if (filePickerRef && filePickerRef.current) {
+                        filePickerRef.current.click();
+                      }
+                    }}
+                  >
+                    + Upload Document
+                  </button>
+                  <input
+                    type="file"
+                    className="hidden"
+                    ref={filePickerRef}
+                    onChange={addImageToPost}
+                  />
+                </div>
+              )}
             </div>
           </TabsContent>
         </div>

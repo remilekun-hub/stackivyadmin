@@ -47,7 +47,7 @@ function Sidebar() {
   };
 
   return (
-    <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[9999999999]">
+    <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[999999]">
       <header className=" h-[100px] pl-5 items-center flex">
         <Link to={"/dashboard"}>
           <img src={SidebarLogo} alt="Stackivy Logo" />

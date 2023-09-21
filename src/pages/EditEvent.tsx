@@ -1,3 +1,4 @@
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import backbtn from "../assets/arrow-left.png";
 import { Link } from "react-router-dom";
@@ -7,8 +8,74 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/SingleJobCustomTab";
+import { XCircleIcon } from "lucide-react";
+import axios from "axios";
+import { userSlice } from "../Hooks/user";
+import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function EditEvent() {
+  const params = useSearchParams();
+  const eventID = params?.[0].get("id");
+  const imageUrl = params?.[0].get("image_url");
+  const title = params?.[0].get("title");
+  const user = userSlice((state) => state.user);
+  const [selectedFile, setSelectedFile] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+
+  useEffect(() => {
+    if (imageUrl) {
+      setSelectedFile(imageUrl);
+    }
+  }, []); //eslint-disable-line
+
+  const filePickerRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  const addImageToPost = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (e.target.files && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+      setFile(e.target.files[0]);
+    }
+    reader.onload = (r) => {
+      if (typeof r.target?.result === "string") {
+        setSelectedFile(r.target?.result);
+      }
+    };
+  };
+
+  const updateEvent = async () => {
+    try {
+      toast.loading("updating event", { id: "event" });
+      const form_data = new FormData();
+      if (newTitle) {
+        form_data.append("title", newTitle);
+      }
+      if (file) {
+        form_data.append("image", file);
+      }
+
+      const { data } = await axios.patch(
+        `https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/marketing/event/${eventID}`,
+        form_data,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (data.code === 200) {
+        toast.success("event updated successfully", { id: "event" });
+      }
+      if (data.code != 200) {
+        toast.error("event couldn't update at this time", { id: "event" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className="">
       <Navbar>
@@ -23,8 +90,11 @@ function EditEvent() {
               <img src={backbtn} className="w-6 h-6" />
               <h1 className="text-[18px] font-medium">Edit Event</h1>
             </Link>
-            <button className="bg-[#116B89] px-6 text-white py-2 rounded-full">
-              Push To Live
+            <button
+              className="bg-[#116B89] px-6 text-white py-2 rounded-full"
+              onClick={updateEvent}
+            >
+              Update Event
             </button>
           </div>
           <div className="px-8 pt-10">
@@ -48,13 +118,47 @@ function EditEvent() {
                 </div>
                 <div className="px-5">
                   <TabsContent value="title" className="pb-2 pt-2">
-                    <input type="text" name="title" className="outline-none " />
+                    <input
+                      type="text"
+                      name="title"
+                      className="outline-none w-full mag text-[16px]"
+                      defaultValue={title || newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                    />
                   </TabsContent>
                   <TabsContent value="uploads" className="pb-2 pt-3">
-                    <div className="flex justify-center items-center border-[1px] h-[300px] rounded-[8px] border-dashed border-[#116B89]">
-                      <button className="text-[#116B89] font-semibold">
-                        + Upload Document
-                      </button>
+                    <div>
+                      {selectedFile ? (
+                        <div className="w-[350px] h-[350px] relative">
+                          <img
+                            src={selectedFile}
+                            className="w-[350px] h-[350px] object-contain"
+                          />
+                          <XCircleIcon
+                            className="absolute right-[-30px] top-0 cursor-pointer Z-[800] text-[#9CA3AF]"
+                            onClick={() => setSelectedFile("")}
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex justify-center items-center border-[1px] h-[300px] rounded-[8px] border-dashed border-[#116B89]">
+                          <button
+                            className="text-[#116B89] font-semibold"
+                            onClick={() => {
+                              if (filePickerRef && filePickerRef.current) {
+                                filePickerRef.current.click();
+                              }
+                            }}
+                          >
+                            + Upload Document
+                          </button>
+                          <input
+                            type="file"
+                            className="hidden"
+                            ref={filePickerRef}
+                            onChange={addImageToPost}
+                          />
+                        </div>
+                      )}
                     </div>
                   </TabsContent>
                 </div>

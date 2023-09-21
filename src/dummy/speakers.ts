@@ -1,83 +1,43 @@
 export type Speaker = {
-  id: string;
-  Name: string;
+  id: string | number;
+  first_name: string;
+  last_name: string;
+  phone: string;
   email: string;
-  phonenumber: string;
-  platform: string;
-  note: string;
+  linkedin: string | null;
+  instagram: string | null;
+  note: string | null;
 };
-
 export const speakers: Speaker[] = [
   {
     id: "1",
-    Name: "Adebowale Oladimeji",
+    first_name: "Adebowale",
+    last_name: "Oladimeji",
     email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
+    phone: "+2347031167715",
+    linkedin: "hfhf",
+    instagram: "ff",
     note: "hello world",
   },
   {
     id: "2",
-    Name: "Adebowale Oladimeji",
+    first_name: "Adebowale",
+    last_name: "Oladimeji",
     email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
+    phone: "+2347031167715",
+    linkedin: null,
+    instagram: "ff",
+    note: "okay people wasup",
   },
+
   {
     id: "3",
-    Name: "Adebowale Oladimeji",
+    first_name: "Adebowale",
+    last_name: "Oladimeji",
     email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "4",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "5",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "6",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "7",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "8",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
-  },
-  {
-    id: "9",
-    Name: "Adebowale Oladimeji",
-    email: "AdebowaleOladimeji67@gmail.com",
-    phonenumber: "08167845624",
-    platform: "Investment",
-    note: "hello world",
+    phone: "+2347031167715",
+    linkedin: "hfhf",
+    instagram: null,
+    note: "okay people wasup dokey dokey dokey",
   },
 ];

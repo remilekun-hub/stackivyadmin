@@ -30,10 +30,18 @@ import SingleComplain from "./pages/SingleComplain";
 import Member from "./pages/Member";
 import SingleMember from "./pages/SingleMember";
 import MemberSettings from "./pages/MemberSettings";
+import { Toaster } from "react-hot-toast";
+import EditWebinar from "./pages/EditWebinar";
+import EditBlog from "./pages/EditBlog";
 
 function App() {
   return (
     <>
+      <Toaster
+        containerStyle={{
+          top: 120,
+        }}
+      />
       <Routes>
         <Route element={<Signup />} path="/sign-up" />
         <Route element={<Signin />} path="/" />
@@ -54,12 +62,14 @@ function App() {
           <Route path="/quote" element={<Quote />} />
           <Route path="/webinars" element={<Webinars />} />
           <Route path="/webinars/create" element={<CreateWebinars />} />
+          <Route path="/webinars/edit" element={<EditWebinar />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/create" element={<CreateEvent />} />
-          <Route path="/events/:id/edit" element={<EditEvent />} />
+          <Route path="/events/edit" element={<EditEvent />} />
 
           <Route element={<Blog />} path="/blogs" />
           <Route element={<NewBlog />} path="/blog/create" />
+          <Route element={<EditBlog />} path="/blog/edit" />
           <Route element={<Guides />} path="/guides" />
           <Route element={<CreateGuide />} path="/guides/create" />
           <Route element={<Member />} path="/members/manage" />

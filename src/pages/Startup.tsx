@@ -16,6 +16,7 @@ import axios from "axios";
 import { userSlice } from "@/Hooks/user";
 import { StarUpType } from "../../types";
 import StartUpTable from "@/components/StartUpTable";
+import toast from "react-hot-toast";
 
 function Startup() {
   const user = userSlice((state) => state.user);
@@ -25,6 +26,7 @@ function Startup() {
     const controller = new AbortController(); // <-- create controller
     const getStartUps = async () => {
       try {
+        toast.loading("fetching startups data", { id: "startup" });
         const { data } = await axios.get(
           "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/startup",
           {
@@ -34,7 +36,13 @@ function Startup() {
         );
 
         if (data.code === 200) {
+          toast.success("startups fetched successfully", { id: "startup" });
           setStartupData(data.data);
+        }
+        if (data.code != 200) {
+          toast.error("couldn't fetch startups at this time", {
+            id: "startup",
+          });
         }
       } catch (error) {
         console.log(error);
@@ -42,7 +50,10 @@ function Startup() {
     };
     getStartUps();
 
-    return () => controller.abort();
+    return () => {
+      toast.dismiss("startup");
+      controller.abort();
+    };
   }, []); //eslint-disable-line
 
   const navigate = useNavigate();
@@ -99,8 +110,8 @@ function Startup() {
         </div>
       </Navbar>
 
-      <main className="bg-[#F3F4F6] h-screen p-4 lg:px-6 lg:py-7">
-        <div className="max-w-[1500px] mx-auto  bg-white rounded-[16px] p-7">
+      <main className="bg-[#F3F4F6] min-h-screen p-4 lg:px-6 lg:py-7">
+        <div className="max-w-[1500px] mx-auto min-h-screen  bg-white rounded-[16px] p-7">
           <div>
             {startUpData && (
               <StartUpTable columns={columns} data={startUpData} />
