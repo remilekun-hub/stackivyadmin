@@ -11,6 +11,15 @@ import "react-quill/dist/quill.snow.css";
 import { XIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { userSlice } from "@/Hooks/user";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 Quill.register("modules/imageResize", ImageResize);
 
@@ -31,9 +40,10 @@ function NewBlog() {
     description: "",
     categories: [],
     tags: ["Savings"],
+    visibility: "public",
+    saved: "false",
   });
   const [category, setCategory] = useState<string[]>(["Savings", "Investment"]);
-  const [saved, setSaved] = useState<boolean>(false);
 
   const handleCatSaveBtn = () => {
     setCategory([...category, catName]);
@@ -154,7 +164,7 @@ function NewBlog() {
 
   const handlePublishBlogPost = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (saved) {
+    if (blogData.saved === "true") {
       await SaveToDraft();
     } else {
       await publishPost();
@@ -184,8 +194,8 @@ function NewBlog() {
       form_Data.append("title", blogData.title);
       form_Data.append("summary", blogData.summary);
       form_Data.append("description", blogData.description);
-      form_Data.append("visibility", "public");
-      form_Data.append("saved", JSON.stringify(saved));
+      form_Data.append("visibility", blogData.visibility);
+      form_Data.append("saved", blogData.saved);
       form_Data.append("categories", JSON.stringify(blogData.categories));
       form_Data.append("blog_contents", JSON.stringify({ post: value }));
       form_Data.append("tags", JSON.stringify(blogData.tags));
@@ -195,7 +205,7 @@ function NewBlog() {
         form_Data,
         {
           headers: {
-            Authorization: `Beare ${user?.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         }
       );
@@ -210,6 +220,8 @@ function NewBlog() {
           summary: "",
           categories: [],
           tags: ["Savings"],
+          visibility: "public",
+          saved: "false",
         });
         setFile(null);
         setValue("");
@@ -221,11 +233,74 @@ function NewBlog() {
       console.log(error);
     }
   };
-  const SaveToDraft = async () => {};
+  const SaveToDraft = async () => {
+    if (
+      !blogData.title ||
+      !blogData.summary ||
+      !blogData.description ||
+      !blogData.categories ||
+      !blogData.tags ||
+      !value ||
+      value == "<p><br></p>"
+    ) {
+      toast.error("All fields must be filled", { id: "blogDraft" });
+      return;
+    }
+    try {
+      toast.loading("saving to draft..", { id: "blogDraft" });
+      const form_Data = new FormData();
+      if (file) {
+        form_Data.append("image", file);
+      }
+      form_Data.append("title", blogData.title);
+      form_Data.append("summary", blogData.summary);
+      form_Data.append("description", blogData.description);
+      form_Data.append("visibility", blogData.visibility);
+      form_Data.append("saved", "true");
+      form_Data.append("categories", JSON.stringify(blogData.categories));
+      form_Data.append("blog_contents", JSON.stringify({ post: value }));
+      form_Data.append("tags", JSON.stringify(blogData.tags));
+
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/marketing/blog`,
+        form_Data,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (!data) {
+        toast.error("something went wrong", { id: "blogDraft" });
+      }
+      if (data.code === 200) {
+        toast.success("Blog post saved as draft", { id: "blogDraft" });
+        setBlogData({
+          title: "",
+          description: "",
+          summary: "",
+          categories: [],
+          tags: ["Savings"],
+          visibility: "public",
+          saved: "false",
+        });
+        setFile(null);
+        setValue("");
+      }
+      if (data.code != 200) {
+        toast.error("couldn't save blog post at this time", {
+          id: "blogDraft",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     return () => {
       toast.dismiss("blog");
+      toast.dismiss("blogDraft");
     };
   }, []);
 
@@ -335,7 +410,11 @@ function NewBlog() {
               <button className="rounded-full bg-[#116B89] px-8 py-3 text-white">
                 Publish
               </button>
-              <button onClick={() => setSaved(true)}>Save to draft</button>
+              <button
+                onClick={() => setBlogData({ ...blogData, saved: "true" })}
+              >
+                Save to draft
+              </button>
             </div>
             {/* <div className="flex gap-8 mb-4">
               <div>
@@ -376,7 +455,24 @@ function NewBlog() {
             </div>
             <div className="flex justify-between mt-5 mb-4">
               <p className="text-[#9CA3AF]">Visibility</p>
-              <p>Public</p>
+              <div className="mr-2">
+                <Select
+                  onValueChange={(value) =>
+                    setBlogData({ ...blogData, visibility: value })
+                  }
+                >
+                  <SelectTrigger className="w-full items-center mb-6 outline-none focus-within:outline-none">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent className="mr-[50px]">
+                    <SelectGroup>
+                      <SelectLabel>Visibility</SelectLabel>
+                      <SelectItem value="Public">Public</SelectItem>
+                      <SelectItem value="Private">Private</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* <div className="flex justify-between items-center mt-6">

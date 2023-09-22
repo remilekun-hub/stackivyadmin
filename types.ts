@@ -132,6 +132,41 @@ export type AccountType = {
   recent_logs: recentLogs[];
 };
 
+export type GuideType = {
+  guide_id: string;
+  title: string;
+  author: string;
+  categories: string[];
+  tags: string[];
+  date_created: string;
+};
+
+export type GuideCreateType = {
+  title: string;
+  summary: string;
+  description: string;
+  categories: string[];
+  tags: string[];
+  visibility: string;
+  saved: string;
+};
+
+export type SingleGuideType = {
+  title: string;
+  summary: string;
+  description: string;
+  categories: string[];
+  tags: string[];
+  date_created: string;
+  date_last_updated: string;
+  visibility: string;
+  saved: string;
+  image: {
+    file_url: string;
+    file_name: string;
+  };
+};
+
 export type BlogType = {
   blog_id: string;
   title: string;
@@ -147,6 +182,8 @@ export type BlogCreateType = {
   description: string;
   categories: string[];
   tags: string[];
+  visibility: string;
+  saved: string;
 };
 
 export type SingleBlogType = {
@@ -157,5 +194,11 @@ export type SingleBlogType = {
   tags: string[];
   date_created: string;
   date_last_updated: string;
+  visibility: string;
+  saved: string;
+  image: {
+    file_url: string;
+    file_name: string;
+  };
 };
 export const base_url = "https://stackivy-admin-be.onrender.com";

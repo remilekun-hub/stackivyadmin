@@ -33,6 +33,7 @@ import MemberSettings from "./pages/MemberSettings";
 import { Toaster } from "react-hot-toast";
 import EditWebinar from "./pages/EditWebinar";
 import EditBlog from "./pages/EditBlog";
+import EditGuide from "./pages/EditGuide";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           <Route element={<EditBlog />} path="/blog/edit" />
           <Route element={<Guides />} path="/guides" />
           <Route element={<CreateGuide />} path="/guides/create" />
+          <Route element={<EditGuide />} path="/guide/edit" />
           <Route element={<Member />} path="/members/manage" />
           <Route element={<SingleMember />} path="/member/manage/:id" />
           <Route element={<MemberSettings />} path="/member/settings" />

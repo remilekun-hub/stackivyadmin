@@ -6,7 +6,7 @@ import ReactQuill, { Quill } from "react-quill";
 import ImageResize from "quill-image-resize-module-react";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { SingleBlogType, base_url } from "../../types";
+import { SingleGuideType, base_url } from "../../types";
 import toast from "react-hot-toast";
 import { userSlice } from "@/Hooks/user";
 import { parseISO, format } from "date-fns";
@@ -25,9 +25,9 @@ import folder from "../assets/folder.png";
 
 Quill.register("modules/imageResize", ImageResize);
 
-function EditBlog() {
+function EditGuide() {
   const params = useSearchParams();
-  const blogId = params[0].get("id");
+  const guideId = params[0].get("id");
   const user = userSlice((state) => state.user);
   const [catModal, setCatModal] = useState(false);
   const [value, setValue] = useState("");
@@ -37,15 +37,18 @@ function EditBlog() {
   const [catName, setCatName] = useState("");
   const navigate = useNavigate();
   const handleTagSaveBtn = () => {
-    setBlogData({
-      ...blogData,
-      tags: [...blogData.tags, tagName],
+    setGuideData({
+      ...guideData,
+      tags: [...guideData.tags, tagName],
     });
     setTagName("");
     setTagModal(false);
   };
   const handleCatSaveBtn = () => {
-    setBlogData({ ...blogData, categories: [...blogData.categories, catName] });
+    setGuideData({
+      ...guideData,
+      categories: [...guideData.categories, catName],
+    });
     setCatName("");
     setCatModal(false);
   };
@@ -153,7 +156,7 @@ function EditBlog() {
     }),
     []
   );
-  const [blogData, setBlogData] = useState<SingleBlogType>({
+  const [guideData, setGuideData] = useState<SingleGuideType>({
     title: "",
     description: "",
     summary: "",
@@ -170,11 +173,11 @@ function EditBlog() {
   });
   useEffect(() => {
     const controller = new AbortController();
-    const getBlogPost = async () => {
+    const getGuide = async () => {
       try {
-        toast.loading("getting blog post ..", { id: "editblog" });
+        toast.loading("getting guide ..", { id: "guide" });
         const { data } = await axios.get(
-          `${base_url}/api/v1/stackivy/admin/marketing/blog/${blogId}`,
+          `${base_url}/api/v1/stackivy/admin/marketing/guide/${guideId}`,
           {
             headers: { Authorization: `Bearer ${user?.token}` },
             signal: controller.signal,
@@ -182,48 +185,48 @@ function EditBlog() {
         );
 
         if (!data) {
-          toast.error("something went wrong", { id: "editblog" });
+          toast.error("something went wrong", { id: "guide" });
         }
         if (data.code === 200) {
-          toast.success("Request Successful", { id: "editblog" });
-
-          setBlogData(data.blogs);
-          setValue(data.blogs.blog_contents.post);
+          toast.success("Request Successful", { id: "guide" });
+          console.log({ data });
+          setGuideData(data.guides);
+          setValue(data.guides.guide_contents.post);
         }
         if (data.code !== 200) {
-          toast.error(`coludn't get blog post id: ${blogId}`, {
-            id: "editblog",
+          toast.error(`coludn't get guide id: ${guideId}`, {
+            id: "editguide",
           });
         }
       } catch (error) {
         console.log(error);
       }
     };
-    getBlogPost();
+    getGuide();
     return () => {
-      toast.dismiss("editblog");
+      toast.dismiss("guide");
     };
   }, []); //eslint-disable-line
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      toast.loading("updating blog post", { id: "updateblog" });
+      toast.loading("updating guide", { id: "updateguide" });
       const form_Data = new FormData();
       if (file) {
         form_Data.append("image", file);
       }
-      form_Data.append("title", blogData.title);
-      form_Data.append("summary", blogData.summary);
-      form_Data.append("description", blogData.description);
-      form_Data.append("visibility", blogData.visibility);
+      form_Data.append("title", guideData.title);
+      form_Data.append("summary", guideData.summary);
+      form_Data.append("description", guideData.description);
+      form_Data.append("visibility", guideData.visibility);
       form_Data.append("saved", "false");
-      form_Data.append("categories", JSON.stringify(blogData.categories));
+      form_Data.append("categories", JSON.stringify(guideData.categories));
       form_Data.append("blog_contents", JSON.stringify({ post: value }));
-      form_Data.append("tags", JSON.stringify(blogData.tags));
+      form_Data.append("tags", JSON.stringify(guideData.tags));
 
       const { data } = await axios.patch(
-        `${base_url}/api/v1/stackivy/admin/marketing/blog/${blogId}`,
+        `${base_url}/api/v1/stackivy/admin/marketing/guide/${guideId}`,
         form_Data,
         {
           headers: {
@@ -232,17 +235,17 @@ function EditBlog() {
         }
       );
       if (!data) {
-        toast.error("something went wrong", { id: "updateblog" });
+        toast.error("something went wrong", { id: "updateguide" });
       }
       if (data.code === 200) {
-        toast.success("Blog post updated", { id: "updateblog" });
+        toast.success("Guide updated", { id: "updateguide" });
         setTimeout(() => {
-          navigate("/blogs");
+          navigate("/guides");
         }, 3000);
       }
       if (data.code != 200) {
-        toast.error("couldn't update blog post at this time", {
-          id: "updateblog",
+        toast.error("couldn't update guide post at this time", {
+          id: "updateguide",
         });
       }
     } catch (error) {
@@ -251,7 +254,7 @@ function EditBlog() {
   };
 
   useEffect(() => {
-    return () => toast.dismiss("updateblog");
+    return () => toast.dismiss("updateguide");
   }, []); //eslint-disable-line
 
   return (
@@ -363,9 +366,9 @@ function EditBlog() {
               <p className="text-[#9CA3AF]">Save to Draft</p>
               <div className="mr-2">
                 <Select
-                  defaultValue={blogData.saved}
+                  defaultValue={guideData.saved}
                   onValueChange={(value) =>
-                    setBlogData({ ...blogData, saved: value })
+                    setGuideData({ ...guideData, saved: value })
                   }
                 >
                   <SelectTrigger className="w-full items-center mb-6 outline-none focus-within:outline-none">
@@ -388,9 +391,9 @@ function EditBlog() {
               <textarea
                 placeholder="Enter your blog Summary"
                 className="w-full h-[110px]  rounded-[5px] resize-none px-3 py-2 border-[2px] border-[#F3F4F6] outline-none"
-                value={blogData.summary}
+                value={guideData.summary}
                 onChange={(e) =>
-                  setBlogData({ ...blogData, summary: e.target.value })
+                  setGuideData({ ...guideData, summary: e.target.value })
                 }
               />
             </div>
@@ -398,9 +401,9 @@ function EditBlog() {
               <p className="text-[#9CA3AF]">Visibility</p>
               <div className="mr-2">
                 <Select
-                  defaultValue={blogData.visibility}
+                  defaultValue={guideData.visibility}
                   onValueChange={(value) =>
-                    setBlogData({ ...blogData, visibility: value })
+                    setGuideData({ ...guideData, visibility: value })
                   }
                 >
                   <SelectTrigger className="w-full items-center mb-6 outline-none focus-within:outline-none">
@@ -439,14 +442,14 @@ function EditBlog() {
               <div className="flex flex-col">
                 <span>
                   {" "}
-                  {blogData.date_last_updated
-                    ? format(parseISO(blogData.date_last_updated), "d/MM/yyyy")
+                  {guideData.date_last_updated
+                    ? format(parseISO(guideData.date_last_updated), "d/MM/yyyy")
                     : ""}
                 </span>
                 <span className="text-[#9CA3AF] text-[12px]">
                   {" "}
-                  {blogData.date_last_updated
-                    ? format(parseISO(blogData.date_last_updated), "hh:mm a")
+                  {guideData.date_last_updated
+                    ? format(parseISO(guideData.date_last_updated), "hh:mm a")
                     : ""}
                 </span>
               </div>
@@ -458,9 +461,9 @@ function EditBlog() {
                 type="text"
                 className="w-full outline-none rounded-[5px] border-[2px] p-3 px-4  border-[#F3F4F6]"
                 placeholder="Enter your meta title"
-                value={blogData.title}
+                value={guideData.title}
                 onChange={(e) =>
-                  setBlogData({ ...blogData, title: e.target.value })
+                  setGuideData({ ...guideData, title: e.target.value })
                 }
               />
             </div>
@@ -470,9 +473,9 @@ function EditBlog() {
               <textarea
                 placeholder="Enter your description"
                 className="w-full h-[110px]  rounded-[5px] resize-none px-3 py-2 border-[2px] border-[#F3F4F6] outline-none"
-                value={blogData.description}
+                value={guideData.description}
                 onChange={(e) =>
-                  setBlogData({ ...blogData, description: e.target.value })
+                  setGuideData({ ...guideData, description: e.target.value })
                 }
               />
             </div>
@@ -497,7 +500,7 @@ function EditBlog() {
                     </span>
                   </p>
                   <p className="text-center">
-                    {file ? file.name : blogData.image.file_name}
+                    {file ? file.name : guideData.image.file_name}
                   </p>
                 </div>
                 <input
@@ -524,9 +527,9 @@ function EditBlog() {
                 </div>
               </div>
 
-              {blogData.categories.length > 0 && (
+              {guideData.categories.length > 0 && (
                 <div className="flex flex-wrap gap-3 rounded-[4px] border-[1px] border-[#F3F4F6] px-3 py-2">
-                  {blogData.categories.map((c, i) => (
+                  {guideData.categories.map((c, i) => (
                     <div
                       className="bg-[#116B89] flex gap-3 px-2 py-1 text-white rounded-[2px] cursor-pointer"
                       key={i}
@@ -535,11 +538,14 @@ function EditBlog() {
                       <XIcon
                         className="cursor-pointer"
                         onClick={() => {
-                          const filteredCat = blogData.categories.filter(
+                          const filteredCat = guideData.categories.filter(
                             (cat) => cat !== c
                           );
 
-                          setBlogData({ ...blogData, categories: filteredCat });
+                          setGuideData({
+                            ...guideData,
+                            categories: filteredCat,
+                          });
                         }}
                       />
                     </div>
@@ -558,9 +564,9 @@ function EditBlog() {
                   + Add New Tag
                 </div>
               </div>
-              {blogData.tags.length > 0 && (
+              {guideData.tags.length > 0 && (
                 <div className="flex flex-wrap gap-3 rounded-[4px] border-[1px] border-[#F3F4F6] px-3 py-2">
-                  {blogData.tags.map((t, i) => (
+                  {guideData.tags.map((t, i) => (
                     <div
                       className="bg-[#116B89] flex gap-3 px-2 py-1 text-white rounded-[2px] cursor-pointer"
                       key={i}
@@ -569,11 +575,11 @@ function EditBlog() {
                       <XIcon
                         className="cursor-pointer"
                         onClick={() => {
-                          const filteredTag = blogData.tags.filter(
+                          const filteredTag = guideData.tags.filter(
                             (tag) => tag !== t
                           );
 
-                          setBlogData({ ...blogData, tags: filteredTag });
+                          setGuideData({ ...guideData, tags: filteredTag });
                         }}
                       />
                     </div>
@@ -588,4 +594,4 @@ function EditBlog() {
   );
 }
 
-export default EditBlog;
+export default EditGuide;

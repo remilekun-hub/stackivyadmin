@@ -22,14 +22,13 @@ function RecentWebinarsList({ data }: DataType) {
             .slice(0, 4)
             .map((webinar: recent, i) => (
               <div className="flex justify-between gap-3 items-center" key={i}>
-                <div>
-                  <p className="">
-                    {webinar.title}
-                    {/* <span className="bg-[#F3F4F6] py-[6px] px-2 text-[12px] rounded-[2px] ml-[3px]">
+                <p className="max-w-[80%] truncate">
+                  {webinar.title}
+                  {/* <span className="bg-[#F3F4F6] py-[6px] px-2 text-[12px] rounded-[2px] ml-[3px]">
           Savings
         </span> */}
-                  </p>
-                </div>
+                </p>
+
                 <div className="">
                   <p className="font-bold text-[14px]">
                     {" "}
