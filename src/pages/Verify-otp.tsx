@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "@mantine/core";
 import { userSlice } from "@/Hooks/user";
+import { base_url } from "../../types";
 
 function Verify() {
   const user = userSlice();
@@ -34,7 +35,7 @@ function Verify() {
       setIsLoading(true);
       parsedOTP = otp;
       const { data } = await axios.post(
-        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/login",
+        `${base_url}/api/v1/stackivy/admin/auth/login`,
         { email: userEmail, otp: parsedOTP }
       );
       if (data.code !== 200) {
@@ -50,7 +51,6 @@ function Verify() {
           },
           token: data.token,
         });
-        console.log({ data });
         navigate("/dashboard");
       }
     } catch (error) {

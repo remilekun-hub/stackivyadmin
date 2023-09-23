@@ -44,7 +44,7 @@ function Forgotpassword() {
                   />
                 </label>
 
-                <button className="mb-4  bg-[#116B89] p-4 g:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
+                <button className="mb-4 h-[60px] bg-[#116B89] p-4 g:p-5 w-full text-white rounded-full text-[15px] leading-[22px] font-medium mt-7 hover:bg-[#0E5971] focus:bg-[#0E5971] transition">
                   Reset Password
                 </button>
               </form>

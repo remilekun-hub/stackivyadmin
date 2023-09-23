@@ -1,6 +1,6 @@
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { pending } from "../dummy/pendingSupport";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,28 +10,32 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Eye, CheckCircle2 } from "lucide-react";
-import { PendingType } from "@/dummy/pendingSupport";
 import SupportTable from "@/components/Tables/SupportTable";
 import { useNavigate } from "react-router-dom";
+import { SupportType, base_url } from "../../types";
+import { userSlice } from "@/Hooks/user";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 function Support() {
+  const user = userSlice((state) => state.user);
   const navigate = useNavigate();
-  const columns: ColumnDef<PendingType>[] = [
+  const [support, setSupport] = useState<SupportType[]>([]);
+  const columns: ColumnDef<SupportType>[] = [
     {
-      accessorKey: "user",
+      accessorKey: "name",
       header: "USER",
-      cell: ({ row }) => {
-        const data = row.original;
-        return (
-          <div className="flex items-center gap-4">
-            <img src={data.user.img} alt="user " className="w-6 h-6" />
-            <p>{data.user.name}</p>
-          </div>
-        );
-      },
     },
     { accessorKey: "email", header: "EMAIL" },
-    { accessorKey: "subject", header: "SUBJECT COMPLAIN" },
+    {
+      accessorKey: "subject",
+      header: "SUBJECT COMPLAIN",
+      cell: ({ row }) => {
+        const data = row.original;
+
+        return <div className="w-[250px] truncate">{data.subject}</div>;
+      },
+    },
     {
       id: "actions",
       header: "ACTION",
@@ -55,7 +59,10 @@ function Support() {
                 <span className="text-black">View</span>
               </DropdownMenuItem>
 
-              <DropdownMenuItem className="cursor-pointer flex items-center gap-4">
+              <DropdownMenuItem
+                className="cursor-pointer flex items-center gap-4"
+                onClick={() => resolveSupport(data.id)}
+              >
                 <CheckCircle2 className="w-3 h-3 text-[#228B22]" />
                 <span className="text-black">Resolve</span>
               </DropdownMenuItem>
@@ -65,6 +72,106 @@ function Support() {
       },
     },
   ];
+  const resolvedCol: ColumnDef<SupportType>[] = [
+    {
+      accessorKey: "name",
+      header: "USER",
+    },
+    { accessorKey: "email", header: "EMAIL" },
+    {
+      accessorKey: "subject",
+      header: "SUBJECT COMPLAIN",
+      cell: ({ row }) => {
+        const data = row.original;
+
+        return <div className="w-[250px] truncate">{data.subject}</div>;
+      },
+    },
+    {
+      id: "actions",
+      header: "ACTION",
+      cell: ({ row }) => {
+        const data = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="cursor-pointer flex items-center  gap-3"
+                onClick={() => navigate(`/support/complaints/${data.id}`)}
+              >
+                <Eye className="text-[#9CA3AF] w-4 h-4" />
+                <span className="text-black">View</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+  useEffect(() => {
+    const controller = new AbortController();
+    const getSupport = async () => {
+      try {
+        toast.loading("Getting support data", { id: "support" });
+        const { data } = await axios.get(
+          `${base_url}/api/v1/stackivy/admin/support`,
+          {
+            headers: { Authorization: `Bearer ${user?.token}` },
+            signal: controller.signal,
+          }
+        );
+        if (data.code === 200) {
+          toast.success("Request Successful", { id: "support" });
+          setSupport(data.data);
+        }
+        if (data.code !== 200) {
+          toast.error("coludn't fetch support data", { id: "support" });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getSupport();
+    return () => {
+      toast.dismiss("support");
+      toast.dismiss("resolve");
+      controller.abort();
+    };
+  }, []); //eslint-disable-line
+
+  const pending = support?.filter((s) => s.status === "pending");
+  const resolved = support?.filter((s) => s.status === "resolved");
+
+  const resolveSupport = async (supportId: string | number) => {
+    try {
+      toast.loading("resolving support..", { id: "resolve" });
+      const { data } = await axios.patch(
+        `${base_url}/api/v1/stackivy/admin/support/${supportId}`,
+        { status: "resolved" },
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
+      if (data.code === 200) {
+        toast.success("support resolved", { id: "resolve" });
+        setTimeout(() => {
+          navigate(0);
+        }, 2000);
+      }
+      if (data.code !== 200) {
+        toast.error("coludn't resolve support", { id: "resolve" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section className="">
@@ -97,7 +204,7 @@ function Support() {
 
                 <TabsContent value="resolved">
                   <div className="mx-9 mt-8 ">
-                    <SupportTable columns={columns} data={pending} />
+                    <SupportTable columns={resolvedCol} data={resolved} />
                   </div>
                 </TabsContent>
               </div>

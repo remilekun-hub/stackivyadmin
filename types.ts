@@ -201,4 +201,30 @@ export type SingleBlogType = {
     file_name: string;
   };
 };
+
+export type QuoteType = {
+  quote_id: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  products: string[];
+  category: string;
+  status: string;
+  message: string | null;
+  feedback: string | null;
+};
+
+export type SupportType = {
+  id: string | number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: string;
+  resolved_by_admin: boolean | null;
+  date_created: string;
+  date_last_updated: string;
+};
+
 export const base_url = "https://stackivy-admin-be.onrender.com";

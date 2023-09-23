@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
 import axios from "axios";
 import { Loader } from "@mantine/core";
+import { base_url } from "../../types";
 
 function Signin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,10 +34,9 @@ function Signin() {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/generate_login_otp",
+        `${base_url}/api/v1/stackivy/admin/auth/generate_login_otp`,
         userData
       );
-      console.log({ data });
       if (data.code !== 200) {
         setMessage(data.message);
       }

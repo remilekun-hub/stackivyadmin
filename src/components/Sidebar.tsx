@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
@@ -17,34 +17,43 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-// import axios from "axios";
+import axios from "axios";
 import { userSlice } from "@/Hooks/user";
+import { base_url } from "../../types";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function Sidebar() {
-  // const navigate = useNavigate();
-  // const user = userSlice((state) => state.user);
+  const navigate = useNavigate();
+  const user = userSlice((state) => state.user);
   const removeUser = userSlice((state) => state.removeUser);
   const { pathname } = useLocation();
 
   const handleLogout = async () => {
-    // if (user) {
-    //   const { data } = await axios.post(
-    //     "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/logout",
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${user.token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log({ data });
-    //   if (data.code === 200) {
-    //     removeUser();
-    //     console.log("loggedOut");
-    //     navigate("/");
-    //   }
-    // }
-    removeUser();
+    try {
+      toast.loading("logging out", { id: "logout" });
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/auth/logout`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
+
+      if (data.code === 200) {
+        toast.dismiss("logout");
+        navigate("/");
+        removeUser();
+      }
+    } catch (error) {
+      toast.error("something went wrong", { id: "logout" });
+    }
   };
+  useEffect(() => {
+    return () => {
+      toast.dismiss("logout");
+    };
+  }, []); //eslint-disable-line
 
   return (
     <aside className="hidden xl:block min-h-screen overflow-auto w-[330px] bg-[#1E2C31] fixed left-0 z-[999999]">
