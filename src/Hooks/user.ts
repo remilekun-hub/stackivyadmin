@@ -10,7 +10,7 @@ type UserType = {
     adminInfo: {
       last_login: string;
       permissions: string[];
-      title: string;
+      title?: string;
     };
   };
   token: string;
