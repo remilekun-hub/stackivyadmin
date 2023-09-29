@@ -28,6 +28,7 @@ function Account() {
             signal: controller.signal,
           }
         );
+        console.log({ data });
         if (data.code === 200) {
           toast.success("Request Successful", { id: "account" });
           setAccount(data.data);

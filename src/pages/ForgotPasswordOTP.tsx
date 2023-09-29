@@ -1,35 +1,65 @@
 import { FormEvent, useState } from "react";
 import logo from "../assets/logo.svg";
 import hero from "../assets/heroimg.svg";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import OtpInput from "react18-input-otp";
+import { Loader } from "@mantine/core";
 import axios from "axios";
 import { base_url } from "../../types";
-import { Loader } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
 
-function Forgotpassword() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+function ForgotPasswordOTP() {
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [isLoading, setisLoading] = useState(false);
+  const params = useSearchParams();
+  const navigate = useNavigate();
+  const email = params[0].get("email");
+  const [otp, setOtp] = useState("");
+  let parsedOTP: number | string;
 
-  const handleReset = async (e: FormEvent) => {
+  const handleChange = (enteredOtp: string) => {
+    setOtp(enteredOtp);
+  };
+
+  const handleResend = async (e: FormEvent) => {
     e.preventDefault();
     if (!email) return;
     try {
-      setisLoading(true);
+      setIsLoading(true);
       const { data } = await axios.get(
         `${base_url}/api/v1/stackivy/admin/auth/forgot_password/${email}`
       );
+      setMessage(data.message);
+    } catch (
+      error: any //eslint-disable-line
+    ) {
+      setMessage(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!email) return;
+      setIsLoading(true);
+      parsedOTP = otp;
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/auth/forgot_password/${email}`,
+        { otp: parsedOTP }
+      );
       if (data.code === 200) {
-        navigate(`/forgot-password/verify-otp?email=${email}`);
+        navigate(`/reset-password?email=${email}&access=${data.access}`);
       }
     } catch (
       error: any //eslint-disable-line
     ) {
       setMessage(error.response.data.message);
     } finally {
-      setisLoading(false);
+      setIsLoading(false);
       setTimeout(() => {
         setMessage("");
       }, 3000);
@@ -53,27 +83,39 @@ function Forgotpassword() {
             <div>
               <div className="mt-6">
                 <h1 className="text-[#116B89] font-medium text-[20px] leading-6 mb-3">
-                  Forgot password?
+                  OTP Verification
                 </h1>
                 <p className="text-[#999999] leading-6">
-                  No worries, we’ll send you reset instructions
+                  We sent you an OTP code to this email{" "}
+                  {email ? (
+                    <span className="text-black font-semibold">{email}</span>
+                  ) : (
+                    <span className="text-black font-semibold">
+                      AyodeleVincentOlagunju888@gmail.com{" "}
+                    </span>
+                  )}
                 </p>
               </div>
-              <form className="mt-7" onSubmit={handleReset}>
-                <label htmlFor="" className="flex flex-col gap-1 mb-4">
-                  <p>Email</p>
 
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
-                    placeholder="Enter Email"
+              <form className="mt-7" onSubmit={handleSubmit}>
+                <div className="mb-5">
+                  <OtpInput
+                    value={otp}
+                    isInputNum={true}
+                    onChange={handleChange}
+                    numInputs={7}
+                    inputStyle={"otp"}
                   />
-                </label>
+                </div>
+                <p>
+                  Didn’t get an OTP code?{" "}
+                  <span
+                    className="text-[#116B89] font-medium cursor-pointer"
+                    onClick={handleResend}
+                  >
+                    RESEND
+                  </span>
+                </p>
 
                 <p className="text-center text-red-500 mt-3 text-[14px]">
                   {message}
@@ -87,7 +129,7 @@ function Forgotpassword() {
                   {isLoading ? (
                     <Loader size={"lg"} variant="dots" color="#116B89" />
                   ) : (
-                    "Reset Password"
+                    "Verify OTP"
                   )}
                 </button>
               </form>
@@ -106,4 +148,4 @@ function Forgotpassword() {
   );
 }
 
-export default Forgotpassword;
+export default ForgotPasswordOTP;

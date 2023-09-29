@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import eye from "../assets/eye.png";
 import axios from "axios";
 import { Loader } from "@mantine/core";
+import { base_url } from "../../types";
 
 function Signup() {
   const navigate = useNavigate();
@@ -13,7 +14,9 @@ function Signup() {
   const [message, setMessage] = useState("");
   const [toggleType, setToggleType] = useState<"password" | "text">("password");
   const [userData, setUserData] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
     email: "",
     password: "",
   });
@@ -33,14 +36,14 @@ function Signup() {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/contact_verification",
+        `${base_url}/api/v1/stackivy/admin/auth/contact_verification`,
         userData
       );
       if (data.code !== 200) {
         setMessage(data.message);
       }
       if (data.code === 200) {
-        sessionStorage.setItem("email", userData.email);
+        sessionStorage.setItem("authSignUp", JSON.stringify(userData));
         navigate("/signup/verify-otp");
       }
     } catch (error) {
@@ -80,12 +83,36 @@ function Signup() {
               </div>
               <form className="mt-7" onSubmit={handleSubmit}>
                 <label htmlFor="" className="flex flex-col gap-1 mb-4">
-                  <p>Name</p>
+                  <p>First Name</p>
                   <input
                     type="text"
-                    name="name"
+                    name="first_name"
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
-                    placeholder="Enter Name"
+                    placeholder="Enter First Name"
+                    required
+                    onChange={handleFormChange}
+                  />
+                </label>
+
+                <label htmlFor="" className="flex flex-col gap-1 mb-4">
+                  <p>Last Name</p>
+                  <input
+                    type="text"
+                    name="last_name"
+                    required
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    placeholder="Enter Last Name"
+                    onChange={handleFormChange}
+                  />
+                </label>
+                <label htmlFor="" className="flex flex-col gap-1 mb-4">
+                  <p>Phone Number</p>
+                  <input
+                    type="number"
+                    name="phone"
+                    required
+                    className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
+                    placeholder="Enter Phone Number"
                     onChange={handleFormChange}
                   />
                 </label>
@@ -95,6 +122,7 @@ function Signup() {
                   <input
                     type="email"
                     name="email"
+                    required
                     className="w-full outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Email"
                     onChange={handleFormChange}
@@ -107,6 +135,7 @@ function Signup() {
                     type={toggleType}
                     name="password"
                     id="pass"
+                    required
                     className="w-full  outline-0 px-4 py-3 lg:p-5 border-[#F0F0F0] border-[2px] rounded-[4px]"
                     placeholder="Enter Password"
                     onChange={handleFormChange}

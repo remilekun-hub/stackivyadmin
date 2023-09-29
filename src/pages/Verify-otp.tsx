@@ -14,15 +14,15 @@ function Verify() {
   const user = userSlice();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [userData, setUserData] = useState({ email: "", password: "" });
   const [otp, setOtp] = useState("");
   let parsedOTP: number | string;
   useEffect(() => {
-    const email = sessionStorage.getItem("email");
-    if (email) {
-      setUserEmail(email);
+    const user = sessionStorage.getItem("authSignin");
+    if (user) {
+      setUserData(JSON.parse(user));
     }
-  }, [userEmail]);
+  }, []);
 
   const navigate = useNavigate();
   const handleChange = (enteredOtp: string) => {
@@ -36,18 +36,25 @@ function Verify() {
       parsedOTP = otp;
       const { data } = await axios.post(
         `${base_url}/api/v1/stackivy/admin/auth/login`,
-        { email: userEmail, otp: parsedOTP }
+        { email: userData.email, otp: parsedOTP }
       );
       if (data.code !== 200) {
         setMessage(data.message);
       }
+
       if (data.code === 200) {
-        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("authSignin");
         user.setUser({
           admin: {
-            name: data.name,
-            email: data.email,
-            adminInfo: { last_login: data.admin.adminInfo.last_login },
+            firstName: data.admin.first_name,
+            LastName: data.admin.last_name,
+            phone: data.admin.phone,
+            email: data.admin.email,
+            adminInfo: {
+              last_login: data.admin.adminInfo.last_login,
+              permissions: data.admin.adminInfo.permissions,
+              title: data.admin.adminInfo.title,
+            },
           },
           token: data.token,
         });
@@ -57,6 +64,29 @@ function Verify() {
       console.log(error);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      if (!userData.email || !userData.password) return;
+      setIsLoading(true);
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/auth/generate_login_otp`,
+        userData
+      );
+
+      if (data.code !== 200) {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+
       setTimeout(() => {
         setMessage("");
       }, 3000);
@@ -83,9 +113,9 @@ function Verify() {
                 </h1>
                 <p className="text-[#999999] leading-6">
                   We sent you an OTP code to this email{" "}
-                  {userEmail ? (
+                  {userData.email ? (
                     <span className="text-black font-semibold">
-                      {userEmail}
+                      {userData.email}
                     </span>
                   ) : (
                     <span className="text-black font-semibold">
@@ -107,7 +137,12 @@ function Verify() {
                 </div>
                 <p>
                   Didn’t get an OTP code?{" "}
-                  <span className="text-[#116B89] font-medium">RESEND</span>
+                  <span
+                    className="text-[#116B89] font-medium"
+                    onClick={handleResend}
+                  >
+                    RESEND
+                  </span>
                 </p>
 
                 <p className="text-center text-red-500 mt-3 text-[14px]">

@@ -34,6 +34,8 @@ import { Toaster } from "react-hot-toast";
 import EditWebinar from "./pages/EditWebinar";
 import EditBlog from "./pages/EditBlog";
 import EditGuide from "./pages/EditGuide";
+import ForgotPasswordOTP from "./pages/ForgotPasswordOTP";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -49,6 +51,11 @@ function App() {
         <Route element={<Verify />} path="/signin/verify-otp" />
         <Route element={<SignupOtp />} path="/signup/verify-otp" />
         <Route element={<Forgotpassword />} path="/forgot-password" />
+        <Route
+          element={<ForgotPasswordOTP />}
+          path="/forgot-password/verify-otp"
+        />
+        <Route element={<ResetPassword />} path="/reset-password" />
 
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Home />} />

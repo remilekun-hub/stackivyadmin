@@ -227,4 +227,20 @@ export type SupportType = {
   date_last_updated: string;
 };
 
+export type MemberType = {
+  admin_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  title: string;
+  image: string;
+  permissions: string[];
+  adminInfo: {
+    date_created: string;
+    suspended: boolean;
+    last_login: string;
+  };
+};
+
 export const base_url = "https://stackivy-admin-be.onrender.com";

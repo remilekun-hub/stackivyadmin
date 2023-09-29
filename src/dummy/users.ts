@@ -5,7 +5,7 @@ export type UserType = {
     img: string;
     name: string;
   };
-  role: string;
+  title: string;
   email: string;
   lastLogin: {
     date: string;
@@ -20,7 +20,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",
@@ -33,7 +33,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",
@@ -46,7 +46,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",
@@ -59,7 +59,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",
@@ -72,7 +72,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",
@@ -85,7 +85,7 @@ export const users: UserType[] = [
       img: userimg,
       name: "Adebowale Franca",
     },
-    role: "Admin",
+    title: "Admin",
     email: "Adebowalefranca653@gmail.com",
     lastLogin: {
       date: "10/08/2023",

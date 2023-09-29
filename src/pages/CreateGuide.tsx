@@ -206,6 +206,7 @@ function CreateGuide() {
           },
         }
       );
+      console.log({ data });
 
       if (!data) {
         toast.error("something went wrong", { id: "guide" });

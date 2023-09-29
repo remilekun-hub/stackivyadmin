@@ -8,19 +8,26 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "@mantine/core";
 import { userSlice } from "@/Hooks/user";
+import { base_url } from "../../types";
 
 function SignupOtp() {
   const [isLoading, setIsLoading] = useState(false);
   const user = userSlice();
   const [message, setMessage] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  let parsedOTP: number | string;
+  const [userData, setUserData] = useState({
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
+  let parsedOTP: string = "";
   useEffect(() => {
-    const email = sessionStorage.getItem("email");
-    if (email) {
-      setUserEmail(email);
+    const auth = sessionStorage.getItem("authSignUp");
+    if (auth) {
+      setUserData(JSON.parse(auth));
     }
-  }, [userEmail]);
+  }, []);
 
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
@@ -34,20 +41,27 @@ function SignupOtp() {
     try {
       setIsLoading(true);
       parsedOTP = otp;
+
       const { data } = await axios.post(
-        "https://stackivy-admin-be.onrender.com/api/v1/stackivy/admin/auth/register",
-        { email: userEmail, otp: parsedOTP }
+        `${base_url}/api/v1/stackivy/admin/auth/register`,
+        { email: userData.email, otp: parsedOTP }
       );
       console.log({ data });
       if (data.code !== 200) {
         setMessage(data.message);
       }
       if (data.code === 200) {
+        sessionStorage.removeItem("authSignUp");
         user.setUser({
           admin: {
-            name: data.name,
-            email: data.email,
-            adminInfo: { last_login: data.admin.adminInfo.last_login },
+            firstName: data.account_data.first_name,
+            LastName: data.account_data.last_name,
+            phone: data.account_data.phone,
+            email: data.account_data.email,
+            adminInfo: {
+              last_login: data.admin.adminInfo.last_login,
+              permissions: [...data.account_data.adminInfo.permissions],
+            },
           },
           token: data.token,
         });
@@ -58,6 +72,27 @@ function SignupOtp() {
     } finally {
       setIsLoading(false);
 
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+
+  const ResendOtp = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/auth/contact_verification`,
+        userData
+      );
+      if (data.code !== 200) {
+        setMessage("OTP sent");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
       setTimeout(() => {
         setMessage("");
       }, 3000);
@@ -84,9 +119,9 @@ function SignupOtp() {
                 </h1>
                 <p className="text-[#999999] leading-6">
                   We sent you an OTP code to this email{" "}
-                  {userEmail ? (
+                  {userData.email ? (
                     <span className="text-black font-semibold">
-                      {userEmail}
+                      {userData.email}
                     </span>
                   ) : (
                     <span className="text-black font-semibold">
@@ -108,16 +143,21 @@ function SignupOtp() {
                 </div>
                 <p>
                   Didn’t get an OTP code?{" "}
-                  <span className="text-[#116B89] font-medium">RESEND</span>
+                  <span
+                    className="text-[#116B89] font-medium cursor-pointer"
+                    onClick={ResendOtp}
+                  >
+                    RESEND
+                  </span>
                 </p>
 
-                <p className="text-center text-red-500 mt-3 text-[14px]">
-                  {message}
-                </p>
+                <p className="text-center mt-3 text-[14px]">{message}</p>
                 <button
-                  disabled={isLoading}
+                  disabled={isLoading || userData.email === ""}
                   className={`${
-                    isLoading ? "bg-white" : "bg-[#116B89] hover:bg-[#0E5971] "
+                    isLoading
+                      ? "bg-white"
+                      : "bg-[#116B89] hover:bg-[#0E5971] cursor-pointer "
                   } mb-4  h-[60px] items-center p-4 lg:p-5 w-full flex justify-center text-white rounded-full text-[15px] leading-[22px] font-medium mt-7  transition`}
                 >
                   {isLoading ? (

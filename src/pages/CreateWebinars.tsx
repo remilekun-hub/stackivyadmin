@@ -87,6 +87,7 @@ function CreateWebinars() {
         form_data,
         { headers: { Authorization: `Bearer ${user?.token}` } }
       );
+      console.log({ data });
       if (data.code === 200) {
         toast.success("Success..", { id: "createWebinar" });
         setWebinarData({

@@ -16,22 +16,19 @@ import trash from "../assets/trash.png";
 import eye from "../assets/eye.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, ChangeEvent } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import axios from "axios";
+// import toast from "react-hot-toast";
+// import { base_url } from "../../types";
+// import { userSlice } from "../Hooks/user";
 
 function Member() {
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
   const [addNewMember, setAddNewMember] = useState(false);
   const [deleteMember, setDeleteMember] = useState(false);
+  // const [members, setMembers] = useState([]);
   const [image, setImage] = useState<File | null>(null);
+  // const user = userSlice((state) => state.user);
   const columns: ColumnDef<UserType>[] = [
     {
       accessorKey: "user",
@@ -46,7 +43,7 @@ function Member() {
         );
       },
     },
-    { accessorKey: "role", header: "ROLE" },
+    { accessorKey: "title", header: "TITLE" },
     { accessorKey: "email", header: "EMAIL" },
     {
       accessorKey: "lastLogin",
@@ -106,6 +103,36 @@ function Member() {
     },
   ];
 
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   const getMembers = async () => {
+  //     try {
+  //       toast.loading("Getting members", { id: "member" });
+  //       const { data } = await axios.get(
+  //         `${base_url}/api/v1/stackivy/admin/member`,
+  //         {
+  //           headers: { Authorization: `Bearer ${user?.token}` },
+  //           signal: controller.signal,
+  //         }
+  //       );
+  //       if (data.code === 200) {
+  //         toast.success("Request Successful", { id: "member" });
+  //         setMembers(data.members);
+  //       }
+  //       if (data.code !== 200) {
+  //         toast.error("coludn't fetch members", { id: "member" });
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getMembers();
+  //   return () => {
+  //     toast.dismiss("member");
+  //     controller.abort();
+  //   };
+  // }, []); //eslint-disable-line
+
   return (
     <section>
       {addNewMember && (
@@ -120,7 +147,7 @@ function Member() {
             </div>
             <div className="p-8">
               <form>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input
                     type="text"
                     name="firstname"
@@ -137,11 +164,12 @@ function Member() {
                   />
                   <input
                     type="text"
-                    name="Username"
-                    className="outline-none rounded-[4px] border-[1px] border-[#F0F0F0] px-5 py-4"
-                    placeholder="User Name"
+                    name="phonenumber"
+                    className="outline-none rounded-[4px] border-[1px] border-[#F0F0F0] px-5 py-4 h-[68px]"
+                    placeholder="Phone Number"
                     required
                   />
+
                   <input
                     type="email"
                     name="email"
@@ -149,32 +177,8 @@ function Member() {
                     placeholder="Email"
                     required
                   />
-                  <input
-                    type="text"
-                    name="phonenumber"
-                    className="outline-none rounded-[4px] border-[1px] border-[#F0F0F0] px-5 py-4 h-[68px]"
-                    placeholder="Phone Number"
-                    required
-                  />
-
-                  <Select>
-                    <SelectTrigger className="w-full py-8 px-5 mb-6 outline-none focus-within:outline-none">
-                      <SelectValue placeholder="User Role" />
-                    </SelectTrigger>
-                    <SelectContent className="z-[99999999999999999999999999999999999999999] overflow-hidden">
-                      <SelectGroup>
-                        <SelectLabel>User Role</SelectLabel>
-                        <SelectItem value="Admin">Admin</SelectItem>
-                        <SelectItem value="Support">Support</SelectItem>
-                        <SelectItem value="Marketing">Marketing</SelectItem>
-                        <SelectItem value="Account Officer">
-                          Account Officer
-                        </SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   <input
                     type="password"
                     name="Password"
@@ -182,8 +186,17 @@ function Member() {
                     placeholder="Password"
                     required
                   />
+                  <input
+                    type="text"
+                    name="Title"
+                    className="outline-none rounded-[4px] border-[1px] border-[#F0F0F0] px-5 py-4"
+                    placeholder="Title"
+                    required
+                  />
+                </div>
 
-                  <button
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                  <div
                     className="px-5 py-4 border-[1px] border-dashed border-[#116B89] rounded-[4px]"
                     onClick={() => {
                       if (fileRef && fileRef.current) {
@@ -207,11 +220,12 @@ function Member() {
                         }
                       }}
                     />
-                    <p>{image?.name}</p>
-                  </button>
+                    <p className="text-center">{image?.name}</p>
+                  </div>
+                  <div>{""}</div>
                 </div>
 
-                <div className="my-8 flex gap-6">
+                <div className="my-8 flex flex-wrap gap-6">
                   <div className="flex flex-wrap gap-1">
                     <input
                       type="checkbox"

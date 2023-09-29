@@ -3,10 +3,14 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 type UserType = {
   admin: {
-    name: string;
+    firstName: string;
+    LastName: string;
     email: string;
+    phone: string;
     adminInfo: {
       last_login: string;
+      permissions: string[];
+      title: string;
     };
   };
   token: string;
