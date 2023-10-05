@@ -36,6 +36,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.15.0",
     "react18-input-otp": "^1.1.4",
+    "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar": "^3.0.5",
     "tailwindcss-animate": "^1.0.6",

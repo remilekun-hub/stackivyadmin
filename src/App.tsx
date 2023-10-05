@@ -29,13 +29,13 @@ import Support from "./pages/Support";
 import SingleComplain from "./pages/SingleComplain";
 import Member from "./pages/Member";
 import SingleMember from "./pages/SingleMember";
-import MemberSettings from "./pages/MemberSettings";
 import { Toaster } from "react-hot-toast";
 import EditWebinar from "./pages/EditWebinar";
 import EditBlog from "./pages/EditBlog";
 import EditGuide from "./pages/EditGuide";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP";
 import ResetPassword from "./pages/ResetPassword";
+import EditJobPost from "./pages/EditJobPost";
 
 function App() {
   return (
@@ -64,6 +64,7 @@ function App() {
 
           <Route path="/career/manage-job-posts" element={<JobPosts />} />
           <Route path="/career/job-posts/create" element={<CreateJobPost />} />
+          <Route path="/career/job-posts/:id/edit" element={<EditJobPost />} />
           <Route path="/career/settings" element={<CareerSettimgs />} />
           <Route path="/startup" element={<Startup />} />
           <Route path="/startup/:id" element={<SingleStartUp />} />
@@ -83,7 +84,6 @@ function App() {
           <Route element={<EditGuide />} path="/guide/edit" />
           <Route element={<Member />} path="/members/manage" />
           <Route element={<SingleMember />} path="/member/manage/:id" />
-          <Route element={<MemberSettings />} path="/member/settings" />
           <Route element={<Account />} path="/account" />
           <Route element={<Support />} path="/support" />
           <Route element={<SingleComplain />} path="/support/complaints/:id" />

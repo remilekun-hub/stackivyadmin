@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import backbtn from "../assets/arrow-left.png";
+import { useParams } from "react-router-dom";
+import { userSlice } from "../Hooks/user";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../components/SingleJobCustomTab";
-import { Link } from "react-router-dom";
+  DocumentType,
+  JobDataType,
+  base_url,
+  jobType,
+  questionType,
+  settingType,
+} from "../../types";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,25 +22,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import JobPostModal from "../components/JobPostModal";
-import SaveDrafts from "@/components/SaveDrafts";
 import {
-  JobDataType,
-  jobType,
-  base_url,
-  settingType,
-  questionType,
-  DocumentType,
-} from "../../types";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/SingleJobCustomTab";
 import { XIcon } from "lucide-react";
-import axios from "axios";
-import { userSlice } from "../Hooks/user";
 import toast from "react-hot-toast";
 
-function CreateJobPost() {
+function EditJobPost() {
+  const { id } = useParams();
+  const [questionData, setQuestionData] = useState<questionType[]>([]);
+  const [jobTypeData, setJobTypeData] = useState<jobType[]>([]);
+  const [workTypeData, setWorkTypeData] = useState<settingType[]>([]);
+  const [docTypeData, setDocTypeData] = useState<DocumentType[]>([]);
   const user = userSlice((state) => state.user);
-  const [jobPostModal, setJobPostModal] = useState(false);
-  const [isSaveDrafts, setIsSaveDrafts] = useState(false);
+
   const [responsibility, setResponsibility] = useState("");
   const [requirement, setRequirement] = useState("");
   const [jobData, setJobData] = useState<JobDataType>({
@@ -50,17 +53,35 @@ function CreateJobPost() {
     application_questions: [],
     uploads: [],
   });
-  const [questionData, setQuestionData] = useState<questionType[]>([]);
-  const [jobTypeData, setJobTypeData] = useState<jobType[]>([]);
-  const [workTypeData, setWorkTypeData] = useState<settingType[]>([]);
-  const [docTypeData, setDocTypeData] = useState<DocumentType[]>([]);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const job = sessionStorage.getItem("jobData");
-    if (job) {
-      setJobData(JSON.parse(job));
-    }
+    const controller = new AbortController();
+    const getSingleJob = async () => {
+      try {
+        toast.loading("Loading", { id: "singlejob" });
+        const { data } = await axios.get(
+          `${base_url}/api/v1/stackivy/admin/career/job_posts/${id}`,
+          {
+            headers: { Authorization: `Bearer ${user?.token}` },
+            signal: controller.signal,
+          }
+        );
+        if (data.code === 200) {
+          toast.success("Request Successful", { id: "singlejob" });
+          setJobData(data.job_post);
+        }
+        if (data.code !== 200) {
+          toast.error("coludn't fetch job", { id: "singlejob" });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getSingleJob();
+    return () => {
+      toast.dismiss("singlejob");
+      controller.abort();
+    };
   }, []); //eslint-disable-line
 
   useEffect(() => {
@@ -115,6 +136,32 @@ function CreateJobPost() {
 
   useEffect(() => {
     const controller = new AbortController();
+    const getDocType = async () => {
+      try {
+        const { data } = await axios.get(
+          `${base_url}/api/v1/stackivy/admin/career/configs/job_document_upload`,
+          {
+            headers: { Authorization: `Bearer ${user?.token}` },
+            signal: controller.signal,
+          }
+        );
+
+        if (data.code === 200) {
+          setDocTypeData(data.upload_type);
+          console.log({ docTypeData });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDocType();
+    return () => {
+      controller.abort();
+    };
+  }, []); //eslint-disable-line
+
+  useEffect(() => {
+    const controller = new AbortController();
     const getQuestions = async () => {
       try {
         const { data } = await axios.get(
@@ -138,97 +185,10 @@ function CreateJobPost() {
     };
   }, []); //eslint-disable-line
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const getDocType = async () => {
-      try {
-        const { data } = await axios.get(
-          `${base_url}/api/v1/stackivy/admin/career/configs/job_document_upload`,
-          {
-            headers: { Authorization: `Bearer ${user?.token}` },
-            signal: controller.signal,
-          }
-        );
-
-        if (data.code === 200) {
-          setDocTypeData(data.upload_type);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getDocType();
-    return () => {
-      controller.abort();
-    };
-  }, []); //eslint-disable-line
-
-  useEffect(() => {
-    sessionStorage.setItem("jobData", JSON.stringify(jobData));
-    return () => {
-      sessionStorage.removeItem("jobData");
-    };
-  }, [jobData]);
-
-  const createJobPost = async () => {
-    if (
-      !jobData.title ||
-      !jobData.description ||
-      !jobData.job_and_work_place_type.job_type ||
-      !jobData.job_and_work_place_type.work_place_type ||
-      jobData.application_questions.length == 0 ||
-      jobData.responsibilities.length == 0 ||
-      jobData.requirements_and_skills.length == 0 ||
-      jobData.uploads.length == 0
-    ) {
-      toast.error("All fields must be filled");
-      return;
-    }
-    try {
-      toast.loading("creating jobpost...", { id: "jobpost" });
-      const { data } = await axios.post(
-        `${base_url}/api/v1/stackivy/admin/career/job_posts`,
-        { ...jobData, saved: false },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-      if (data.code === 200) {
-        setJobData({
-          title: "",
-          description: "",
-          responsibilities: [],
-          requirements_and_skills: [],
-          job_and_work_place_type: {
-            job_type: "",
-            work_place_type: "",
-          },
-          application_questions: [],
-          uploads: [],
-        });
-        setJobPostModal(true);
-      }
-      console.log(data);
-    } catch (
-      error: any //eslint-disable-line
-    ) {
-      setMessage(error.response.data.message);
-      console.log(error);
-    } finally {
-      toast.dismiss("jobpost");
-
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    }
-  };
+  console.log({ jobData });
 
   return (
     <section className="">
-      {jobPostModal && <JobPostModal setJobPostModal={setJobPostModal} />}
-
       <Navbar>
         <div className="flex items-center">
           <h1 className="font-bold text-[24px]">Career</h1>
@@ -237,8 +197,6 @@ function CreateJobPost() {
 
       <main className="bg-[#F3F4F6] h-full p-4 lg:px-6 lg:py-7">
         <div className="max-w-[1500px] relative  mx-auto bg-white rounded-[16px] min-h-screen pb-10">
-          {isSaveDrafts && <SaveDrafts setIsSaveDrafts={setIsSaveDrafts} />}
-
           <div className="flex justify-between border-b-[2px] border-b-[#F3F4F6] items-center h-[100px] px-8">
             <Link
               to="/career/manage-job-posts"
@@ -252,16 +210,17 @@ function CreateJobPost() {
               <button
                 className="px-6 py-3 text-white bg-[#116B89] rounded-full outline-none"
                 onClick={() => {
-                  createJobPost();
+                  // createJobPost();
                 }}
               >
-                Post Job
+                Update Job Post
               </button>
               {/* <button className="text-[#116B89] font-medium">
                 Save As Draft
               </button> */}
             </div>
           </div>
+
           <div className="px-8 pt-10">
             <div className="rounded-[8px] border-[1px] border-[#E5E7EB]">
               <Tabs defaultValue="jobtitle" className="py-5 overflow-auto ">
@@ -494,6 +453,11 @@ function CreateJobPost() {
                             className="mt-1 accent-[#116B89] cursor-pointer"
                             onChange={(e) => {
                               if (e.target.checked === true) {
+                                const isAvailable =
+                                  jobData.application_questions.find(
+                                    (n) => n.question === q.question
+                                  );
+                                if (isAvailable) return;
                                 setJobData({
                                   ...jobData,
                                   application_questions: [
@@ -547,6 +511,10 @@ function CreateJobPost() {
                             className="mt-1 accent-[#116B89] cursor-pointer"
                             onChange={(e) => {
                               if (e.target.checked === true) {
+                                const isAvailable = jobData.uploads.find(
+                                  (j) => j.file === d.file
+                                );
+                                if (isAvailable) return;
                                 setJobData({
                                   ...jobData,
                                   uploads: [
@@ -589,7 +557,6 @@ function CreateJobPost() {
                       ))}
                     </div>
                   </TabsContent>
-                  <p className="text-center mt-2">{message}</p>
                 </div>
               </Tabs>
             </div>
@@ -600,4 +567,4 @@ function CreateJobPost() {
   );
 }
 
-export default CreateJobPost;
+export default EditJobPost;

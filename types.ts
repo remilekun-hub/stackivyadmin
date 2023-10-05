@@ -243,4 +243,84 @@ export type MemberType = {
   };
 };
 
+export type MemberDataType = {
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  password: string;
+  title: string;
+  permissions: string[];
+};
+
+type appQuestion = {
+  question: string;
+  compulsory: boolean;
+};
+type UploadType = {
+  file: string;
+  compulsory: boolean;
+};
+
+export type JobDataType = {
+  title: string;
+  description: string;
+  responsibilities: string[];
+  requirements_and_skills: string[];
+  job_and_work_place_type: {
+    job_type: string;
+    work_place_type: string;
+  };
+  application_questions: appQuestion[];
+  uploads: UploadType[];
+};
+
+export type SingleJobType = {
+  job_post_id: "1a1d7cb5-6ec4-4776-bd49-f99a47df1917";
+  title: string;
+  description: string;
+  responsibilities: string[];
+  requirements_and_skills: string[];
+  job_and_work_place_type: {
+    job_type: string;
+    work_place_type: string;
+  };
+  application_questions: appQuestion[];
+  uploads: UploadType[];
+};
+
+export type settingType = {
+  id: string;
+  work_place_type: string;
+  deleted: boolean;
+  date_created: string;
+  date_last_updated: string;
+};
+
+export type jobType = {
+  id: string;
+  job_type: string;
+  deleted: boolean;
+  date_created: string;
+  date_last_updated: string;
+};
+
+export type DocumentType = {
+  id: string;
+  file: string;
+  compulsory: boolean;
+  deleted: boolean;
+  date_created: string;
+  date_last_updated: string;
+};
+
+export type questionType = {
+  id: string;
+  question: string;
+  compulsory: boolean;
+  deleted: boolean;
+  date_created: string;
+  date_last_updated: string;
+};
+
 export const base_url = "https://stackivy-admin-be.onrender.com";
