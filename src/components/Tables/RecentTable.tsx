@@ -8,7 +8,6 @@ import {
   getFilteredRowModel,
   ColumnFiltersState,
 } from "@tanstack/react-table";
-// import glassIcon2 from "../assets/search-two.png";
 import {
   Table,
   TableBody,

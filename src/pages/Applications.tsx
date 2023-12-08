@@ -41,7 +41,7 @@ function Applications() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer flex items-center  gap-4"
-                onClick={() => navigate(`/career/applicantion/${applicant.id}`)}
+                onClick={() => navigate(`/career/application/${applicant.id}`)}
               >
                 <span>
                   <img src={eye} className="w-4 h-4" />

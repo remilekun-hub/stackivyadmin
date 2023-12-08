@@ -36,6 +36,7 @@ import EditGuide from "./pages/EditGuide";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP";
 import ResetPassword from "./pages/ResetPassword";
 import EditJobPost from "./pages/EditJobPost";
+import Enquiry from "./pages/Enquiry";
 
 function App() {
   return (
@@ -86,6 +87,7 @@ function App() {
           <Route element={<SingleMember />} path="/member/manage/:id" />
           <Route element={<Account />} path="/account" />
           <Route element={<Support />} path="/support" />
+          <Route element={<Enquiry />} path="/enquiry" />
           <Route element={<SingleComplain />} path="/support/complaints/:id" />
         </Route>
         <Route

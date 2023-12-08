@@ -21,6 +21,7 @@ function SingleJobTab({
   application_questions,
   job_and_work_place_type,
   uploads,
+  isDeleted,
 }: SingleJobType) {
   const navigate = useNavigate();
   const user = userSlice((state) => state.user);
@@ -83,7 +84,9 @@ function SingleJobTab({
           </TabsList>
           <div className="flex gap-5 pr-5">
             <div
-              className="flex gap-2 items-center cursor-pointer"
+              className={`flex gap-2 items-center cursor-pointer ${
+                isDeleted && "hidden"
+              } `}
               onClick={deleteJobPost}
             >
               <img src={trash} alt="trash icon" className="w-4 h-4 mb-1" />

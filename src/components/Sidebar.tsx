@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SidebarLogo from "../assets/sidebarlogo.svg";
 import glassIcon from "../assets/search-normal.svg";
 import dashboardicon from "../assets/Dashboardicon.svg";
@@ -24,7 +24,6 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 
 function Sidebar() {
-  const navigate = useNavigate();
   const user = userSlice((state) => state.user);
   const removeUser = userSlice((state) => state.removeUser);
   const { pathname } = useLocation();
@@ -42,7 +41,6 @@ function Sidebar() {
 
       if (data.code === 200) {
         toast.dismiss("logout");
-        navigate("/");
         removeUser();
       }
     } catch (error) {
@@ -140,6 +138,13 @@ function Sidebar() {
           isActive={pathname === "/quote"}
         />
 
+        <Sidebaritem
+          link="/enquiry"
+          icon={marketing}
+          title="Enquiry"
+          isActive={pathname === "/enquiry"}
+        />
+
         <Accordion
           type="single"
           collapsible
@@ -217,7 +222,7 @@ function Sidebar() {
               >
                 Manage Members
               </Link>
-              <Link
+              {/* <Link
                 to={"/member/settings"}
                 className={`block mt-2  ml-[50px]  hover:text-white hover:bg-[#2B3E46] px-4 py-2 rounded-[4px] mb-1 ${
                   pathname === "/member/settings"
@@ -226,7 +231,7 @@ function Sidebar() {
                 }`}
               >
                 Settings
-              </Link>
+              </Link> */}
             </AccordionContent>
           </AccordionItem>
         </Accordion>

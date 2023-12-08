@@ -56,12 +56,12 @@ function CreateJobPost() {
   const [docTypeData, setDocTypeData] = useState<DocumentType[]>([]);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const job = sessionStorage.getItem("jobData");
-    if (job) {
-      setJobData(JSON.parse(job));
-    }
-  }, []); //eslint-disable-line
+  // useEffect(() => {
+  //   const job = sessionStorage.getItem("jobData");
+  //   if (job) {
+  //     setJobData(JSON.parse(job));
+  //   }
+  // }, []); //eslint-disable-line
 
   useEffect(() => {
     const controller = new AbortController();
@@ -163,14 +163,69 @@ function CreateJobPost() {
     };
   }, []); //eslint-disable-line
 
-  useEffect(() => {
-    sessionStorage.setItem("jobData", JSON.stringify(jobData));
-    return () => {
-      sessionStorage.removeItem("jobData");
-    };
-  }, [jobData]);
+  // useEffect(() => {
+  //   sessionStorage.setItem("jobData", JSON.stringify(jobData));
+  //   return () => {
+  //     sessionStorage.removeItem("jobData");
+  //   };
+  // }, [jobData]);
 
   const createJobPost = async () => {
+    if (
+      !jobData.title ||
+      !jobData.description ||
+      !jobData.job_and_work_place_type.job_type ||
+      !jobData.job_and_work_place_type.work_place_type ||
+      jobData.application_questions.length == 0 ||
+      jobData.responsibilities.length == 0 ||
+      jobData.requirements_and_skills.length == 0 ||
+      jobData.uploads.length == 0
+    ) {
+      toast.error("All fields must be filled");
+      return;
+    }
+    try {
+      toast.loading("creating jobpost...", { id: "jobpost" });
+      const { data } = await axios.post(
+        `${base_url}/api/v1/stackivy/admin/career/job_posts`,
+        { ...jobData, saved: true },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (data.code === 200) {
+        setJobData({
+          title: "",
+          description: "",
+          responsibilities: [],
+          requirements_and_skills: [],
+          job_and_work_place_type: {
+            job_type: "",
+            work_place_type: "",
+          },
+          application_questions: [],
+          uploads: [],
+        });
+        setJobPostModal(true);
+      }
+      console.log(data);
+    } catch (
+      error: any //eslint-disable-line
+    ) {
+      setMessage(error.response.data.message);
+      console.log(error);
+    } finally {
+      toast.dismiss("jobpost");
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+
+  const createDraft = async () => {
     if (
       !jobData.title ||
       !jobData.description ||
@@ -257,9 +312,12 @@ function CreateJobPost() {
               >
                 Post Job
               </button>
-              {/* <button className="text-[#116B89] font-medium">
+              <button
+                className="text-[#116B89] font-medium"
+                onClick={createDraft}
+              >
                 Save As Draft
-              </button> */}
+              </button>
             </div>
           </div>
           <div className="px-8 pt-10">
@@ -486,52 +544,93 @@ function CreateJobPost() {
                     </Select>
                   </TabsContent>
                   <TabsContent value="appq" className="pb-3 h-full">
-                    <div className="flex flex-col gap-5">
-                      {questionData.map((q, i) => (
-                        <div className="flex gap-3 items-start" key={i}>
-                          <input
-                            type="checkbox"
-                            className="mt-1 accent-[#116B89] cursor-pointer"
-                            onChange={(e) => {
-                              if (e.target.checked === true) {
-                                setJobData({
-                                  ...jobData,
-                                  application_questions: [
-                                    ...jobData.application_questions,
-                                    {
-                                      question: q.question,
-                                      compulsory: q.compulsory,
-                                    },
-                                  ],
-                                });
-                              } else {
-                                const filtered =
-                                  jobData.application_questions.filter(
-                                    (f) => f.question != q.question
-                                  );
-                                setJobData({
-                                  ...jobData,
-                                  application_questions: filtered,
-                                });
-                              }
+                    <div className="flex flex-col">
+                      {questionData.map((qd, i) => (
+                        <div className="flex flex-col gap-2 mb-5" key={i}>
+                          <Select
+                            onValueChange={(value) => {
+                              setJobData({
+                                ...jobData,
+                                application_questions: [
+                                  ...jobData.application_questions,
+                                  { question: value, compulsory: false },
+                                ],
+                              });
                             }}
-                          />
-                          <div className="flex flex-col">
-                            <p className="mb-1">Question {i + 1}</p>
-                            <p className="w-full text-[17px]">{q.question}</p>
-                            <div className="mt-2">
-                              <input
-                                type="checkbox"
-                                name=""
-                                id=""
-                                className="accent-[#116B89] cursor-pointer "
-                                defaultChecked={q.compulsory}
-                                disabled={q.compulsory}
-                              />{" "}
-                              <span className="text-[#6B7280] text-[14px]">
-                                Compulsory
-                              </span>
-                            </div>
+                          >
+                            <SelectTrigger className="w-full py-8 px-5 mb-1">
+                              <SelectValue
+                                placeholder={`Question ${i + 1} Q${i + 1}`}
+                              />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>{`Question ${i + 1} Q${
+                                  i + 1
+                                }`}</SelectLabel>
+                                {questionData.map((q, i) => (
+                                  <SelectItem value={q.question} key={i}>
+                                    {q.question}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className=" accent-[#116B89] w-4 h-4 cursor-pointer "
+                              onChange={(e) => {
+                                if (e.target.checked === true) {
+                                  console.log({ qd });
+                                  const isExist =
+                                    jobData.application_questions.find(
+                                      (ap) => ap.question === qd.question
+                                    );
+                                  console.log({ isExist });
+                                  if (isExist) {
+                                    const updated =
+                                      jobData.application_questions.map((up) =>
+                                        up === isExist
+                                          ? {
+                                              question: isExist.question,
+                                              compulsory: true,
+                                            }
+                                          : up
+                                      );
+                                    setJobData({
+                                      ...jobData,
+                                      application_questions: updated,
+                                    });
+                                  }
+                                } else {
+                                  const isExist =
+                                    jobData.application_questions.find(
+                                      (ap) => ap.question === qd.question
+                                    );
+                                  if (isExist) {
+                                    const updated =
+                                      jobData.application_questions.map((up) =>
+                                        up === isExist
+                                          ? {
+                                              question: isExist.question,
+                                              compulsory: false,
+                                            }
+                                          : up
+                                      );
+                                    setJobData({
+                                      ...jobData,
+                                      application_questions: updated,
+                                    });
+                                  }
+                                }
+                              }}
+                            />
+                            <span className="ml-2 text-[14px] text-[#6B7280]">
+                              Compulsory
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -539,51 +638,84 @@ function CreateJobPost() {
                   </TabsContent>
 
                   <TabsContent value="upload">
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col">
                       {docTypeData.map((d, i) => (
-                        <div className="flex gap-3 items-start" key={i}>
-                          <input
-                            type="checkbox"
-                            className="mt-1 accent-[#116B89] cursor-pointer"
-                            onChange={(e) => {
-                              if (e.target.checked === true) {
-                                setJobData({
-                                  ...jobData,
-                                  uploads: [
-                                    ...jobData.uploads,
-                                    {
-                                      file: d.file,
-                                      compulsory: d.compulsory,
-                                    },
-                                  ],
-                                });
-                              } else {
-                                const filtered = jobData.uploads.filter(
-                                  (f) => f.file != d.file
-                                );
-                                setJobData({
-                                  ...jobData,
-                                  uploads: filtered,
-                                });
-                              }
+                        <div className="flex flex-col gap-2 mb-5" key={i}>
+                          <Select
+                            onValueChange={(value) => {
+                              setJobData({
+                                ...jobData,
+                                uploads: [
+                                  ...jobData.uploads,
+                                  { file: value, compulsory: false },
+                                ],
+                              });
                             }}
-                          />
-                          <div className="flex flex-col">
-                            <p className="mb-1">Document {i + 1}</p>
-                            <p className="w-full text-[17px]">{d.file}</p>
-                            <div className="mt-2">
-                              <input
-                                type="checkbox"
-                                name=""
-                                id=""
-                                className="accent-[#116B89] cursor-pointer "
-                                defaultChecked={d.compulsory}
-                                disabled={d.compulsory}
-                              />{" "}
-                              <span className="text-[#6B7280] text-[14px]">
-                                Compulsory
-                              </span>
-                            </div>
+                          >
+                            <SelectTrigger className="w-full py-8 px-5 mb-1">
+                              <SelectValue placeholder="Choose Document" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Choose Document</SelectLabel>
+                                {docTypeData.map((q, i) => (
+                                  <SelectItem value={q.file} key={i}>
+                                    {q.file}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className=" accent-[#116B89] w-4 h-4 cursor-pointer "
+                              onChange={(e) => {
+                                if (e.target.checked === true) {
+                                  const isExist = jobData.uploads.find(
+                                    (ap) => ap.file === d.file
+                                  );
+
+                                  if (isExist) {
+                                    const updated = jobData.uploads.map((up) =>
+                                      up === isExist
+                                        ? {
+                                            file: isExist.file,
+                                            compulsory: true,
+                                          }
+                                        : up
+                                    );
+                                    setJobData({
+                                      ...jobData,
+                                      uploads: updated,
+                                    });
+                                  }
+                                } else {
+                                  const isExist = jobData.uploads.find(
+                                    (ap) => ap.file === d.file
+                                  );
+                                  if (isExist) {
+                                    const updated = jobData.uploads.map((up) =>
+                                      up === isExist
+                                        ? {
+                                            file: isExist.file,
+                                            compulsory: false,
+                                          }
+                                        : up
+                                    );
+                                    setJobData({
+                                      ...jobData,
+                                      uploads: updated,
+                                    });
+                                  }
+                                }
+                              }}
+                            />
+                            <span className="ml-2 text-[14px] text-[#6B7280]">
+                              Compulsory
+                            </span>
                           </div>
                         </div>
                       ))}

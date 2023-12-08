@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { base_url, MemberDataType, MemberType } from "../../types";
 import { userSlice } from "../Hooks/user";
 import { format, parseISO } from "date-fns";
+// import { useFetcher } from "@/util/usefetch";
 
 function Member() {
   const navigate = useNavigate();
@@ -165,6 +166,11 @@ function Member() {
       controller.abort();
     };
   }, []); //eslint-disable-line
+
+  // const { data, error, isLoading } = useFetcher(
+  //   `${base_url}/api/v1/stackivy/admin/member`,
+  //   user?.token
+  // );
 
   const AddMember = async (e: FormEvent) => {
     e.preventDefault();

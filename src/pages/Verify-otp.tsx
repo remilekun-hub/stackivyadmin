@@ -34,6 +34,7 @@ function Verify() {
     try {
       setIsLoading(true);
       parsedOTP = otp;
+      console.log({ parsedOTP }, userData.email);
       const { data } = await axios.post(
         `${base_url}/api/v1/stackivy/admin/auth/login`,
         { email: userData.email, otp: parsedOTP }
@@ -41,6 +42,7 @@ function Verify() {
       if (data.code !== 200) {
         setMessage(data.message);
       }
+      console.log({ data });
 
       if (data.code === 200) {
         sessionStorage.removeItem("authSignin");

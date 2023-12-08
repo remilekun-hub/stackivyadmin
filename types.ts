@@ -287,6 +287,7 @@ export type SingleJobType = {
   };
   application_questions: appQuestion[];
   uploads: UploadType[];
+  isDeleted: boolean;
 };
 
 export type settingType = {
@@ -322,5 +323,93 @@ export type questionType = {
   date_created: string;
   date_last_updated: string;
 };
+
+export type enquiryType = {
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  destination: string;
+  category: string;
+  company: string;
+  website: string;
+  overview: string;
+  message: string;
+};
+
+export const enquiryData: enquiryType[] = [
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+  {
+    first_name: "Matthew",
+    last_name: "Oluwatobi",
+    phone: "08156754328",
+    email: "Matthew46@gmail.com",
+    destination: "Wealth management",
+    category: "Personal",
+    company: "Yem and Kem linited",
+    website: "yemkemlimitedcompany.com",
+    overview: "Pharmaceuticals",
+    message: "hello world",
+  },
+];
 
 export const base_url = "https://stackivy-admin-be.onrender.com";

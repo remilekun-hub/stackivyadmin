@@ -7,28 +7,20 @@ import jobicon1 from "../assets/jobicon1.png";
 import jobicon2 from "../assets/jobicon2.png";
 import jobicon3 from "../assets/jobicon3.png";
 import { base_url } from "../../types";
-import useSWR from "swr";
 import { userSlice } from "@/Hooks/user";
-import axios from "axios";
-import { Loader } from "@mantine/core";
+import CustomeError from "@/components/CustomError";
+import Spinner from "@/components/Spinner";
+import { useFetcher } from "@/util/usefetch";
 
 function JobPosts() {
   const user = userSlice((state) => state.user);
-  const fetcher = (url: string) =>
-    axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      })
-      .then((res) => res.data);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useFetcher(
     `${base_url}/api/v1/stackivy/admin/career/manage_job_posts`,
-    fetcher
+    user?.token
   );
 
-  console.log({ data, error, isLoading });
+  console.log({ data });
   return (
     <section className="">
       <Navbar>
@@ -38,15 +30,9 @@ function JobPosts() {
       </Navbar>
 
       <main className="bg-[#F3F4F6] min-h-screen p-4 lg:px-6 lg:py-7">
-        {error && (
-          <p className="flex justify-center">Error while fetching data.</p>
-        )}
+        {error && <CustomeError />}
 
-        {isLoading && (
-          <p className="flex justify-center">
-            <Loader color="#116B89" />
-          </p>
-        )}
+        {isLoading && <Spinner />}
 
         {data && (
           <div className="max-w-[1500px] mx-auto">
@@ -127,7 +113,11 @@ function JobPosts() {
                     </TabsContent>
                     <TabsContent value="closedjobs">
                       {data.closed_job_posts.map((job) => (
-                        <SingleJobTab key={job.job_post_id} {...job} />
+                        <SingleJobTab
+                          key={job.job_post_id}
+                          {...job}
+                          isDeleted
+                        />
                       ))}
                     </TabsContent>
                   </div>
